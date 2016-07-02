@@ -13,6 +13,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'devise'
 gem 'ancestry'
+gem 'reform'
 
 group :production do
   gem 'rails_12factor'
