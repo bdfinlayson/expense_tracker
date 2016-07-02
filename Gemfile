@@ -14,6 +14,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'devise'
 gem 'ancestry'
 gem 'reform'
+gem 'reform-rails'
 
 group :production do
   gem 'rails_12factor'
