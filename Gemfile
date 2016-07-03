@@ -16,6 +16,10 @@ gem 'ancestry'
 gem 'reform'
 gem 'reform-rails'
 
+# Styles
+gem 'bourbon'
+gem 'neat'
+
 group :production do
   gem 'rails_12factor'
 end
