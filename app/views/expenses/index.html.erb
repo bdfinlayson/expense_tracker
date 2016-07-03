@@ -47,7 +47,7 @@
           <div class='update-btn'><%= f.submit %></div>
         </td>
         <td>
-          DELETE
+          <%= link_to 'DELETE', {action: :destroy, id: expense.id, expense: { q: { category_name_or_vendor_name_cont: @search_query.values.first }}}, method: :delete %>
         </td>
       <% end %>
     </tr>

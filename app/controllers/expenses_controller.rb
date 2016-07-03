@@ -33,14 +33,18 @@ class ExpensesController < ApplicationController
     @expense = Expense.find params[:expense][:id]
     @search_query = params[:expense][:q]
     if @expense.update(amount: params[:expense][:amount], vendor_id: params[:expense][:vendor_id], category_id: params[:expense][:category_id])
-      return redirect_to expenses_path(
-        q: {
-          category_name_or_vendor_name_cont: ( params[:expense][:q].present? ? params[:expense][:q][:category_name_or_vendor_name_cont] : [] )
-        }
-      ), notice: 'Expense updated!'
+      return redirect_to build_expenses_path, notice: 'Expense updated!'
     else
-      return redirect_to expenses_path(search_query), alert: @expense.errors.full_messages.join('!, ').concat('!')
+      return redirect_to build_expenses_path, alert: @expense.errors.full_messages.join('!, ').concat('!')
     end
+  end
+
+  def build_expenses_path
+    expenses_path(
+      q: {
+        category_name_or_vendor_name_cont: ( params[:expense][:q].present? ? params[:expense][:q][:category_name_or_vendor_name_cont] : [] )
+      }
+    )
   end
 
   def create_new_category
@@ -56,6 +60,12 @@ class ExpensesController < ApplicationController
         user_id: current_user.id
       )
     end
+  end
+
+  def destroy
+    @expense = Expense.find params[:id]
+    @expense.destroy
+    redirect_to build_expenses_path, notice: 'Expense destroyed!'
   end
 
   def new_category?
