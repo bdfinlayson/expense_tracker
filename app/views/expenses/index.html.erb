@@ -1,0 +1,18 @@
+<table>
+  <tr>
+    <td>Date</td>
+    <td>Amount</td>
+    <td>Vendor</td>
+    <td>Category</td>
+  </tr>
+  <% @expenses.each do |expense| %>
+    <tr>
+      <td><%= expense.created_at %></td>
+      <td><%= expense.amount %></td>
+      <td><%= expense.category.name %></td>
+      <td><%= expense.vendor.name %></td>
+    </tr>
+  <% end %>
+</table>
+
+

@@ -6,6 +6,10 @@ class ExpensesController < ApplicationController
   def new
   end
 
+  def index
+    @expenses = current_user.expenses
+  end
+
   def create
     if validate!
       @form.save
