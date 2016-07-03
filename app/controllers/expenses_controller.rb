@@ -11,7 +11,9 @@ class ExpensesController < ApplicationController
       @form.save
       return redirect_to root_path, notice: 'Expense saved!'
     else
-      return redirect_to root_path, alert: @form.errors.full_messages
+      # flash[:alert] = @form.errors.full_messages
+      # return render :new, form: @form
+      return redirect_to root_path, alert: @form.errors.full_messages.join('!, ').concat('!')
     end
   end
 

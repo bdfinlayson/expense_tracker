@@ -20,6 +20,9 @@ gem 'reform-rails'
 gem 'bourbon'
 gem 'neat'
 
+# JS
+gem 'jquery-ui-rails'
+
 group :production do
   gem 'rails_12factor'
 end
