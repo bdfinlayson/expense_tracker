@@ -1,21 +1,22 @@
 require_dependency 'app/models/forms/expense_form'
 
 class ExpensesController < ApplicationController
-  before_action :set_new_form, only: [:new, :create]
+  before_action :set_new_form, only: [:new, :create, :update]
 
   def new
   end
 
   def index
-    @q = Expense.where(user: current_user).ransack( search_query )
+    @search_query = search_query
+    @q = Expense.where(user: current_user).order(created_at: :desc).ransack( search_query )
     @expenses = @q.result
+    @total_expenses = @expenses.map(&:amount).sum
+    @total_items = @expenses.count
   end
 
   def search_query
-    return {} unless params[:q].present?
-    if params[:q]['category_name_or_vendor_name_cont'].present?
-      { category_name_or_vendor_name_cont: params[:q]['category_name_or_vendor_name_cont'] }
-    end
+    return {} unless params[:q].present? || params[:q]['category_name_or_vendor_name_cont'].present?
+    { category_name_or_vendor_name_cont: params[:q]['category_name_or_vendor_name_cont'] }
   end
 
   def create
@@ -23,9 +24,17 @@ class ExpensesController < ApplicationController
       @form.save
       return redirect_to root_path, notice: 'Expense saved!'
     else
-      # flash[:alert] = @form.errors.full_messages
-      # return render :new, form: @form
       return redirect_to root_path, alert: @form.errors.full_messages.join('!, ').concat('!')
+    end
+  end
+
+  def update
+    @expense = Expense.find params[:expense][:id]
+    @search_query = params[:expense][:q]
+    if @expense.update(amount: params[:expense][:amount], vendor_id: params[:expense][:vendor_id], category_id: params[:expense][:category_id])
+      return redirect_to expenses_path(q: { category_name_or_vendor_name_cont: params[:expense][:q][:category_name_or_vendor_name_cont]} ), notice: 'Expense updated!'
+    else
+      return redirect_to expenses_path(search_query), alert: @form.errors.full_messages.join('!, ').concat('!')
     end
   end
 
@@ -45,6 +54,7 @@ class ExpensesController < ApplicationController
   end
 
   def new_category?
+    return false if not expense_params[:category].present?
     expense_params[:category][:name].present?
   end
 
@@ -57,6 +67,7 @@ class ExpensesController < ApplicationController
   end
 
   def new_vendor?
+    return false if not expense_params[:vendor].present?
     expense_params[:vendor][:name].present?
   end
 

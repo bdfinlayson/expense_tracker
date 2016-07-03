@@ -3,19 +3,29 @@
   <%= f.search_field :category_name_or_vendor_name_cont %>
   <%= f.submit %>
 <% end %>
+<h2>Total Expenses: <%= number_to_currency @total_expenses %></h2>
+<h2>Total Items: <%= @total_items %></h2>
 <table>
   <tr>
     <td>Date</td>
     <td>Amount</td>
     <td>Vendor</td>
     <td>Category</td>
+    <td></td>
+    <td></td>
   </tr>
   <% @expenses.each do |expense| %>
     <tr>
-      <td><%= expense.created_at %></td>
-      <td><%= expense.amount %></td>
-      <td><%= expense.vendor.name %></td>
-      <td><%= expense.category.name %></td>
+      <%= form_for expense do |f| %>
+        <%= f.text_field :id, type: :hidden, value: expense.id %>
+        <%= f.text_field "q[#{@search_query.keys.first}]", type: :hidden, value: @search_query.values.first %>
+        <td><%= expense.created_at %></td>
+        <td><%= expense.amount %><%= f.text_field :amount, type: :number, step: '0.01', placeholder: '$1.50' %></td>
+        <td><%= expense.vendor.name %><%= collection_select(:expense, :vendor_id, Vendor.all, :id, :name, prompt: 'Select a vendor', selected: expense.vendor.id) %></td>
+        <td><%= expense.category.name %><%= collection_select(:expense, :category_id, Category.all, :id, :name, prompt: 'Select a category', selected: expense.category.id) %></td>
+        <td class='edit-expense'>EDIT<%= f.submit %></td>
+        <td>DELETE</td>
+      <% end %>
     </tr>
   <% end %>
 </table>
