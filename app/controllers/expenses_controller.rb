@@ -15,7 +15,8 @@ class ExpensesController < ApplicationController
   end
 
   def search_query
-    return {} unless params[:q].present? || params[:q]['category_name_or_vendor_name_cont'].present?
+    return {} unless params[:q].present?
+    return {} unless params[:q]['category_name_or_vendor_name_cont'].present?
     { category_name_or_vendor_name_cont: params[:q]['category_name_or_vendor_name_cont'] }
   end
 
@@ -32,9 +33,13 @@ class ExpensesController < ApplicationController
     @expense = Expense.find params[:expense][:id]
     @search_query = params[:expense][:q]
     if @expense.update(amount: params[:expense][:amount], vendor_id: params[:expense][:vendor_id], category_id: params[:expense][:category_id])
-      return redirect_to expenses_path(q: { category_name_or_vendor_name_cont: params[:expense][:q][:category_name_or_vendor_name_cont]} ), notice: 'Expense updated!'
+      return redirect_to expenses_path(
+        q: {
+          category_name_or_vendor_name_cont: ( params[:expense][:q].present? ? params[:expense][:q][:category_name_or_vendor_name_cont] : [] )
+        }
+      ), notice: 'Expense updated!'
     else
-      return redirect_to expenses_path(search_query), alert: @form.errors.full_messages.join('!, ').concat('!')
+      return redirect_to expenses_path(search_query), alert: @expense.errors.full_messages.join('!, ').concat('!')
     end
   end
 

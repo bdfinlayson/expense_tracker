@@ -15,5 +15,6 @@
 //= require turbolinks
 //= require_tree .
 //= require jquery-ui
-//= require new_expense
 //= require alerts
+//= require expenses_new
+//= require expenses_index

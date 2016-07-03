@@ -15,16 +15,40 @@
     <td></td>
   </tr>
   <% @expenses.each do |expense| %>
-    <tr>
+    <tr class='expenses-index-form'>
       <%= form_for expense do |f| %>
         <%= f.text_field :id, type: :hidden, value: expense.id %>
         <%= f.text_field "q[#{@search_query.keys.first}]", type: :hidden, value: @search_query.values.first %>
-        <td><%= expense.created_at %></td>
-        <td><%= expense.amount %><%= f.text_field :amount, type: :number, step: '0.01', placeholder: '$1.50' %></td>
-        <td><%= expense.vendor.name %><%= collection_select(:expense, :vendor_id, Vendor.all, :id, :name, prompt: 'Select a vendor', selected: expense.vendor.id) %></td>
-        <td><%= expense.category.name %><%= collection_select(:expense, :category_id, Category.all, :id, :name, prompt: 'Select a category', selected: expense.category.id) %></td>
-        <td class='edit-expense'>EDIT<%= f.submit %></td>
-        <td>DELETE</td>
+        <td>
+          <%= expense.created_at %>
+        </td>
+        <td>
+          <div class='row-item'>
+            <%= expense.amount %>
+          </div>
+          <%= f.text_field :amount, type: :number, step: '0.01', placeholder: '$1.50' %>
+        </td>
+        <td>
+          <div class='row-item'>
+            <%= expense.vendor.name %>
+          </div>
+          <%= collection_select(:expense, :vendor_id, Vendor.all, :id, :name, prompt: 'Select a vendor', selected: expense.vendor.id) %>
+        </td>
+        <td>
+          <div class='row-item'>
+            <%= expense.category.name %>
+          </div>
+          <%= collection_select(:expense, :category_id, Category.all, :id, :name, prompt: 'Select a category', selected: expense.category.id) %>
+        </td>
+        <td>
+          <div class='edit-expense'>EDIT</div>
+          <div class='cancel-edit'>CANCEL</div>
+          <div class='update-expense'>UPDATE</div>
+          <div class='update-btn'><%= f.submit %></div>
+        </td>
+        <td>
+          DELETE
+        </td>
       <% end %>
     </tr>
   <% end %>

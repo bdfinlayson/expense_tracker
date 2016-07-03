@@ -1,0 +1,19 @@
+.notice, .alert {
+  position: fixed;
+  bottom: 5%;
+  right: 5%;
+  width: 400px;
+  color: white;
+  // @include display(flex);
+  // @include align-items(center);
+  // @include justify-content(center);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: larger;
+  text-align: center;
+  display: none;
+}
+
+.notice { background: forestgreen }
+.alert { background: orangered }
