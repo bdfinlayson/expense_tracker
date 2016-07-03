@@ -15,6 +15,7 @@ gem 'devise'
 gem 'ancestry'
 gem 'reform'
 gem 'reform-rails'
+gem 'ransack'
 
 # Styles
 gem 'bourbon'

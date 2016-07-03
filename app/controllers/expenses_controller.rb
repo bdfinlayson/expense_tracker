@@ -7,7 +7,15 @@ class ExpensesController < ApplicationController
   end
 
   def index
-    @expenses = current_user.expenses
+    @q = Expense.where(user: current_user).ransack( search_query )
+    @expenses = @q.result
+  end
+
+  def search_query
+    return '' unless params[:q].present?
+    if params[:q]['category_name_or_vendor_name_cont'].present?
+      { category_name_or_vendor_name_cont: params[:q]['category_name_or_vendor_name_cont'] }
+    end
   end
 
   def create

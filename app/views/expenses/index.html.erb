@@ -1,3 +1,8 @@
+<%= search_form_for @q do |f| %>
+  <%= f.label :category_name_or_vendor_name_cont %>
+  <%= f.search_field :category_name_or_vendor_name_cont %>
+  <%= f.submit %>
+<% end %>
 <table>
   <tr>
     <td>Date</td>
@@ -9,8 +14,8 @@
     <tr>
       <td><%= expense.created_at %></td>
       <td><%= expense.amount %></td>
-      <td><%= expense.category.name %></td>
       <td><%= expense.vendor.name %></td>
+      <td><%= expense.category.name %></td>
     </tr>
   <% end %>
 </table>
