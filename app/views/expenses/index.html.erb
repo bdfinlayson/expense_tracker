@@ -36,7 +36,7 @@
         </td>
         <td>
           <div class='row-item'>
-            <%= expense.category.name %>
+            <%= link_to expense.category.name, edit_category_path(expense.category) %>
           </div>
           <%= collection_select(:expense, :category_id, Category.all, :id, :name, prompt: 'Select a category', selected: expense.category.id) %>
         </td>
