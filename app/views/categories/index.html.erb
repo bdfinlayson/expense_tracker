@@ -10,16 +10,25 @@
     <td></td>
   </tr>
   <% @categories.order('name asc').each do |c| %>
-    <tr>
-      <td>
-        <%= c.name %>
-      </td>
-      <td>
-        <%= link_to 'EDIT', edit_category_path(c) %>
-      </td>
-      <td>
-        <%= link_to 'DELETE', { action: :destroy, id: c.id}, method: :delete %>
-      </td>
+    <tr class='categories-index-form'>
+      <%= form_for c do |f| %>
+        <%= f.text_field :id, type: :hidden, value: c.id %>
+        <td>
+          <div class='row-item'>
+            <%= c.name %>
+          </div>
+          <%= f.text_field :name, placeholder: 'Category name' %>
+        </td>
+        <td>
+          <div class='edit-category'>EDIT</div>
+          <div class='cancel-edit'>CANCEL</div>
+          <div class='update-category'>UPDATE</div>
+          <div class='update-btn'><%= f.submit %></div>
+        </td>
+        <td>
+          <%= link_to 'DELETE', { action: :destroy, id: c.id}, method: :delete %>
+        </td>
+      <% end %>
     </tr>
   <% end %>
 </table>

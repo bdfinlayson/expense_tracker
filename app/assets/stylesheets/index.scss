@@ -1,0 +1,9 @@
+.update-btn, .update-category, .update-expense, .cancel-edit {
+  display: none;
+}
+
+.expenses-index-form, .categories-index-form {
+  input, select {
+    display: none;
+  }
+}

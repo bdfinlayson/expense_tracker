@@ -1,8 +1,6 @@
 <%= form_for @form do |f| %>
   <%= f.label :name %>
   <%= f.text_field :name %>
-  <%= collection_select(:category, :ancestry, Category.all, :id, :name, prompt: 'Select a parent category', selected: @parent_id) %>
-  <div class='make-root-node'>ACT AS ROOT NODE</div>
   <%= f.submit %>
 <% end %>
 
