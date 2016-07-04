@@ -18,3 +18,4 @@
 //= require alerts
 //= require expenses_new
 //= require expenses_index
+//= require categories_edit

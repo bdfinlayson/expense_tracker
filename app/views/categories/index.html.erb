@@ -1,0 +1,24 @@
+<table>
+  <tr>
+    <td>Name</td>
+    <td>Parent Category</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <% @categories.each do |c| %>
+    <tr>
+      <td>
+        <%= c.name %>
+      </td>
+      <td>
+        <%= c.parent.present? ? c.parent.name : 'Root Node' %>
+      </td>
+      <td>
+        <%= link_to 'EDIT', edit_category_path(c) %>
+      </td>
+      <td>
+        <%= link_to 'DELETE', action: :destroy, id: c.id, method: :delete %>
+      </td>
+    </tr>
+  <% end %>
+</table>
