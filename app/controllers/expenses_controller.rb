@@ -25,7 +25,7 @@ class ExpensesController < ApplicationController
       @form.save
       return redirect_to root_path, notice: 'Expense saved!'
     else
-      return redirect_to root_path, alert: @form.errors.full_messages.join('!, ').concat('!')
+      return redirect_to root_path, alert: @form.errors.full_messages.join("! ").concat('!')
     end
   end
 
