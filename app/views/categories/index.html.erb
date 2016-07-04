@@ -1,14 +1,11 @@
 <%= form_for @form do |f| %>
   <%= f.label :name %>
   <%= f.text_field :name, placeholder: 'Category name' %>
-  <%= collection_select(:category, :ancestry, Category.all, :id, :name, prompt: 'Select parent category') %>
   <%= f.submit %>
 <% end %>
 <table>
   <tr>
     <td>Name</td>
-    <td>Parent</td>
-    <td>Subcategories</td>
     <td></td>
     <td></td>
   </tr>
@@ -16,18 +13,6 @@
     <tr>
       <td>
         <%= c.name %>
-      </td>
-      <td>
-        <%= c.parent.present? ? link_to(c.parent.name, edit_category_path(c.parent)) : '*' %>
-      </td>
-      <td>
-        <% if c.descendants.any? %>
-          <% c.descendants.order('name asc').each do |d| %>
-            <%= link_to d.name, edit_category_path(d) %><br/>
-          <% end %>
-        <% else %>
-          *
-        <% end %>
       </td>
       <td>
         <%= link_to 'EDIT', edit_category_path(c) %>

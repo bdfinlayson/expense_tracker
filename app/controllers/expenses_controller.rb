@@ -48,18 +48,10 @@ class ExpensesController < ApplicationController
   end
 
   def create_new_category
-    if expense_params[:category][:ancestry].present?
-      Category.create(
-        name: expense_params[:category][:name],
-        parent: Category.find(expense_params[:category][:ancestry]),
-        user_id: current_user.id
-      )
-    else
-      Category.create(
-        name: expense_params[:category][:name],
-        user_id: current_user.id
-      )
-    end
+    Category.create(
+      name: expense_params[:category][:name],
+      user_id: current_user.id
+    )
   end
 
   def destroy
@@ -112,7 +104,6 @@ class ExpensesController < ApplicationController
       category: [
         :id,
         :name,
-        :ancestry,
         :done,
         :_destroy
       ],

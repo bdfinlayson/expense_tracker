@@ -11,7 +11,6 @@
       <h4>Create New Category</h4>
       <%= category_fields.label :name %>
       <%= category_fields.text_field :name, placeholder: 'Enter a category name' %>
-      <%= collection_select('expense[category]', :ancestry, Category.all, :id, :name, prompt: 'Select a parent category') %>
     <% end %>
     <div class='cancel'>Cancel</div>
   </div>
