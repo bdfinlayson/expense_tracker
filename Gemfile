@@ -16,6 +16,8 @@ gem 'ancestry'
 gem 'reform'
 gem 'reform-rails'
 gem 'ransack'
+gem 'virtus'
+gem 'dry-types'
 
 # Styles
 gem 'bourbon'

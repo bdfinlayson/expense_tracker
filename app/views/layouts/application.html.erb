@@ -9,6 +9,12 @@
   </head>
 
   <body>
+    <div class='navbar'>
+      <ol>
+        <li><%= link_to 'Expenses', expenses_path %></li>
+        <li><%= link_to 'Categories', categories_path %></li>
+      </ol>
+    </div>
     <p class='notice'><%= notice %></p>
     <p class='alert'><%= alert %></p>
     <%= yield %>

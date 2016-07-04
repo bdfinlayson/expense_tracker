@@ -19,6 +19,17 @@ class CategoriesController < ApplicationController
     end
   end
 
+  def create
+    @form = CategoryForm.new(Category.new)
+    binding.pry
+    if @form.validate(category_params)
+      @form.save
+      return redirect_to categories_path, notice: 'Category created!'
+    else
+      return redirect_to categories_path, alert: @form.errors.full_messages.join('! ').concat('!')
+    end
+  end
+
   def destroy
     @category = Category.find params[:id]
     if @category.expenses.any? || @category.children.any?
@@ -30,6 +41,7 @@ class CategoriesController < ApplicationController
   end
 
   def index
+    @form = CategoryForm.new(Category.new)
     @categories = Category.where(user_id: current_user.id)
   end
 

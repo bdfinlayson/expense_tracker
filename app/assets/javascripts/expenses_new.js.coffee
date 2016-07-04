@@ -1,4 +1,4 @@
-$ ->
+$(document).on 'turbolinks:load', ->
   $('.new-category-btn, .new-vendor-btn').on 'click', ->
     $(@).prev().toggle().val('')
     $(@).next().toggle('slow')

@@ -1,4 +1,4 @@
-$ ->
+$(document).on 'turbolinks:load', ->
   $('.update-expense').on 'click', ->
     $(@).next().children().click()
 
