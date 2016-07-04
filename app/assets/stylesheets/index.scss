@@ -1,9 +1,9 @@
-.update-btn, .update-category, .update-expense, .cancel-edit {
+.update-btn, .update-category, .update-expense, .update-vendor, .cancel-edit {
   display: none;
 }
 
-.expenses-index-form, .categories-index-form {
-  input, select {
+.vendors-index-form, .expenses-index-form, .categories-index-form {
+  input, select, textarea {
     display: none;
   }
 }

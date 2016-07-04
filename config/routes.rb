@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   root to: 'expenses#new'
   resources :expenses
   resources :categories
+  resources :vendors
 end

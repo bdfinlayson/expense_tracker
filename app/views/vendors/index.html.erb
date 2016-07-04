@@ -1,0 +1,43 @@
+<%= form_for @form do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name, placeholder: 'Vendor name' %>
+  <%= f.label :note %>
+  <%= f.text_area :note, placeholder: 'Notes on this vendor here' %>
+  <%= f.submit %>
+<% end %>
+<table>
+  <tr>
+    <td>Name</td>
+    <td>Notes</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <% @vendors.order('name asc').each do |v| %>
+    <tr class='vendors-index-form'>
+      <%= form_for v do |f| %>
+        <%= f.text_field :id, type: :hidden, value: v.id %>
+        <td>
+          <div class='row-item'>
+            <%= v.name %>
+          </div>
+          <%= f.text_field :name, placeholder: 'Vendor name' %>
+        </td>
+        <td>
+          <div class='row-item'>
+            <%= v.note %>
+          </div>
+          <%= f.text_area :note, placeholder: 'Notes on this vendor here' %>
+        </td>
+        <td>
+          <div class='edit-vendor'>EDIT</div>
+          <div class='cancel-edit'>CANCEL</div>
+          <div class='update-vendor'>UPDATE</div>
+          <div class='update-btn'><%= f.submit %></div>
+        </td>
+        <td>
+          <%= link_to 'DELETE', { action: :destroy, id: v.id}, method: :delete %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>

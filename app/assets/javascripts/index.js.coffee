@@ -1,8 +1,8 @@
 $(document).on 'turbolinks:load', ->
-  $('.update-expense, .update-category').on 'click', ->
+  $('.update-vendor, .update-expense, .update-category').on 'click', ->
     $(@).next().children().click()
 
-  $('.edit-expense, .edit-category').on 'click', ->
+  $('.edit-vendor, .edit-expense, .edit-category').on 'click', ->
     $(@).toggle()
     $(@).next().toggle()
     $(@).next().next().toggle()

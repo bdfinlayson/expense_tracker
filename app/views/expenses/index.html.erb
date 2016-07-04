@@ -30,7 +30,7 @@
         </td>
         <td>
           <div class='row-item'>
-            <%= expense.vendor.name %>
+            <%= link_to expense.vendor.name, edit_vendor_path(expense.vendor) %>
           </div>
           <%= collection_select(:expense, :vendor_id, Vendor.all, :id, :name, prompt: 'Select a vendor', selected: expense.vendor.id) %>
         </td>
