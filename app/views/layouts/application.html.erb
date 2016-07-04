@@ -8,11 +8,11 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
+  <body “data-no-turbolink”>
     <div class='navbar'>
       <ol>
-        <li><%= link_to 'Expenses', expenses_path %></li>
-        <li><%= link_to 'Categories', categories_path %></li>
+        <li><%= link_to 'Expenses', expenses_path, 'data-turbolinks' => false %></li>
+        <li><%= link_to 'Categories', categories_path, 'data-turbolinks' => false %></li>
       </ol>
     </div>
     <p class='notice'><%= notice %></p>
