@@ -11,13 +11,13 @@
         <%= c.name %>
       </td>
       <td>
-        <%= c.parent.present? ? c.parent.name : 'Root Node' %>
+        <%= c.parent.present? ? c.parent.name : '*' %>
       </td>
       <td>
         <%= link_to 'EDIT', edit_category_path(c) %>
       </td>
       <td>
-        <%= link_to 'DELETE', action: :destroy, id: c.id, method: :delete %>
+        <%= link_to 'DELETE', { action: :destroy, id: c.id}, method: :delete %>
       </td>
     </tr>
   <% end %>

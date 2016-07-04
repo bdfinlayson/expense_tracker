@@ -19,6 +19,16 @@ class CategoriesController < ApplicationController
     end
   end
 
+  def destroy
+    @category = Category.find params[:id]
+    if @category.expenses.any? || @category.children.any?
+      return redirect_to categories_path(@category), alert: 'Cannot delete category. Please reassociate any expenses and subcategories.'
+    else
+      @category.destroy
+      return redirect_to categories_path, notice: 'Category deleted!'
+    end
+  end
+
   def index
     @categories = Category.where(user_id: current_user.id)
   end
