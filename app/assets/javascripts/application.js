@@ -18,3 +18,4 @@
 //= require expenses_new
 //= require index
 //= require categories_edit
+//= require nav

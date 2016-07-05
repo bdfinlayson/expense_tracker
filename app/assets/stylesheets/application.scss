@@ -5,12 +5,13 @@
 @import 'alerts';
 @import 'expenses_new';
 @import 'index';
+@import 'nav';
 
 .navbar > ol {
   display: flex;
   justify-content: center;
 
   li {
-    padding: 1em 3em;
+    padding: 1em 1em;
   }
 }
