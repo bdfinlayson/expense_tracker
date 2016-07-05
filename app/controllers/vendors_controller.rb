@@ -1,4 +1,4 @@
-require_dependency 'app/models/forms/vendor_form'
+# require_dependency 'app/models/forms/vendor_form'
 
 class VendorsController < ApplicationController
   def index

@@ -1,4 +1,4 @@
-require_dependency 'app/models/forms/expense_form'
+# require_dependency 'app/models/forms/expense_form'
 
 class ExpensesController < ApplicationController
   before_action :set_new_form, only: [:new, :create, :update]
