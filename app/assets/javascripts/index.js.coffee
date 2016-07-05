@@ -1,19 +1,21 @@
 $(document).on 'turbolinks:load', ->
-  $('.update-vendor, .update-expense, .update-category').on 'click', ->
-    $(@).next().children().click()
+  $('.update').on 'click', ->
+    $(@).next().next().children().click()
 
-  $('.edit-vendor, .edit-expense, .edit-category').on 'click', ->
+  $('.edit').on 'click', ->
     $(@).toggle()
     $(@).next().toggle()
     $(@).next().next().toggle()
-    $(@).parent().parent().find('input').toggle()
-    $(@).parent().parent().find('select').toggle()
-    $(@).parent().parent().find('.row-item').toggle()
+    $(@).next().next().next().toggle()
+    $(@).closest('tr').find('input').toggle()
+    $(@).closest('tr').find('select').toggle()
+    $(@).closest('tr').find('.row-item').toggle()
 
-  $('.cancel-edit').on 'click', ->
-    $(@).toggle()
+  $('.cancel').on 'click', ->
     $(@).prev().toggle()
+    $(@).toggle()
     $(@).next().toggle()
-    $(@).parent().parent().find('input').toggle()
-    $(@).parent().parent().find('select').toggle()
-    $(@).parent().parent().find('.row-item').toggle()
+    $(@).next().next().toggle()
+    $(@).closest('tr').find('input').toggle()
+    $(@).closest('tr').find('select').toggle()
+    $(@).closest('tr').find('.row-item').toggle()

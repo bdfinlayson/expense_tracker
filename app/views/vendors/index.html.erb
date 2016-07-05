@@ -13,7 +13,7 @@
     <td></td>
   </tr>
   <% @vendors.order('name asc').each do |v| %>
-    <tr class='vendors-index-form'>
+    <tr class='index-form'>
       <%= form_for v do |f| %>
         <%= f.text_field :id, type: :hidden, value: v.id %>
         <td>
@@ -29,13 +29,11 @@
           <%= f.text_area :note, placeholder: 'Notes on this vendor here' %>
         </td>
         <td>
-          <div class='edit-vendor'>EDIT</div>
-          <div class='cancel-edit'>CANCEL</div>
-          <div class='update-vendor'>UPDATE</div>
+          <div class='edit'>&#9998;</div>
+          <div class='cancel'>&#9995;</div>
+          <div class='update'>&#10003;</div>
           <div class='update-btn'><%= f.submit %></div>
-        </td>
-        <td>
-          <%= link_to 'DELETE', { action: :destroy, id: v.id}, method: :delete %>
+          <div class='delete'><%= link_to 'X', {action: :destroy, id: v.id}, method: :delete, data: { confirm: 'Are you sure?'} %></div>
         </td>
       <% end %>
     </tr>

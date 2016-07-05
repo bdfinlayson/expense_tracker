@@ -4,7 +4,7 @@ $(document).on 'turbolinks:load', ->
     $(@).next().toggle('slow')
     $(@).toggle()
 
-  $('.cancel').on 'click', ->
+  $('.cancel-add').on 'click', ->
     $(@).parent().prev().prev().toggle('slow')
     $(@).parent().prev().toggle('slow')
     $(@).parent().find('input').val('')

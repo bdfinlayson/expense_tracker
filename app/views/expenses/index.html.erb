@@ -17,7 +17,7 @@
   </thead>
   <tbody>
     <% @expenses.each do |expense| %>
-      <tr class='expenses-index-form'>
+      <tr class='index-form'>
         <%= form_for expense do |f| %>
           <%= f.text_field :id, type: :hidden, value: expense.id %>
           <%= f.text_field "q[#{@search_query.keys.first}]", type: :hidden, value: @search_query.values.first %>
@@ -43,11 +43,11 @@
             <%= collection_select(:expense, :category_id, Category.all, :id, :name, prompt: 'Select a category', selected: expense.category.id) %>
           </td>
           <td>
-            <div class='edit-expense'>&#9998;</div>
-            <div class='cancel-edit'>&#9995;</div>
-            <div class='update-expense'>&#10003</div>
+            <div class='edit'>&#9998;</div>
+            <div class='cancel'>&#9995;</div>
+            <div class='update'>&#10003</div>
+            <div class='delete'><%= link_to 'X', {action: :destroy, id: expense.id, expense: { q: { category_name_or_vendor_name_cont: @search_query.values.first }}}, method: :delete, data: { confirm: 'Are you sure?'} %></div>
             <div class='update-btn'><%= f.submit %></div>
-            <div class='delete-btn'><%= link_to 'X', {action: :destroy, id: expense.id, expense: { q: { category_name_or_vendor_name_cont: @search_query.values.first }}}, method: :delete, data: { confirm: 'Are you sure?'} %></div>
           </td>
         <% end %>
       </tr>

@@ -1,10 +1,20 @@
-.update-btn, .update-category, .update-expense, .update-vendor, .cancel-edit {
+.delete, .update-btn, .update, .cancel {
   display: none;
+  padding: 6px 0;
+  font-size: larger;
+}
+
+.edit {
+  font-size: x-large;
 }
 
 tr {
   text-align: center;
   font-size: smaller;
+}
+
+td {
+  padding: 0;
 }
 
 .date-column {
@@ -13,7 +23,7 @@ tr {
   }
 }
 
-.vendors-index-form, .expenses-index-form, .categories-index-form {
+.index-form {
   input, select, textarea {
     display: none;
   }
