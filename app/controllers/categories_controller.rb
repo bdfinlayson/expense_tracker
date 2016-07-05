@@ -1,4 +1,4 @@
-# require_relative 'app/models/forms/category_form'
+require_dependency 'app/models/forms/category_form' unless Rails.env == 'production'
 
 class CategoriesController < ApplicationController
   def edit

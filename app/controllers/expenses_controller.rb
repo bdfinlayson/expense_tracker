@@ -1,4 +1,4 @@
-# require_dependency 'app/models/forms/expense_form'
+require_dependency 'app/models/forms/expense_form' unless Rails.env == 'production'
 
 class ExpensesController < ApplicationController
   before_action :set_new_form, only: [:new, :create, :update]
