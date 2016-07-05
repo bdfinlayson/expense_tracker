@@ -5,53 +5,54 @@
 <% end %>
 <h2>Total Expenses: <%= number_to_currency @total_expenses %></h2>
 <h2>Total Items: <%= @total_items %></h2>
-<table>
-  <tr>
-    <td>Date</td>
-    <td>Amount</td>
-    <td>Vendor</td>
-    <td>Category</td>
-    <td></td>
-    <td></td>
-  </tr>
-  <% @expenses.each do |expense| %>
-    <tr class='expenses-index-form'>
-      <%= form_for expense do |f| %>
-        <%= f.text_field :id, type: :hidden, value: expense.id %>
-        <%= f.text_field "q[#{@search_query.keys.first}]", type: :hidden, value: @search_query.values.first %>
-        <td>
-          <%= expense.created_at %>
-        </td>
-        <td>
-          <div class='row-item'>
-            <%= expense.amount %>
-          </div>
-          <%= f.text_field :amount, type: :number, step: '0.01', placeholder: '$1.50' %>
-        </td>
-        <td>
-          <div class='row-item'>
-            <%= link_to expense.vendor.name, edit_vendor_path(expense.vendor) %>
-          </div>
-          <%= collection_select(:expense, :vendor_id, Vendor.all, :id, :name, prompt: 'Select a vendor', selected: expense.vendor.id) %>
-        </td>
-        <td>
-          <div class='row-item'>
-            <%= link_to expense.category.name, edit_category_path(expense.category) %>
-          </div>
-          <%= collection_select(:expense, :category_id, Category.all, :id, :name, prompt: 'Select a category', selected: expense.category.id) %>
-        </td>
-        <td>
-          <div class='edit-expense'>EDIT</div>
-          <div class='cancel-edit'>CANCEL</div>
-          <div class='update-expense'>UPDATE</div>
-          <div class='update-btn'><%= f.submit %></div>
-        </td>
-        <td>
-          <%= link_to 'DELETE', {action: :destroy, id: expense.id, expense: { q: { category_name_or_vendor_name_cont: @search_query.values.first }}}, method: :delete %>
-        </td>
-      <% end %>
+<table data-role="table" class="ui-responsive">
+  <thead>
+    <tr>
+      <td class='date-column'>Date</td>
+      <td>Amount</td>
+      <td>Vendor</td>
+      <td>Category</td>
+      <td></td>
     </tr>
-  <% end %>
+  </thead>
+  <tbody>
+    <% @expenses.each do |expense| %>
+      <tr class='expenses-index-form'>
+        <%= form_for expense do |f| %>
+          <%= f.text_field :id, type: :hidden, value: expense.id %>
+          <%= f.text_field "q[#{@search_query.keys.first}]", type: :hidden, value: @search_query.values.first %>
+          <td class='date-column'>
+            <%= expense.created_at %>
+          </td>
+          <td>
+            <div class='row-item'>
+              <%= expense.amount %>
+            </div>
+            <%= f.text_field :amount, type: :number, step: '0.01', placeholder: '$1.50' %>
+          </td>
+          <td>
+            <div class='row-item'>
+              <%= link_to expense.vendor.name, edit_vendor_path(expense.vendor) %>
+            </div>
+            <%= collection_select(:expense, :vendor_id, Vendor.all, :id, :name, prompt: 'Select a vendor', selected: expense.vendor.id) %>
+          </td>
+          <td>
+            <div class='row-item'>
+              <%= link_to expense.category.name, edit_category_path(expense.category) %>
+            </div>
+            <%= collection_select(:expense, :category_id, Category.all, :id, :name, prompt: 'Select a category', selected: expense.category.id) %>
+          </td>
+          <td>
+            <div class='edit-expense'>&#9998;</div>
+            <div class='cancel-edit'>&#9995;</div>
+            <div class='update-expense'>&#10003</div>
+            <div class='update-btn'><%= f.submit %></div>
+            <div class='delete-btn'><%= link_to 'X', {action: :destroy, id: expense.id, expense: { q: { category_name_or_vendor_name_cont: @search_query.values.first }}}, method: :delete %></div>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
 </table>
 
 

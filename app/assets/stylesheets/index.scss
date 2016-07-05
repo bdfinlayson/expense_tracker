@@ -2,8 +2,22 @@
   display: none;
 }
 
+tr {
+  text-align: center;
+  font-size: smaller;
+}
+
+.date-column {
+  @include media(max-width 400px) {
+    display: none;
+  }
+}
+
 .vendors-index-form, .expenses-index-form, .categories-index-form {
   input, select, textarea {
     display: none;
+  }
+  select {
+    white-space: pre-line;
   }
 }
