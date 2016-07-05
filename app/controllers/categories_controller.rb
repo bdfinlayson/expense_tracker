@@ -1,4 +1,4 @@
-require_relative 'app/models/forms/category_form'
+# require_relative 'app/models/forms/category_form'
 
 class CategoriesController < ApplicationController
   def edit
