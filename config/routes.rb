@@ -4,4 +4,5 @@ Rails.application.routes.draw do
   resources :expenses
   resources :categories
   resources :vendors
+  resources :overviews, only: [:index]
 end

@@ -1,0 +1,106 @@
+<h1>Overview</h1>
+<table>
+  <tr>
+    GENERAL
+  </tr>
+  <tr>
+    <td>
+      Expense
+    </td>
+    <td>
+      <%= number_to_currency @total_expenses_this_month %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Income
+    </td>
+    <td>
+      TODO
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Net Worth for Month
+    </td>
+    <td>
+      TODO
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    BUDGET
+  </tr>
+  <tr>
+    <td>
+      Total for Month
+    </td>
+    <td>
+      TODO
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Spent
+    </td>
+    <td>
+      TODO
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Left
+    </td>
+    <td>
+      TODO
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Top Spent
+    </td>
+    <td>
+      TODO
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Top Left
+    </td>
+    <td>
+      TODO
+    </td>
+  </tr>
+</table>
+
+<table>
+  CATEGORIES
+  <tr>
+    <td>
+      Category
+    </td>
+    <td>
+      Percentage of Montly Expenses
+    </td>
+    <td>
+      Amount
+    </td>
+  </tr>
+  <% @categories.each do |c| %>
+    <tr>
+      <td>
+        <%= c.name %>
+      </td>
+      <td>
+        <%= Calculator.percentage_of(c.summed_expenses, @total_expenses_this_month) %>%
+      </td>
+      <td>
+        <%= number_to_currency c.summed_expenses %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+
