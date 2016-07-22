@@ -1,6 +1,7 @@
 <%= form_for @form do |f| %>
   <%= f.label :amount %>
   <%= f.text_field :amount, type: :number, step: '0.01', placeholder: '$1.50' %>
+  <%= f.date_field :created_at %>
 
   <%= collection_select(:expense, :category_id, Category.all, :id, :name, prompt: 'Select a category') %>
 

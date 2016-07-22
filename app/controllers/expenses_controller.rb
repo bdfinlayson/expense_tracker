@@ -21,6 +21,7 @@ class ExpensesController < ApplicationController
   end
 
   def create
+    binding.pry
     if validate!
       @form.save
       return redirect_to root_path, notice: 'Expense saved!'
@@ -99,6 +100,7 @@ class ExpensesController < ApplicationController
   def expense_params
     params.require(:expense).permit(
       :amount,
+      :created_at,
       :category_id,
       :vendor_id,
       category: [

@@ -1,4 +1,6 @@
 $(document).on 'turbolinks:load', ->
+  $('#expense_created_at').datepicker({ dateFormat: 'yy-mm-dd'})
+
   $('.new-category-btn, .new-vendor-btn').on 'click', ->
     $(@).prev().toggle().val('')
     $(@).next().toggle('slow')

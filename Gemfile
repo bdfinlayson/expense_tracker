@@ -42,4 +42,4 @@ group :development, :test do
   gem 'pry-byebug'
 end
 
-ruby '2.3.1'
+ruby '2.3.0'
