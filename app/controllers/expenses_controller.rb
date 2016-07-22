@@ -21,7 +21,6 @@ class ExpensesController < ApplicationController
   end
 
   def create
-    binding.pry
     if validate!
       @form.save
       return redirect_to root_path, notice: 'Expense saved!'
