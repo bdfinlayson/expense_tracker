@@ -45,7 +45,7 @@
             </div>
             <%= collection_select(:expense, :category_id, Category.all, :id, :name, prompt: 'Select a category', selected: expense.category.id) %>
           </td>
-          <td>
+          <td class='form-actions'>
             <div class='edit'>&#9998;</div>
             <div class='cancel'>&#9995;</div>
             <div class='update'>&#10003</div>
