@@ -4,6 +4,8 @@ class ExpensesController < ApplicationController
   before_action :set_new_form, only: [:new, :create, :update]
 
   def new
+    @categories = Category.where(user_id: current_user.id).order(name: :asc)
+    @vendors = Vendor.where(user_id: current_user.id).order(name: :asc)
   end
 
   def index
@@ -12,6 +14,8 @@ class ExpensesController < ApplicationController
     @expenses = @q.result
     @total_expenses = @expenses.map(&:amount).sum
     @total_items = @expenses.count
+    @vendors = Vendor.where(user_id: current_user.id).order(name: :asc)
+    @categories = Category.where(user_id: current_user.id).order(name: :asc)
   end
 
   def search_query

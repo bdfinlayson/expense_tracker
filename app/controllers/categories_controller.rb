@@ -37,7 +37,7 @@ class CategoriesController < ApplicationController
 
   def index
     @form = CategoryForm.new(Category.new)
-    @categories = Category.where(user_id: current_user.id)
+    @categories = Category.where(user_id: current_user.id).order(name: :asc)
   end
 
   def category_params

@@ -1,3 +1,5 @@
+<h1>Expenses</h1>
+
 <%= search_form_for @q do |f| %>
   <%= f.label :category_name_or_vendor_name_cont %>
   <%= f.search_field :category_name_or_vendor_name_cont %>
@@ -5,6 +7,7 @@
 <% end %>
 <h2>Total Expenses: <%= number_to_currency @total_expenses %></h2>
 <h2>Total Items: <%= @total_items %></h2>
+
 <table data-role="table" class="ui-responsive">
   <thead>
     <tr>
