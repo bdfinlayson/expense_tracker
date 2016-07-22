@@ -22,7 +22,10 @@
           <%= f.text_field :id, type: :hidden, value: expense.id %>
           <%= f.text_field "q[#{@search_query.keys.first}]", type: :hidden, value: @search_query.values.first %>
           <td class='date-column'>
-            <%= expense.created_at %>
+            <div class='row-item'>
+              <%= expense.created_at %>
+            </div>
+            <%= f.date_field :created_at %>
           </td>
           <td>
             <div class='row-item'>

@@ -32,7 +32,12 @@ class ExpensesController < ApplicationController
   def update
     @expense = Expense.find params[:expense][:id]
     @search_query = params[:expense][:q]
-    if @expense.update(amount: params[:expense][:amount], vendor_id: params[:expense][:vendor_id], category_id: params[:expense][:category_id])
+    if @expense.update(
+        amount: params[:expense][:amount],
+        created_at: params[:expense][:created_at],
+        vendor_id: params[:expense][:vendor_id],
+        category_id: params[:expense][:category_id]
+    )
       return redirect_to build_expenses_path, notice: 'Expense updated!'
     else
       return redirect_to build_expenses_path, alert: @expense.errors.full_messages.join('!, ').concat('!')
