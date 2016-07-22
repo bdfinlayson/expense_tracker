@@ -4,28 +4,22 @@ class ExpensesController < ApplicationController
   before_action :set_new_form, only: [:new, :create, :update]
 
   def new
-    @categories = Category.where(user_id: current_user.id).order(name: :asc)
-    @vendors = Vendor.where(user_id: current_user.id).order(name: :asc)
+    @categories = current_user.categories.order(name: :asc)
+    @vendors = current_user.vendors.order(name: :asc)
   end
 
   def index
     @search_query = search_query
-    @q = Expense.where(user: current_user).order(created_at: :desc).ransack( search_query )
+    @q = current_user.expenses.order(created_at: :desc).ransack( search_query )
     @expenses = @q.result
     @total_expenses = @expenses.map(&:amount).sum
     @total_items = @expenses.count
-    @vendors = Vendor.where(user_id: current_user.id).order(name: :asc)
-    @categories = Category.where(user_id: current_user.id).order(name: :asc)
-    @total_expenses_this_month = Expense.where(user_id: current_user.id).where(created_at: Time.now.beginning_of_month..Time.now.end_of_month).pluck(:amount).sum
-    @total_expenses_last_month = Expense.where(user_id: current_user.id).where(created_at: Time.now.last_month.beginning_of_month..Time.now.last_month.end_of_month).pluck(:amount).sum
-    @percentage_change_over_last_month = percentage_change(@total_expenses_last_month, @total_expenses_this_month)
-    @searched_vs_total = (@total_expenses / @total_expenses_this_month * 100).floor
-  end
-
-  def percentage_change(original_amount, new_amount)
-    return 100 if original_amount == 0
-    diff = new_amount - original_amount
-    (diff / original_amount).floor
+    @vendors = current_user.vendors.order(name: :asc)
+    @categories = current_user.categories.order(name: :asc)
+    @total_expenses_this_month = current_user.expenses.where(created_at: Time.now.beginning_of_month..Time.now.end_of_month).pluck(:amount).sum
+    @total_expenses_last_month = current_user.expenses.where(created_at: Time.now.last_month.beginning_of_month..Time.now.last_month.end_of_month).pluck(:amount).sum
+    @percentage_change_over_last_month = Calculator.percentage_change(@total_expenses_last_month, @total_expenses_this_month)
+    @searched_vs_total = Calculator.percentage_of(@total_expenses, @total_expenses_this_month)
   end
 
   def search_query
