@@ -14,18 +14,16 @@
         <%= f.text_field :id, type: :hidden, value: c.id %>
         <td>
           <div class='row-item'>
-            <%= c.name %>
+            <%= link_to c.name, edit_category_path(c) %>
           </div>
           <%= f.text_field :name, placeholder: 'Category name' %>
         </td>
-        <td>
+        <td class='form-actions'>
           <div class='edit'>&#9998;</div>
           <div class='cancel'>&#9995;</div>
           <div class='update'>&#10003</div>
-          <div class='update-btn'><%= f.submit %></div>
           <div class='delete'><%= link_to 'X', {action: :destroy, id: c.id }, method: :delete, data: { confirm: 'Are you sure?'} %></div>
-        </td>
-        <td>
+          <div class='update-btn'><%= f.submit %></div>
         </td>
       <% end %>
     </tr>

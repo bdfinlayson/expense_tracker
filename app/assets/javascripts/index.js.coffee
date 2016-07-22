@@ -2,6 +2,8 @@ $(document).on 'turbolinks:load', ->
   $('.update').on 'click', ->
     $(@).next().next().children().click()
 
+  $('.created_at').datepicker({ dateFormat: 'yy-mm-dd'})
+
   $('.edit').on 'click', ->
     $(@).toggle()
     $(@).next().toggle()

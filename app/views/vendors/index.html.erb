@@ -10,7 +10,6 @@
     <td>Name</td>
     <td>Notes</td>
     <td></td>
-    <td></td>
   </tr>
   <% @vendors.order('name asc').each do |v| %>
     <tr class='index-form'>
@@ -18,7 +17,7 @@
         <%= f.text_field :id, type: :hidden, value: v.id %>
         <td>
           <div class='row-item'>
-            <%= v.name %>
+            <%= link_to v.name, edit_vendor_path(v) %>
           </div>
           <%= f.text_field :name, placeholder: 'Vendor name' %>
         </td>
@@ -28,12 +27,12 @@
           </div>
           <%= f.text_area :note, placeholder: 'Notes on this vendor here' %>
         </td>
-        <td>
+        <td class='form-actions'>
           <div class='edit'>&#9998;</div>
           <div class='cancel'>&#9995;</div>
           <div class='update'>&#10003;</div>
-          <div class='update-btn'><%= f.submit %></div>
           <div class='delete'><%= link_to 'X', {action: :destroy, id: v.id}, method: :delete, data: { confirm: 'Are you sure?'} %></div>
+          <div class='update-btn'><%= f.submit %></div>
         </td>
       <% end %>
     </tr>
