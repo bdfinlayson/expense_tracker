@@ -1,5 +1,6 @@
 class Category < ApplicationRecord
   has_many :expenses
+  has_one :budget
   validates_presence_of :name, :user_id
 
   def summed_expenses

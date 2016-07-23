@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   resources :categories
   resources :vendors
   resources :overviews, only: [:index]
+  resources :budgets
 end

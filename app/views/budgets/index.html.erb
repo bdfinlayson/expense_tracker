@@ -1,0 +1,47 @@
+<h1>Budget</h1>
+<%= form_for @form do |f| %>
+  <%= f.label :amount %>
+  <%= f.text_field :amount, type: :number, placeholder: '$1.50' %>
+  <%= collection_select(:budget, :category_id, @categories, :id, :name, prompt: 'Select a category') %>
+  <%= f.submit %>
+<% end %>
+
+<table>
+  <tr>
+    <td>Category</td>
+    <td>Spent</td>
+    <td>Left</td>
+    <td>Budgeted Amount</td>
+    <td>% Spent</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <% @budgets.each do |b| %>
+    <tr class='index-form'>
+      <%= form_for b do |f| %>
+        <%= f.text_field :id, type: :hidden, value: b.id %>
+        <td>
+          <%= link_to b.category.name, edit_category_path(b.category) %>
+        </td>
+        <td>
+          <%= number_to_currency b.category.summed_expenses %>
+        </td>
+        <td>
+          <%= number_to_currency(b.amount - b.category.summed_expenses) %>
+        </td>
+        <td>
+          <%= number_to_currency b.amount %>
+        </td>
+        <td>
+          <%= Calculator.percentage_of(b.category.summed_expenses, b.amount) %>%
+        </td>
+        <td>
+          <div><%= link_to 'Edit', edit_budget_path(b) %></div>
+        </td>
+        <td>
+          <div><%= link_to 'X', {action: :destroy, id: b.id}, method: :delete, data: { confirm: 'Are you sure?'} %></div>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>

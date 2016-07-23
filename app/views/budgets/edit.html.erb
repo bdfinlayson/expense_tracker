@@ -1,0 +1,9 @@
+<h1>Edit Budget</h1>
+<%= form_for @form do |f| %>
+  <%= f.label :amount %>
+  <%= f.text_field :amount, type: :number, placeholder: '$1.50' %>
+  <%= collection_select(:budget, :category_id, @categories, :id, :name, prompt: 'Select a category') %>
+  <%= f.submit %>
+<% end %>
+
+
