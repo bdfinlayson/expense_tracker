@@ -7,4 +7,5 @@ class User < ApplicationRecord
   has_many :vendors
   has_many :categories
   has_many :budgets
+  has_many :incomes
 end

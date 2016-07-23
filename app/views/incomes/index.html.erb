@@ -1,0 +1,6 @@
+<h1>Income</h1>
+
+<%= form_for @form do |f| %>
+  <%= f.label :amount %>
+  <%= f.text_field :amount, type: :number, placeholder: '$1500' %>
+<% end %>

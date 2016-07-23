@@ -6,4 +6,5 @@ Rails.application.routes.draw do
   resources :vendors
   resources :overviews, only: [:index]
   resources :budgets
+  resources :incomes
 end

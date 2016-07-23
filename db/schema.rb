@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160723004320) do
+ActiveRecord::Schema.define(version: 20160723052526) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,16 @@ ActiveRecord::Schema.define(version: 20160723004320) do
     t.index ["category_id"], name: "index_expenses_on_category_id", using: :btree
     t.index ["user_id"], name: "index_expenses_on_user_id", using: :btree
     t.index ["vendor_id"], name: "index_expenses_on_vendor_id", using: :btree
+  end
+
+  create_table "incomes", force: :cascade do |t|
+    t.float    "amount"
+    t.integer  "user_id"
+    t.boolean  "recurring"
+    t.integer  "frequency"
+    t.integer  "vendor_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
