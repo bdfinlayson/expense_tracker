@@ -39,7 +39,7 @@
       Total for Month
     </td>
     <td>
-      TODO
+      <%= number_to_currency @total_for_month %>
     </td>
   </tr>
   <tr>
@@ -47,7 +47,7 @@
       Spent
     </td>
     <td>
-      TODO
+      <%= number_to_currency @total_spent %>
     </td>
   </tr>
   <tr>
@@ -55,7 +55,7 @@
       Left
     </td>
     <td>
-      TODO
+      <%= number_to_currency(@total_for_month - @total_spent) %>
     </td>
   </tr>
   <tr>
