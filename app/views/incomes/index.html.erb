@@ -74,7 +74,7 @@
             <div class='row-item'>
               <%= income.frequency %>
             </div>
-            <%= collection_select(:income, :frequency, Income.frequencies, :second, :first, prompt: 'Income recurring...') %>
+            <%= collection_select(:income, :frequency, Income.frequencies, :second, :first, prompt: 'Income recurring...', selected: Income.frequencies[Income.last.frequency]) %>
           </td>
           <td class='form-actions'>
             <div class='edit'>&#9998;</div>
