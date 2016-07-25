@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 20160725045602) do
     t.integer  "vendor_id"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
-    t.integer  "type"
+    t.integer  "type",       default: 0
   end
 
   create_table "users", force: :cascade do |t|
