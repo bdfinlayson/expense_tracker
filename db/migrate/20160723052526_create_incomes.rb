@@ -3,8 +3,8 @@ class CreateIncomes < ActiveRecord::Migration[5.0]
     create_table :incomes do |t|
       t.float :amount
       t.integer :user_id
-      t.boolean :recurring
-      t.integer :frequency
+      t.boolean :recurring, default: false
+      t.integer :frequency, default: 0
       t.integer :vendor_id
 
       t.timestamps

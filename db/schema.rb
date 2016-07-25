@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160723052526) do
+ActiveRecord::Schema.define(version: 20160725045602) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,9 +35,11 @@ ActiveRecord::Schema.define(version: 20160723052526) do
     t.integer  "user_id"
     t.float    "amount"
     t.integer  "vendor_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.integer  "category_id"
+    t.boolean  "recurring",   default: false
+    t.integer  "frequency",   default: 0
     t.index ["category_id"], name: "index_expenses_on_category_id", using: :btree
     t.index ["user_id"], name: "index_expenses_on_user_id", using: :btree
     t.index ["vendor_id"], name: "index_expenses_on_vendor_id", using: :btree
@@ -46,11 +48,12 @@ ActiveRecord::Schema.define(version: 20160723052526) do
   create_table "incomes", force: :cascade do |t|
     t.float    "amount"
     t.integer  "user_id"
-    t.boolean  "recurring"
-    t.integer  "frequency"
+    t.boolean  "recurring",  default: false
+    t.integer  "frequency",  default: 0
     t.integer  "vendor_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.integer  "type"
   end
 
   create_table "users", force: :cascade do |t|
