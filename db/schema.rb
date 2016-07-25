@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160725045602) do
+ActiveRecord::Schema.define(version: 20160725051856) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(version: 20160725045602) do
     t.datetime "updated_at",                  null: false
     t.integer  "category_id"
     t.boolean  "recurring",   default: false
-    t.integer  "frequency",   default: 0
+    t.integer  "frequency"
     t.index ["category_id"], name: "index_expenses_on_category_id", using: :btree
     t.index ["user_id"], name: "index_expenses_on_user_id", using: :btree
     t.index ["vendor_id"], name: "index_expenses_on_vendor_id", using: :btree
@@ -49,11 +49,11 @@ ActiveRecord::Schema.define(version: 20160725045602) do
     t.float    "amount"
     t.integer  "user_id"
     t.boolean  "recurring",  default: false
-    t.integer  "frequency",  default: 0
+    t.integer  "frequency"
     t.integer  "vendor_id"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
-    t.integer  "type",       default: 0
+    t.integer  "kind"
   end
 
   create_table "users", force: :cascade do |t|
