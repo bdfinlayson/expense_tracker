@@ -30,10 +30,11 @@ class VendorsController < ApplicationController
 
   def destroy
     @vendor = Vendor.find(params[:id])
-    if @vendor.expenses.any?
-      return redirect_to vendors_path, alert: 'Cannot delete vendors with expenses.'
+    if @vendor.expenses.any? || @vendor.incomes.any?
+      return redirect_to vendors_path, alert: 'Cannot delete vendors with expenses/incomes.'
     else
       @vendor.destroy
+      return redirect_to vendors_path, notice: 'Vendor deleted!'
     end
   end
 

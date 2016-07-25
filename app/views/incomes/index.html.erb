@@ -54,7 +54,7 @@
           </td>
           <td>
             <div class='row-item'>
-              <%= income.amount %>
+              <%= number_to_currency income.amount %>
             </div>
             <%= f.text_field :amount, type: :number, step: '0.01', placeholder: '$1.50' %>
           </td>
