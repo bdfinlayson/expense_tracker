@@ -10,4 +10,5 @@ class IncomeForm < Reform::Form
   validates :user_id, presence: true
   validates :vendor_id, presence: true
   validates :created_at, presence: true
+  validates :frequency, presence: true, if: :recurring
 end
