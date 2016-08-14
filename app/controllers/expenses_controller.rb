@@ -5,6 +5,7 @@ class ExpensesController < ApplicationController
 
   def new
     @categories = current_user.categories.order(name: :asc)
+    @frequencies = Expense.frequencies
     @vendors = current_user.vendors.order(name: :asc)
   end
 
@@ -20,6 +21,7 @@ class ExpensesController < ApplicationController
     @total_expenses_last_month = current_user.expenses.where(created_at: Time.now.last_month.beginning_of_month..Time.now.last_month.end_of_month).pluck(:amount).sum
     @percentage_change_over_last_month = Calculator.percentage_change(@total_expenses_last_month, @total_expenses_this_month)
     @searched_vs_total = Calculator.percentage_of(@total_expenses, @total_expenses_this_month)
+    @frequencies = Expense.frequencies
   end
 
   def search_query
@@ -40,16 +42,26 @@ class ExpensesController < ApplicationController
   def update
     @expense = Expense.find params[:expense][:id]
     @search_query = params[:expense][:q]
-    if @expense.update(
-        amount: params[:expense][:amount],
-        created_at: params[:expense][:created_at],
-        vendor_id: params[:expense][:vendor_id],
-        category_id: params[:expense][:category_id]
-    )
-      return redirect_to build_expenses_path, notice: 'Expense updated!'
-    else
+    p = expense_params
+    p[:frequency] = p[:frequency].try(:to_i)
+    if validate!
+      @expense.update_attributes(p)
       return redirect_to build_expenses_path, alert: @expense.errors.full_messages.join('!, ').concat('!')
+     else
+       return redirect_to build_expenses_path, notice: 'Expense updated!'
     end
+    # if @expense.update(
+    #     amount: params[:expense][:amount],
+    #     created_at: params[:expense][:created_at],
+    #     vendor_id: params[:expense][:vendor_id],
+    #     category_id: params[:expense][:category_id],
+    #     recurring: params[:expense][:recurring],
+    #     frequency: params[:expense][:frequency]
+    # )
+    #   return redirect_to build_expenses_path, notice: 'Expense updated!'
+    # else
+    #   return redirect_to build_expenses_path, alert: @expense.errors.full_messages.join('!, ').concat('!')
+    # end
   end
 
   def build_expenses_path
@@ -114,6 +126,8 @@ class ExpensesController < ApplicationController
       :amount,
       :created_at,
       :category_id,
+      :recurring,
+      :frequency,
       :vendor_id,
       category: [
         :id,

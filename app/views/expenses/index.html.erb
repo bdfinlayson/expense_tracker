@@ -43,6 +43,8 @@
       <td>Amount</td>
       <td>Vendor</td>
       <td>Category</td>
+      <td>Recurring</td>
+      <td>Frequency</td>
       <td></td>
     </tr>
   </thead>
@@ -76,6 +78,19 @@
             </div>
             <%= collection_select(:expense, :category_id, Category.all, :id, :name, prompt: 'Select a category', selected: expense.category.id) %>
           </td>
+          <td>
+            <div class='row-item'>
+              <%= expense.recurring %>
+            </div>
+            <%= f.check_box :recurring %>
+          </td>
+          <td>
+            <div class='row-item'>
+              <%= expense.frequency %>
+            </div>
+            <%= collection_select(:expense, :frequency, @frequencies, :second, :first, prompt: 'Select a frequency', selected: @frequencies[expense.frequency]) %>
+          </td>
+
           <td class='form-actions'>
             <div class='edit'>&#9998;</div>
             <div class='cancel'>&#9995;</div>
