@@ -9,3 +9,5 @@
 * set cutoff date for recurring expense / income
 * list categories that are not yet budgeted for
 * improved category and vendor search and selection using selectize
+* user profile page (name, email, etc)
+* total net worth (including cash on hand, bank account totals) after accounting for expenses and revenue
