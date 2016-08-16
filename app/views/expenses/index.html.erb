@@ -69,23 +69,25 @@
             <div class='row-item'>
               <%= link_to expense.vendor.name, edit_vendor_path(expense.vendor) %>
             </div>
-            <%= collection_select(:expense, :vendor_id, Vendor.all, :id, :name, prompt: 'Select a vendor', selected: expense.vendor.id) %>
+            <%= collection_select(:expense, :vendor_id, Vendor.all, :id, :name, prompt: 'Select vendor', selected: expense.vendor.id) %>
           </td>
           <td>
             <div class='row-item'>
               <%= link_to expense.category.name, edit_category_path(expense.category) %>
             </div>
-            <%= collection_select(:expense, :category_id, Category.all, :id, :name, prompt: 'Select a category', selected: expense.category.id) %>
+            <%= collection_select(:expense, :category_id, Category.all, :id, :name, prompt: 'Select category', selected: expense.category.id) %>
           </td>
-          <td class='recurring'>
-            <div class='row-item'>
-              <%= expense.recurring %>
+          <td>
+            <div class='recurring'>
+              <div class='row-item'>
+                <%= expense.recurring %>
+              </div>
+              <%= f.check_box :recurring %>
+              <div class='row-item'>
+                <%= expense.frequency %>
+              </div>
+              <%= collection_select(:expense, :frequency, @frequencies, :second, :first, prompt: 'Select frequency', selected: @frequencies[expense.frequency]) %>
             </div>
-            <%= f.check_box :recurring %>
-            <div class='row-item'>
-              <%= expense.frequency %>
-            </div>
-            <%= collection_select(:expense, :frequency, @frequencies, :second, :first, prompt: 'Select a frequency', selected: @frequencies[expense.frequency]) %>
           </td>
           <td class='form-actions'>
             <div class='edit'>&#9998;</div>

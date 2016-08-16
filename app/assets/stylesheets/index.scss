@@ -1,6 +1,6 @@
 .delete, .update-btn, .update, .cancel {
   display: none;
-  padding: 6px 0;
+  padding: 3px 0;
   font-size: x-large;
 }
 
@@ -43,6 +43,9 @@ td {
 }
 
 .recurring {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   input {
     margin: 15px 0;
   }
