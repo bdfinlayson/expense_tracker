@@ -44,6 +44,10 @@ class ExpensesController < ApplicationController
     @search_query = params[:expense][:q]
     p = expense_params
     p[:frequency] = p[:frequency].try(:to_i)
+    if p[:recurring] == '0'
+      params[:expense][:frequency] = nil
+      p[:frequency] = nil
+    end
     if validate!
       @expense.update_attributes(p)
       return redirect_to build_expenses_path, notice: 'Expense updated!'
