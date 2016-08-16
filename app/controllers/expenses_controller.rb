@@ -46,22 +46,10 @@ class ExpensesController < ApplicationController
     p[:frequency] = p[:frequency].try(:to_i)
     if validate!
       @expense.update_attributes(p)
-      return redirect_to build_expenses_path, alert: @expense.errors.full_messages.join('!, ').concat('!')
-     else
-       return redirect_to build_expenses_path, notice: 'Expense updated!'
+      return redirect_to build_expenses_path, notice: 'Expense updated!'
+    else
+      return redirect_to build_expenses_path, alert: @form.errors.full_messages.join('!, ').concat('!')
     end
-    # if @expense.update(
-    #     amount: params[:expense][:amount],
-    #     created_at: params[:expense][:created_at],
-    #     vendor_id: params[:expense][:vendor_id],
-    #     category_id: params[:expense][:category_id],
-    #     recurring: params[:expense][:recurring],
-    #     frequency: params[:expense][:frequency]
-    # )
-    #   return redirect_to build_expenses_path, notice: 'Expense updated!'
-    # else
-    #   return redirect_to build_expenses_path, alert: @expense.errors.full_messages.join('!, ').concat('!')
-    # end
   end
 
   def build_expenses_path

@@ -6,6 +6,7 @@ class Calculator
   end
 
   def self.percentage_of(part, whole)
+    return 0 if whole.zero?
     (part / whole * 100).floor
   end
 end
