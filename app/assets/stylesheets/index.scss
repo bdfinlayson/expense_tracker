@@ -1,7 +1,7 @@
 .delete, .update-btn, .update, .cancel {
   display: none;
   padding: 6px 0;
-  font-size: large;
+  font-size: x-large;
 }
 
 .edit {
@@ -23,15 +23,13 @@ td {
   }
 }
 
+
 .index-form {
   input, select, textarea {
     display: none;
     margin: 0;
   }
   .form-actions {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
     .delete > a {
       color: red;
     }
@@ -41,5 +39,11 @@ td {
   }
   select {
     white-space: pre-line;
+  }
+}
+
+.recurring {
+  input {
+    margin: 15px 0;
   }
 }
