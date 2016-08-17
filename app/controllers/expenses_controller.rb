@@ -4,8 +4,8 @@ class ExpensesController < ApplicationController
   before_action :set_new_form, only: [:new, :create, :update]
 
   def new
-    @categories = current_user.categories.order(name: :asc)
-    @frequencies = Expense.frequencies
+    @categories = current_user.expense_categories.order(name: :asc)
+    # @frequencies = RecurringExpense.frequencies
     @vendors = current_user.vendors.order(name: :asc)
   end
 
@@ -16,7 +16,7 @@ class ExpensesController < ApplicationController
     @total_expenses = @expenses.map(&:amount).sum
     @total_items = @expenses.count
     @vendors = current_user.vendors.order(name: :asc)
-    @categories = current_user.categories.order(name: :asc)
+    @categories = current_user.expense_categories.order(name: :asc)
     @total_expenses_this_month = current_user.expenses.where(created_at: Time.now.beginning_of_month..Time.now.end_of_month).pluck(:amount).sum
     @total_expenses_last_month = current_user.expenses.where(created_at: Time.now.last_month.beginning_of_month..Time.now.last_month.end_of_month).pluck(:amount).sum
     @percentage_change_over_last_month = Calculator.percentage_change(@total_expenses_last_month, @total_expenses_this_month)
@@ -26,8 +26,8 @@ class ExpensesController < ApplicationController
 
   def search_query
     return {} unless params[:q].present?
-    return {} unless params[:q]['category_name_or_vendor_name_cont'].present?
-    { category_name_or_vendor_name_cont: params[:q]['category_name_or_vendor_name_cont'] }
+    return {} unless params[:q]['expense_category_name_or_vendor_name_cont'].present?
+    { expense_category_name_or_vendor_name_cont: params[:q]['expense_category_name_or_vendor_name_cont'] }
   end
 
   def create
@@ -41,13 +41,13 @@ class ExpensesController < ApplicationController
 
   def update
     @expense = Expense.find params[:expense][:id]
-    @search_query = params[:expense][:q]
-    p = expense_params
-    p[:frequency] = p[:frequency].try(:to_i)
-    if p[:recurring] == '0'
-      params[:expense][:frequency] = nil
-      p[:frequency] = nil
-    end
+    # @search_query = params[:expense][:q]
+    # p = expense_params
+    # p[:frequency] = p[:frequency].try(:to_i)
+    # if p[:recurring] == '0'
+    #   params[:expense][:frequency] = nil
+    #   p[:frequency] = nil
+    # end
     if validate!
       @expense.update_attributes(p)
       return redirect_to build_expenses_path, notice: 'Expense updated!'
@@ -65,8 +65,8 @@ class ExpensesController < ApplicationController
   end
 
   def create_new_category
-    Category.create(
-      name: expense_params[:category][:name],
+    ExpenseCategory.create(
+      name: expense_params[:expense_category][:name],
       user_id: current_user.id
     )
   end
@@ -78,8 +78,8 @@ class ExpensesController < ApplicationController
   end
 
   def new_category?
-    return false if not expense_params[:category].present?
-    expense_params[:category][:name].present?
+    return false if not expense_params[:expense_category].present?
+    expense_params[:expense_category][:name].present?
   end
 
   def create_new_vendor
@@ -117,21 +117,18 @@ class ExpensesController < ApplicationController
     params.require(:expense).permit(
       :amount,
       :created_at,
-      :category_id,
-      :recurring,
-      :frequency,
+      :expense_category_id,
       :vendor_id,
-      category: [
+      :note,
+      expense_category: [
         :id,
         :name,
-        :done,
         :_destroy
       ],
       vendor: [
         :id,
         :name,
         :note,
-        :done,
         :_destroy
       ]
     )

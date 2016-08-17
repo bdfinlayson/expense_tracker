@@ -1,0 +1,2 @@
+class RecurringIncome < ApplicationRecord
+end
