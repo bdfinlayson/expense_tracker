@@ -7,11 +7,12 @@ class ExpenseForm < Reform::Form
   property :vendor_id
   property :expense_category_id
   property :created_at
+  property :recurring_expense_id, type: Types::Form::Int
   property :note
 
   validates :amount, presence: true
   validates :user_id, presence: true
   validates :vendor_id, presence: true
-  validates :expense_category_id, presence: true
+  validates :category_id, presence: true
   validates :created_at, presence: true
 end

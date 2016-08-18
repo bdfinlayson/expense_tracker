@@ -99,12 +99,13 @@ class ExpensesController < ApplicationController
     category = create_new_category if new_category?
     vendor = create_new_vendor if new_vendor?
     if category && vendor
-      @form.validate(expense_params.merge(user_id: current_user.id, category_id: category.id, vendor_id: vendor.id))
+      @form.validate(expense_params.merge(user_id: current_user.id, expense_category_id: category.id, vendor_id: vendor.id))
     elsif category
-      @form.validate(expense_params.merge(user_id: current_user.id, category_id: category.id))
+      @form.validate(expense_params.merge(user_id: current_user.id, expense_category_id: category.id))
     elsif vendor
       @form.validate(expense_params.merge(user_id: current_user.id, vendor_id: vendor.id))
     else
+      binding.pry
       @form.validate(expense_params.merge(user_id: current_user.id))
     end
   end
