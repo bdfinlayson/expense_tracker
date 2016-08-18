@@ -21,7 +21,7 @@ class ExpensesController < ApplicationController
     @total_expenses_last_month = current_user.expenses.where(created_at: Time.now.last_month.beginning_of_month..Time.now.last_month.end_of_month).pluck(:amount).sum
     @percentage_change_over_last_month = Calculator.percentage_change(@total_expenses_last_month, @total_expenses_this_month)
     @searched_vs_total = Calculator.percentage_of(@total_expenses, @total_expenses_this_month)
-    @frequencies = Expense.frequencies
+    # @frequencies = Expense.frequencies
   end
 
   def search_query
@@ -49,7 +49,7 @@ class ExpensesController < ApplicationController
     #   p[:frequency] = nil
     # end
     if validate!
-      @expense.update_attributes(p)
+      @expense.update_attributes(expense_params)
       return redirect_to build_expenses_path, notice: 'Expense updated!'
     else
       return redirect_to build_expenses_path, alert: @form.errors.full_messages.join('!, ').concat('!')
@@ -105,7 +105,6 @@ class ExpensesController < ApplicationController
     elsif vendor
       @form.validate(expense_params.merge(user_id: current_user.id, vendor_id: vendor.id))
     else
-      binding.pry
       @form.validate(expense_params.merge(user_id: current_user.id))
     end
   end
