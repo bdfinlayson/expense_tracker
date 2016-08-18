@@ -4,8 +4,8 @@ class ExpenseForm < Reform::Form
   feature Coercion
   property :amount
   property :user_id
-  property :vendor_id
-  property :expense_category_id
+  property :vendor_id, type: Types::Form::Int
+  property :expense_category_id, type: Types::Form::Int
   property :created_at
   property :recurring_expense_id, type: Types::Form::Int
   property :note

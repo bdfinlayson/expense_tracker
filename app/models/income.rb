@@ -1,6 +1,7 @@
 class Income < ApplicationRecord
   belongs_to :user
   belongs_to :vendor
-  enum frequency: [:weekly, :biweekly, :monthly, :annually]
-  validates_inclusion_of :recurring, :in => [true], if: 'frequency.present?'
+  belongs_to :income_category
+  belongs_to :recurring_income
+  validates_presence_of :income_category_id, :vendor_id, :user_id
 end

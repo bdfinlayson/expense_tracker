@@ -1,2 +1,92 @@
-<h1>RecurringIncomes#index</h1>
-<p>Find me in app/views/recurring_incomes/index.html.erb</p>
+<h1>Income</h1>
+
+<%= form_for @form do |f| %>
+  <%= f.label :amount %>
+  <%= f.text_field :amount, type: :number, placeholder: '$1500' %>
+
+  <%= f.date_field :created_at, class: 'created_at' %>
+
+  <%= collection_select(:income, :vendor_id, @vendors, :id, :name, prompt: 'Select a vendor') %>
+
+  <div class='create-new new-vendor-btn'>Create Vendor</div>
+
+  <div class='vendor-form'>
+    <%= f.fields_for Vendor.new do |vendor_fields| %>
+      <h4>Create New Vendor</h4>
+      <%= vendor_fields.label :name %>
+      <%= vendor_fields.text_field :name, placeholder: 'Enter vendor name' %>
+      <%= vendor_fields.label :note, 'Notes' %>
+      <%= vendor_fields.text_area :note, placeholder: 'Enter notes about the vendor' %>
+    <% end %>
+    <div class='cancel-add'>Cancel</div>
+  </div>
+
+  <%= f.label :recurring %>
+  <%= f.check_box :recurring %>
+
+  <%= collection_select(:income, :frequency, Income.frequencies, :second, :first, prompt: 'Income recurring...') %>
+
+  <%= f.submit %>
+
+<% end %>
+
+<table data-role="table" class="ui-responsive">
+  <thead>
+    <tr>
+      <td class='date-column'>Date</td>
+      <td>Amount</td>
+      <td>Vendor</td>
+      <td>Recurring</td>
+      <td>Frequency</td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody>
+    <% @incomes.each do |income| %>
+      <tr class='index-form'>
+        <%= form_for income do |f| %>
+          <%= f.text_field :id, type: :hidden, value: income.id %>
+          <td class='date-column'>
+            <div class='row-item'>
+              <%= income.created_at.strftime('%m-%d-%Y') %>
+            </div>
+            <%= f.date_field :created_at, class: 'created_at' %>
+          </td>
+          <td>
+            <div class='row-item'>
+              <%= number_to_currency income.amount %>
+            </div>
+            <%= f.text_field :amount, type: :number, step: '0.01', placeholder: '$1.50' %>
+          </td>
+          <td>
+            <div class='row-item'>
+              <%= link_to income.vendor.name, edit_vendor_path(income.vendor) %>
+            </div>
+            <%= collection_select(:income, :vendor_id, @vendors, :id, :name, prompt: 'Select a vendor', selected: income.vendor.id) %>
+          </td>
+          <td>
+            <div class='row-item'>
+              <%= income.recurring %>
+            </div>
+            <%= f.check_box :recurring, default: income.recurring %>
+          </td>
+          <td>
+            <div class='row-item'>
+              <%= income.frequency %>
+            </div>
+            <%= collection_select(:income, :frequency, Income.frequencies, :second, :first, prompt: 'Income recurring...', selected: Income.frequencies[Income.last.frequency]) %>
+          </td>
+          <td class='form-actions'>
+            <div class='edit'>&#9998;</div>
+            <div class='cancel'>&#9995;</div>
+            <div class='update'>&#10003</div>
+            <div class='delete'><%= link_to 'X', {action: :destroy, id: income.id }, method: :delete, data: { confirm: 'Are you sure?'} %></div>
+            <div class='update-btn'><%= f.submit %></div>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+

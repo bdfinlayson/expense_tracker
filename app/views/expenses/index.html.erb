@@ -57,7 +57,7 @@
             <div class='row-item'>
               <%= expense.created_at.strftime('%m-%d-%Y') %>
             </div>
-            <%= f.date_field :created_at, class: 'created_at' %>
+            <%= f.date_field :created_at, class: 'created_at', id: "expense_created_at_#{expense.id}"  %>
           </td>
           <td>
             <div class='row-item'>
@@ -73,7 +73,7 @@
           </td>
           <td>
             <div class='row-item'>
-              <%= link_to expense.expense_category.name, edit_category_path(expense.expense_category) %>
+              <%= link_to expense.expense_category.name, edit_expense_category_path(expense.expense_category) %>
             </div>
             <%= collection_select(:expense, :expense_category_id, ExpenseCategory.all, :id, :name, prompt: 'Select category', selected: expense.expense_category.id) %>
           </td>
