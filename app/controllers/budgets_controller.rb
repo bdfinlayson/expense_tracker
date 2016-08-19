@@ -39,7 +39,7 @@ class BudgetsController < ApplicationController
   def edit
     @budget = Budget.find(params[:id])
     @form = BudgetForm.new(@budget)
-    @categories = current_user.categories
+    @categories = current_user.expense_categories
   end
 
   def budget_params

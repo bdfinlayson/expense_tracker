@@ -2,7 +2,7 @@
 <%= form_for @form do |f| %>
   <%= f.label :amount %>
   <%= f.text_field :amount, type: :number, placeholder: '$1.50' %>
-  <%= collection_select(:budget, :category_id, @categories, :id, :name, prompt: 'Select a category') %>
+  <%= collection_select(:budget, :expense_category_id, @categories, :id, :name, prompt: 'Select a category') %>
   <%= f.submit %>
 <% end %>
 
@@ -21,19 +21,19 @@
       <%= form_for b do |f| %>
         <%= f.text_field :id, type: :hidden, value: b.id %>
         <td>
-          <%= link_to b.category.name, edit_category_path(b.category) %>
+          <%= link_to b.expense_category.name, edit_expense_category_path(b.expense_category) %>
         </td>
         <td>
-          <%= number_to_currency b.category.summed_expenses %>
+          <%= number_to_currency b.expense_category.summed_expenses %>
         </td>
         <td>
-          <%= number_to_currency(b.amount - b.category.summed_expenses) %>
+          <%= number_to_currency(b.amount - b.expense_category.summed_expenses) %>
         </td>
         <td>
           <%= number_to_currency b.amount %>
         </td>
         <td>
-          <%= Calculator.percentage_of(b.category.summed_expenses, b.amount) %>%
+          <%= Calculator.percentage_of(b.expense_category.summed_expenses, b.amount) %>%
         </td>
         <td>
           <div><%= link_to 'Edit', edit_budget_path(b) %></div>

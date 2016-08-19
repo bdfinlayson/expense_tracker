@@ -1,4 +1,4 @@
-require_dependency 'app/models/forms/category_form' unless Rails.env == 'production'
+require_dependency 'app/models/forms/expense_category_form' unless Rails.env == 'production'
 
 class ExpenseCategoriesController < ApplicationController
   def edit
@@ -9,7 +9,7 @@ class ExpenseCategoriesController < ApplicationController
   def update
     @category = ExpenseCategory.find(params[:id])
     if @category.update(category_params)
-      return redirect_to expenses_path, notice: 'Category updated!'
+      return redirect_to expense_categories_path, notice: 'Category updated!'
     else
       return redirect_to edit_category_path(@category), alert: @category.errors.full_messages.join('! ').concat('!')
     end

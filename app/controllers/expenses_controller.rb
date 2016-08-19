@@ -5,7 +5,6 @@ class ExpensesController < ApplicationController
 
   def new
     @categories = current_user.expense_categories.order(name: :asc)
-    # @frequencies = RecurringExpense.frequencies
     @vendors = current_user.vendors.order(name: :asc)
   end
 
@@ -21,7 +20,6 @@ class ExpensesController < ApplicationController
     @total_expenses_last_month = current_user.expenses.where(created_at: Time.now.last_month.beginning_of_month..Time.now.last_month.end_of_month).pluck(:amount).sum
     @percentage_change_over_last_month = Calculator.percentage_change(@total_expenses_last_month, @total_expenses_this_month)
     @searched_vs_total = Calculator.percentage_of(@total_expenses, @total_expenses_this_month)
-    # @frequencies = Expense.frequencies
   end
 
   def search_query
@@ -41,13 +39,6 @@ class ExpensesController < ApplicationController
 
   def update
     @expense = Expense.find params[:expense][:id]
-    # @search_query = params[:expense][:q]
-    # p = expense_params
-    # p[:frequency] = p[:frequency].try(:to_i)
-    # if p[:recurring] == '0'
-    #   params[:expense][:frequency] = nil
-    #   p[:frequency] = nil
-    # end
     if validate!
       @expense.update_attributes(expense_params)
       return redirect_to build_expenses_path, notice: 'Expense updated!'
