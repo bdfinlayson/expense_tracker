@@ -6,7 +6,6 @@ class RecurringExpense < ApplicationRecord
   has_many :expenses
   accepts_nested_attributes_for :expense_category, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :vendor, reject_if: :all_blank, allow_destroy: true
-  validates_presence_of :user_id, :amount, :vendor_id, :expense_category_id
-  validates_inclusion_of :recurring, :in => [true], if: 'frequency.present?'
-  validates :frequency, presence: true, if: 'recurring.present?'
+  validates_presence_of :user_id, :amount, :vendor_id, :expense_category_id, :frequency
+  validates :vendor_id, uniqueness: {scope: :user_id}
 end

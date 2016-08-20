@@ -1,5 +1,6 @@
 class Expense < ApplicationRecord
   belongs_to :expense_category
+  belongs_to :recurring_expense
   belongs_to :vendor
   belongs_to :user
   accepts_nested_attributes_for :expense_category, reject_if: :all_blank, allow_destroy: true

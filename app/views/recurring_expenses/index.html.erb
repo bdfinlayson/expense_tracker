@@ -1,41 +1,44 @@
-<h1>Expenses</h1>
-<h3>Displaying <%= @total_items %> Expenses</h3>
+<h1>Recurring Expenses</h1>
+<h3>Displaying <%= @total_items %> Recurring Expenses</h3>
 
-<table>
-  <tr>
-    <td>This Month</td>
-    <td>Last Month</td>
-    <td>% Change over Last Month</td>
-    <td>Displayed Expenses</td>
-    <td>Displayed Vs Total</td>
-  </tr>
-  <tr>
-    <td>
-      <%= number_to_currency @total_expenses_this_month %>
-    </td>
-    <td>
-      <%= number_to_currency @total_expenses_last_month %>
-    </td>
-    <td>
-      <%= @percentage_change_over_last_month %>%
-    </td>
-    <td>
-      <%= number_to_currency @total_expenses %>
-    </td>
-    <td>
-      <%= @searched_vs_total %>%
-    </td>
-  </tr>
-</table>
+<h1>New Recurring Expense</h1>
 
+<%= form_for @form do |f| %>
+  <%= f.label :amount %>
+  <%= f.text_field :amount, type: :number, step: '0.01', placeholder: '$1.50' %>
+  <%= f.date_field :created_at, class: 'created_at' %>
+  <%= collection_select(:recurring_expense, :frequency, @frequencies, :second, :first, prompt: 'Select a frequency') %>
 
+  <%= collection_select(:recurring_expense, :expense_category_id, @categories, :id, :name, prompt: 'Select a category') %>
 
-<%= search_form_for @q do |f| %>
-  <%= f.label :expense_category_name_or_vendor_name_cont %>
-  <%= f.search_field :expense_category_name_or_vendor_name_cont %>
+  <div class='create-new new-category-btn'>Create Category</div>
+
+  <div class='category-form'>
+    <%= f.fields_for ExpenseCategory.new do |category_fields| %>
+      <h4>Create New Category</h4>
+      <%= category_fields.label :name %>
+      <%= category_fields.text_field :name, placeholder: 'Enter a category name' %>
+    <% end %>
+    <div class='cancel-add'>Cancel</div>
+  </div>
+
+  <%= collection_select(:recurring_expense, :vendor_id, @vendors, :id, :name, prompt: 'Select a vendor') %>
+
+  <div class='create-new new-vendor-btn'>Create Vendor</div>
+
+  <div class='vendor-form'>
+    <%= f.fields_for Vendor.new do |vendor_fields| %>
+      <h4>Create New Vendor</h4>
+      <%= vendor_fields.label :name %>
+      <%= vendor_fields.text_field :name, placeholder: 'Enter vendor name' %>
+      <%= vendor_fields.label :note, 'Notes' %>
+      <%= vendor_fields.text_area :note, placeholder: 'Enter notes about the vendor' %>
+    <% end %>
+    <div class='cancel-add'>Cancel</div>
+  </div>
+
   <%= f.submit %>
 <% end %>
-
 <table data-role="table" class="ui-responsive">
   <thead>
     <tr>
@@ -43,7 +46,7 @@
       <td>Amount</td>
       <td>Vendor</td>
       <td>Category</td>
-      <td>Recurring</td>
+      <td>Frequency</td>
       <td></td>
     </tr>
   </thead>
@@ -52,12 +55,11 @@
       <tr class='index-form'>
         <%= form_for expense do |f| %>
           <%= f.text_field :id, type: :hidden, value: expense.id %>
-          <%= f.text_field "q[#{@search_query.keys.first}]", type: :hidden, value: @search_query.values.first %>
           <td class='date-column'>
             <div class='row-item'>
               <%= expense.created_at.strftime('%m-%d-%Y') %>
             </div>
-            <%= f.date_field :created_at, class: 'created_at' %>
+            <%= f.date_field :created_at, class: 'created_at', id: "recurring_expense_created_at_#{expense.id}" %>
           </td>
           <td>
             <div class='row-item'>
@@ -69,31 +71,25 @@
             <div class='row-item'>
               <%= link_to expense.vendor.name, edit_vendor_path(expense.vendor) %>
             </div>
-            <%= collection_select(:expense, :vendor_id, Vendor.all, :id, :name, prompt: 'Select vendor', selected: expense.vendor.id) %>
+            <%= collection_select(:recurring_expense, :vendor_id, Vendor.all, :id, :name, prompt: 'Select vendor', selected: expense.vendor.id) %>
           </td>
           <td>
             <div class='row-item'>
-              <%= link_to expense.expense_category.name, edit_category_path(expense.expense_category) %>
+              <%= link_to expense.expense_category.name, edit_expense_category_path(expense.expense_category) %>
             </div>
-            <%= collection_select(:expense, :expense_category_id, ExpenseCategory.all, :id, :name, prompt: 'Select category', selected: expense.expense_category.id) %>
+            <%= collection_select(:recurring_expense, :expense_category_id, ExpenseCategory.all, :id, :name, prompt: 'Select category', selected: expense.expense_category.id) %>
           </td>
           <td>
-            <div class='recurring'>
-              <div class='row-item'>
-                <%= expense.recurring %>
-              </div>
-              <%= f.check_box :recurring %>
-              <div class='row-item'>
-                <%= expense.frequency %>
-              </div>
-              <%= collection_select(:expense, :frequency, @frequencies, :second, :first, prompt: 'Select frequency', selected: @frequencies[expense.frequency]) %>
+            <div class='row-item'>
+              <%= expense.frequency %>
             </div>
+            <%= collection_select(:recurring_expense, :frequency, @frequencies, :second, :first, prompt: 'Select frequency', selected: @frequencies[expense.frequency]) %>
           </td>
           <td class='form-actions'>
             <div class='edit'>&#9998;</div>
             <div class='cancel'>&#9995;</div>
             <div class='update'>&#10003</div>
-            <div class='delete'><%= link_to 'X', {action: :destroy, id: expense.id, expense: { q: { category_name_or_vendor_name_cont: @search_query.values.first }}}, method: :delete, data: { confirm: 'Are you sure?'} %></div>
+            <div class='delete'><%= link_to 'X', {action: :destroy, id: expense.id }, method: :delete, data: { confirm: 'Are you sure?'} %></div>
             <div class='update-btn'><%= f.submit %></div>
           </td>
         <% end %>
