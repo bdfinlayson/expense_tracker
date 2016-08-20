@@ -1,0 +1,2 @@
+module RecurringIncomesHelper
+end

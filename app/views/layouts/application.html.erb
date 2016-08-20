@@ -12,25 +12,29 @@
   </head>
 
   <body>
-    <div class='nav-wrapper'>
-      <button type="button" class="js-menu-trigger sliding-panel-button">
-        |||
-      </button>
-    </div>
+    <% if signed_in? %>
+      <div class='nav-wrapper'>
+        <button type="button" class="js-menu-trigger sliding-panel-button">
+          |||
+        </button>
+      </div>
 
-    <nav class="js-menu sliding-panel-content">
-      <ul>
-        <li><%= link_to 'Overview', overviews_path, 'data-turbolinks' => false %></li>
-        <li><%= link_to 'Expenses', expenses_path, 'data-turbolinks' => false %></li>
-        <li><%= link_to 'Income', incomes_path, 'data-turbolinks' => false %></li>
-        <li><%= link_to 'Budget', budgets_path, 'data-turbolinks' => false %></li>
-        <li><%= link_to 'Categories', categories_path, 'data-turbolinks' => false %></li>
-        <li><%= link_to 'Vendors', vendors_path, 'data-turbolinks' => false %></li>
-        <li><%= link_to 'New Expense', new_expense_path, 'data-turbolinks' => false %></li>
-      </ul>
-    </nav>
+      <nav class="js-menu sliding-panel-content">
+        <ul>
+          <li><%= link_to 'Overview', overviews_path, 'data-turbolinks' => false %></li>
+          <li><%= link_to 'Expenses', expenses_path, 'data-turbolinks' => false %></li>
+          <li><%= link_to 'Recurring Expenses', recurring_expenses_path, 'data-turbolinks' => false %></li>
+          <li><%= link_to 'Income', incomes_path, 'data-turbolinks' => false %></li>
+          <li><%= link_to 'Budget', budgets_path, 'data-turbolinks' => false %></li>
+          <li><%= link_to 'Expense Categories', expense_categories_path, 'data-turbolinks' => false %></li>
+          <li><%= link_to 'Vendors', vendors_path, 'data-turbolinks' => false %></li>
+          <li><%= link_to 'New Expense', new_expense_path, 'data-turbolinks' => false %></li>
+          <li class='logout'><%= link_to 'Log Out', destroy_user_session_path, method: :delete, 'data-turbolinks' => false %></li>
+        </ul>
+      </nav>
 
       <div class="js-menu-screen sliding-panel-fade-screen"></div>
+    <% end %>
 
 
     <p class='notice'><%= notice %></p>

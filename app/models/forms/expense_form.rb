@@ -5,16 +5,13 @@ class ExpenseForm < Reform::Form
   property :amount
   property :user_id
   property :vendor_id
-  property :category_id
+  property :expense_category_id
   property :created_at
-  property :recurring, type: Types::Form::Bool
-  property :frequency, type: Types::Form::Int
+  property :note
 
   validates :amount, presence: true
   validates :user_id, presence: true
   validates :vendor_id, presence: true
-  validates :category_id, presence: true
+  validates :expense_category_id, presence: true
   validates :created_at, presence: true
-  validates :frequency, presence: true, if: 'recurring.present?'
-  validates :recurring, presence: true, if: 'frequency.present?'
 end

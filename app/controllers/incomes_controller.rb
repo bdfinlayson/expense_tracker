@@ -5,6 +5,7 @@ class IncomesController < ApplicationController
     @form = IncomeForm.new(Income.new)
     @incomes = current_user.incomes
     @vendors = current_user.vendors
+    @categories = current_user.income_categories
   end
 
   def destroy
@@ -19,33 +20,43 @@ class IncomesController < ApplicationController
 
   def update
     @income = Income.find params[:id]
-    params[:income][:frequency] = params[:income][:frequency].to_i if params[:income][:frequency].present?
-    params[:income][:recurring] = params[:income][:recurring].to_i if params[:income][:recurring].present?
-
-    if @income.update(
-        amount: params[:income][:amount],
-        created_at: params[:income][:created_at],
-        vendor_id: params[:income][:vendor_id],
-        frequency: params[:income][:frequency],
-        recurring: params[:income][:recurring]
-    )
-      return redirect_to incomes_path, notice: 'Income updated!'
+    if validate!
+      @income.update_attributes(income_params)
+      return redirect_to incomes_path, notice: 'Expense updated!'
     else
-      return redirect_to incomes_path, alert: @income.errors.full_messages.join('!, ').concat('!')
+      return redirect_to incomes_path, alert: @form.errors.full_messages.join('!, ').concat('!')
     end
   end
 
   def create
-    @form = IncomeForm.new(Income.new)
-    vendor = create_new_vendor if new_vendor?
-    params[:income][:vendor_id] = vendor.id if vendor.present?
-    if @form.validate(income_params)
+    if validate!
       @form.save
       return redirect_to incomes_path, notice: 'Income saved!'
     else
       return redirect_to incomes_path, alert: @form.errors.full_messages.join('. ').concat('.')
     end
   end
+  def income_params
+    params.require(:income).permit(
+      :amount,
+      :created_at,
+      :income_category_id,
+      :vendor_id,
+      :note,
+      income_category: [
+        :id,
+        :name,
+        :_destroy
+      ],
+      vendor: [
+        :id,
+        :name,
+        :note,
+        :_destroy
+      ]
+    ).merge!(user_id: current_user.id)
+  end
+  private
 
   def create_new_vendor
     Vendor.create(
@@ -62,9 +73,34 @@ class IncomesController < ApplicationController
   end
 
 
-  def income_params
-    params[:income][:frequency] = params[:income][:frequency].to_i if params[:income][:frequency].present?
-    params[:income][:recurring] = params[:income][:recurring].to_i if params[:income][:recurring].present?
-    params.require(:income).permit(:amount, :created_at, :vendor, :vendor_id, :recurring, :frequency).merge!(user_id: current_user.id)
+  def create_new_category
+    IncomeCategory.create(
+      name: income_params[:income_category][:name],
+      user_id: current_user.id
+    )
   end
+
+  def new_category?
+    return false if not income_params[:income_category].present?
+    income_params[:income_category][:name].present?
+  end
+
+
+  def validate!
+    @form = IncomeForm.new(Income.new)
+    category = create_new_category if new_category?
+    vendor = create_new_vendor if new_vendor?
+    if category && vendor
+      @form.validate(income_params.merge(user_id: current_user.id, income_category_id: category.id, vendor_id: vendor.id))
+    elsif category
+      @form.validate(income_params.merge(user_id: current_user.id, income_category_id: category.id))
+    elsif vendor
+      @form.validate(income_params.merge(user_id: current_user.id, vendor_id: vendor.id))
+    else
+      @form.validate(income_params.merge(user_id: current_user.id))
+    end
+  end
+
+
+
 end

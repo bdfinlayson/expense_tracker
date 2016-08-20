@@ -4,7 +4,7 @@ class BudgetsController < ApplicationController
   def index
     @budgets = current_user.budgets
     @form = BudgetForm.new(Budget.new)
-    @categories = current_user.categories
+    @categories = current_user.expense_categories
   end
 
   def create
@@ -39,10 +39,10 @@ class BudgetsController < ApplicationController
   def edit
     @budget = Budget.find(params[:id])
     @form = BudgetForm.new(@budget)
-    @categories = current_user.categories
+    @categories = current_user.expense_categories
   end
 
   def budget_params
-    params.require(:budget).permit(:amount, :category_id).merge!(user_id: current_user.id)
+    params.require(:budget).permit(:amount, :expense_category_id).merge!(user_id: current_user.id)
   end
 end

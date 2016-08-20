@@ -1,6 +1,6 @@
 require 'reform/form/coercion'
 
-class CategoryForm < Reform::Form
+class ExpenseCategoryForm < Reform::Form
   feature Coercion
   property :name
   property :user_id

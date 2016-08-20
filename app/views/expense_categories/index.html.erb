@@ -1,4 +1,4 @@
-<h1>Categories</h1>
+<h1>Expense Categories</h1>
 <table>
   <tr>
     <td>Name</td>
@@ -10,7 +10,7 @@
         <%= f.text_field :id, type: :hidden, value: c.id %>
         <td>
           <div class='row-item'>
-            <%= link_to c.name, edit_category_path(c) %>
+            <%= link_to c.name, edit_expense_category_path(c) %>
           </div>
           <%= f.text_field :name, placeholder: 'Category name' %>
         </td>

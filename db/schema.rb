@@ -10,50 +10,93 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160725051856) do
+ActiveRecord::Schema.define(version: 20160819013715) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "budgets", force: :cascade do |t|
     t.integer  "amount"
-    t.integer  "category_id"
+    t.integer  "expense_category_id"
     t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
   end
 
-  create_table "categories", force: :cascade do |t|
+  create_table "expense_categories", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer  "user_id"
-    t.index ["user_id"], name: "index_categories_on_user_id", using: :btree
+    t.index ["user_id"], name: "index_expense_categories_on_user_id", using: :btree
   end
 
   create_table "expenses", force: :cascade do |t|
     t.integer  "user_id"
     t.float    "amount"
     t.integer  "vendor_id"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-    t.integer  "category_id"
-    t.boolean  "recurring",   default: false
-    t.integer  "frequency"
-    t.index ["category_id"], name: "index_expenses_on_category_id", using: :btree
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+    t.integer  "expense_category_id"
+    t.text     "note"
+    t.integer  "recurring_expense_id"
+    t.index ["expense_category_id"], name: "index_expenses_on_expense_category_id", using: :btree
+    t.index ["recurring_expense_id"], name: "index_expenses_on_recurring_expense_id", using: :btree
     t.index ["user_id"], name: "index_expenses_on_user_id", using: :btree
     t.index ["vendor_id"], name: "index_expenses_on_vendor_id", using: :btree
+  end
+
+  create_table "income_categories", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_income_categories_on_user_id", using: :btree
   end
 
   create_table "incomes", force: :cascade do |t|
     t.float    "amount"
     t.integer  "user_id"
-    t.boolean  "recurring",  default: false
-    t.integer  "frequency"
     t.integer  "vendor_id"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.integer  "kind"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.integer  "income_category_id"
+    t.text     "note"
+    t.integer  "recurring_income_id"
+    t.index ["income_category_id"], name: "index_incomes_on_income_category_id", using: :btree
+    t.index ["recurring_income_id"], name: "index_incomes_on_recurring_income_id", using: :btree
+    t.index ["user_id"], name: "index_incomes_on_user_id", using: :btree
+    t.index ["vendor_id"], name: "index_incomes_on_vendor_id", using: :btree
+  end
+
+  create_table "recurring_expenses", force: :cascade do |t|
+    t.float    "amount"
+    t.integer  "user_id"
+    t.integer  "vendor_id"
+    t.integer  "expense_category_id"
+    t.text     "note"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.integer  "frequency"
+    t.index ["expense_category_id"], name: "index_recurring_expenses_on_expense_category_id", using: :btree
+    t.index ["frequency"], name: "index_recurring_expenses_on_frequency", using: :btree
+    t.index ["user_id"], name: "index_recurring_expenses_on_user_id", using: :btree
+    t.index ["vendor_id"], name: "index_recurring_expenses_on_vendor_id", using: :btree
+  end
+
+  create_table "recurring_incomes", force: :cascade do |t|
+    t.float    "amount"
+    t.integer  "user_id"
+    t.integer  "vendor_id"
+    t.integer  "income_category_id"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.text     "note"
+    t.integer  "frequency"
+    t.index ["frequency"], name: "index_recurring_incomes_on_frequency", using: :btree
+    t.index ["income_category_id"], name: "index_recurring_incomes_on_income_category_id", using: :btree
+    t.index ["user_id"], name: "index_recurring_incomes_on_user_id", using: :btree
+    t.index ["vendor_id"], name: "index_recurring_incomes_on_vendor_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
@@ -76,11 +119,9 @@ ActiveRecord::Schema.define(version: 20160725051856) do
   create_table "vendors", force: :cascade do |t|
     t.string   "name"
     t.integer  "user_id"
-    t.integer  "category_id"
     t.text     "note"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.index ["category_id"], name: "index_vendors_on_category_id", using: :btree
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_vendors_on_user_id", using: :btree
   end
 

@@ -4,8 +4,7 @@ class ExpensesController < ApplicationController
   before_action :set_new_form, only: [:new, :create, :update]
 
   def new
-    @categories = current_user.categories.order(name: :asc)
-    @frequencies = Expense.frequencies
+    @categories = current_user.expense_categories.order(name: :asc)
     @vendors = current_user.vendors.order(name: :asc)
   end
 
@@ -16,18 +15,17 @@ class ExpensesController < ApplicationController
     @total_expenses = @expenses.map(&:amount).sum
     @total_items = @expenses.count
     @vendors = current_user.vendors.order(name: :asc)
-    @categories = current_user.categories.order(name: :asc)
+    @categories = current_user.expense_categories.order(name: :asc)
     @total_expenses_this_month = current_user.expenses.where(created_at: Time.now.beginning_of_month..Time.now.end_of_month).pluck(:amount).sum
     @total_expenses_last_month = current_user.expenses.where(created_at: Time.now.last_month.beginning_of_month..Time.now.last_month.end_of_month).pluck(:amount).sum
     @percentage_change_over_last_month = Calculator.percentage_change(@total_expenses_last_month, @total_expenses_this_month)
     @searched_vs_total = Calculator.percentage_of(@total_expenses, @total_expenses_this_month)
-    @frequencies = Expense.frequencies
   end
 
   def search_query
     return {} unless params[:q].present?
-    return {} unless params[:q]['category_name_or_vendor_name_cont'].present?
-    { category_name_or_vendor_name_cont: params[:q]['category_name_or_vendor_name_cont'] }
+    return {} unless params[:q]['expense_category_name_or_vendor_name_cont'].present?
+    { expense_category_name_or_vendor_name_cont: params[:q]['expense_category_name_or_vendor_name_cont'] }
   end
 
   def create
@@ -41,15 +39,8 @@ class ExpensesController < ApplicationController
 
   def update
     @expense = Expense.find params[:expense][:id]
-    @search_query = params[:expense][:q]
-    p = expense_params
-    p[:frequency] = p[:frequency].try(:to_i)
-    if p[:recurring] == '0'
-      params[:expense][:frequency] = nil
-      p[:frequency] = nil
-    end
     if validate!
-      @expense.update_attributes(p)
+      @expense.update_attributes(expense_params)
       return redirect_to build_expenses_path, notice: 'Expense updated!'
     else
       return redirect_to build_expenses_path, alert: @form.errors.full_messages.join('!, ').concat('!')
@@ -65,8 +56,8 @@ class ExpensesController < ApplicationController
   end
 
   def create_new_category
-    Category.create(
-      name: expense_params[:category][:name],
+    ExpenseCategory.create(
+      name: expense_params[:expense_category][:name],
       user_id: current_user.id
     )
   end
@@ -78,8 +69,8 @@ class ExpensesController < ApplicationController
   end
 
   def new_category?
-    return false if not expense_params[:category].present?
-    expense_params[:category][:name].present?
+    return false if not expense_params[:expense_category].present?
+    expense_params[:expense_category][:name].present?
   end
 
   def create_new_vendor
@@ -99,9 +90,9 @@ class ExpensesController < ApplicationController
     category = create_new_category if new_category?
     vendor = create_new_vendor if new_vendor?
     if category && vendor
-      @form.validate(expense_params.merge(user_id: current_user.id, category_id: category.id, vendor_id: vendor.id))
+      @form.validate(expense_params.merge(user_id: current_user.id, expense_category_id: category.id, vendor_id: vendor.id))
     elsif category
-      @form.validate(expense_params.merge(user_id: current_user.id, category_id: category.id))
+      @form.validate(expense_params.merge(user_id: current_user.id, expense_category_id: category.id))
     elsif vendor
       @form.validate(expense_params.merge(user_id: current_user.id, vendor_id: vendor.id))
     else
@@ -117,21 +108,18 @@ class ExpensesController < ApplicationController
     params.require(:expense).permit(
       :amount,
       :created_at,
-      :category_id,
-      :recurring,
-      :frequency,
+      :expense_category_id,
       :vendor_id,
-      category: [
+      :note,
+      expense_category: [
         :id,
         :name,
-        :done,
         :_destroy
       ],
       vendor: [
         :id,
         :name,
         :note,
-        :done,
         :_destroy
       ]
     )

@@ -1,4 +1,4 @@
-class Category < ApplicationRecord
+class ExpenseCategory < ApplicationRecord
   has_many :expenses
   has_one :budget
   validates_presence_of :name, :user_id
