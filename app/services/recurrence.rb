@@ -1,12 +1,14 @@
 class Recurrence
   def initialize(model)
     @model = model
+    @model_due_day = model.created_at.day
     @frequency = model.frequency
     @vendor_id = model.vendor_id
     @user = model.user
     @target = which_table
     @current_month = Time.now.month
     @current_day = Time.now.day
+    @days_in_month = Time.now.end_of_month.day
   end
 
   def compute
@@ -48,7 +50,12 @@ class Recurrence
   end
 
   def overdue?
-    @model.created_at.day <= @current_day
+    difference_in_days = @model_due_day - @days_in_month
+    if (@model_due_day > @days_in_month) && (difference_in_days <= 3)
+      true
+    else
+      @model_due_day <= @current_day
+    end
   end
 
   def get_model_attributes
