@@ -42,6 +42,7 @@ class RecurringIncomesController < ApplicationController
   def create
     if validate!
       @form.save
+      Recurrence.new(@form.model).compute
       return redirect_to recurring_incomes_path, notice: 'Income saved!'
     else
       return redirect_to recurring_incomes_path, alert: @form.errors.full_messages.join('. ').concat('.')
