@@ -1,4 +1,4 @@
-<h1>Income</h1>
+<h1>Recurring Income</h1>
 
 <%= form_for @form do |f| %>
   <%= f.label :amount %>
@@ -6,7 +6,22 @@
 
   <%= f.date_field :created_at, class: 'created_at' %>
 
-  <%= collection_select(:income, :vendor_id, @vendors, :id, :name, prompt: 'Select a vendor') %>
+  <%= collection_select(:recurring_income, :frequency, RecurringIncome.frequencies, :second, :first, prompt: 'Income recurring...') %>
+
+  <%= collection_select(:recurring_income, :income_category_id, @categories, :id, :name, prompt: 'Select a category') %>
+
+  <div class='create-new new-category-btn'>Create Category</div>
+
+  <div class='category-form'>
+    <%= f.fields_for IncomeCategory.new do |category_fields| %>
+      <h4>Create New Category</h4>
+      <%= category_fields.label :name %>
+      <%= category_fields.text_field :name, placeholder: 'Enter a category name' %>
+    <% end %>
+    <div class='cancel-add'>Cancel</div>
+  </div>
+
+  <%= collection_select(:recurring_income, :vendor_id, @vendors, :id, :name, prompt: 'Select a vendor') %>
 
   <div class='create-new new-vendor-btn'>Create Vendor</div>
 
@@ -21,10 +36,6 @@
     <div class='cancel-add'>Cancel</div>
   </div>
 
-  <%= f.label :recurring %>
-  <%= f.check_box :recurring %>
-
-  <%= collection_select(:income, :frequency, Income.frequencies, :second, :first, prompt: 'Income recurring...') %>
 
   <%= f.submit %>
 
@@ -36,7 +47,7 @@
       <td class='date-column'>Date</td>
       <td>Amount</td>
       <td>Vendor</td>
-      <td>Recurring</td>
+      <td>Category</td>
       <td>Frequency</td>
       <td></td>
     </tr>
@@ -62,19 +73,19 @@
             <div class='row-item'>
               <%= link_to income.vendor.name, edit_vendor_path(income.vendor) %>
             </div>
-            <%= collection_select(:income, :vendor_id, @vendors, :id, :name, prompt: 'Select a vendor', selected: income.vendor.id) %>
+            <%= collection_select(:recurring_income, :vendor_id, @vendors, :id, :name, prompt: 'Select a vendor', selected: income.vendor.id) %>
           </td>
           <td>
             <div class='row-item'>
-              <%= income.recurring %>
+              <%= link_to income.income_category.name, edit_income_category_path(income.income_category) %>
             </div>
-            <%= f.check_box :recurring, default: income.recurring %>
+            <%= collection_select(:recurring_income, :income_category_id, @categories, :id, :name, prompt: 'Select category', selected: income.income_category.id) %>
           </td>
           <td>
             <div class='row-item'>
               <%= income.frequency %>
             </div>
-            <%= collection_select(:income, :frequency, Income.frequencies, :second, :first, prompt: 'Income recurring...', selected: Income.frequencies[Income.last.frequency]) %>
+            <%= collection_select(:recurring_income, :frequency, RecurringIncome.frequencies, :second, :first, prompt: 'Income recurring...', selected: RecurringIncome.frequencies[income.frequency]) %>
           </td>
           <td class='form-actions'>
             <div class='edit'>&#9998;</div>

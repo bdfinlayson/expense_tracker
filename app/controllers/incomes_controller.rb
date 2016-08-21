@@ -3,9 +3,9 @@ require_dependency 'app/models/forms/income_form' unless Rails.env == 'productio
 class IncomesController < ApplicationController
   def index
     @form = IncomeForm.new(Income.new)
-    @incomes = current_user.incomes
-    @vendors = current_user.vendors
-    @categories = current_user.income_categories
+    @incomes = current_user.incomes.order(created_at: :desc)
+    @vendors = current_user.vendors.order('lower(name) asc')
+    @categories = current_user.income_categories.order('lower(name) asc')
   end
 
   def destroy
@@ -22,7 +22,7 @@ class IncomesController < ApplicationController
     @income = Income.find params[:id]
     if validate!
       @income.update_attributes(income_params)
-      return redirect_to incomes_path, notice: 'Expense updated!'
+      return redirect_to incomes_path, notice: 'Income updated!'
     else
       return redirect_to incomes_path, alert: @form.errors.full_messages.join('!, ').concat('!')
     end

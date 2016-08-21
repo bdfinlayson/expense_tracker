@@ -1,2 +1,27 @@
-<h1>IncomeCategories#index</h1>
-<p>Find me in app/views/income_categories/index.html.erb</p>
+<h1>Income Categories</h1>
+<table>
+  <tr>
+    <td>Name</td>
+    <td></td>
+  </tr>
+  <% @categories.each do |c| %>
+    <tr class='index-form'>
+      <%= form_for c do |f| %>
+        <%= f.text_field :id, type: :hidden, value: c.id %>
+        <td>
+          <div class='row-item'>
+            <%= link_to c.name, edit_income_category_path(c) %>
+          </div>
+          <%= f.text_field :name, placeholder: 'Category name' %>
+        </td>
+        <td class='form-actions'>
+          <div class='edit'>&#9998;</div>
+          <div class='cancel'>&#9995;</div>
+          <div class='update'>&#10003</div>
+          <div class='delete'><%= link_to 'X', {action: :destroy, id: c.id }, method: :delete, data: { confirm: 'Are you sure?'} %></div>
+          <div class='update-btn'><%= f.submit %></div>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
