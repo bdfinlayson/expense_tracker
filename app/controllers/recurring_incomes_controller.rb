@@ -17,7 +17,6 @@ class RecurringIncomesController < ApplicationController
     end
   end
 
-
   def update
     @income = RecurringIncome.find params[:recurring_income][:id]
     p = recurring_income_params
@@ -27,16 +26,6 @@ class RecurringIncomesController < ApplicationController
     return redirect_to recurring_incomes_path, notice: 'Recurring Income updated!'
   rescue
     return redirect_to recurring_incomes_path, alert: @income.errors.full_messages.join('!, ').concat('!')
-  end
-
-  def update
-    @income = RecurringIncome.find params[:id]
-    if validate!
-      @income.update_attributes(recurring_income_params)
-      return redirect_to recurring_incomes_path, notice: 'Recurring Income updated!'
-    else
-      return redirect_to recurring_incomes_path, alert: @form.errors.full_messages.join('!, ').concat('!')
-    end
   end
 
   def create
