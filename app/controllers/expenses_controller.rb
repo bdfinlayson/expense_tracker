@@ -1,12 +1,7 @@
 require_dependency 'app/models/forms/expense_form' unless Rails.env == 'production'
 
 class ExpensesController < ApplicationController
-  before_action :set_new_form, only: [:new, :create, :update]
-
-  def new
-    @categories = current_user.expense_categories.order(name: :asc)
-    @vendors = current_user.vendors.order(name: :asc)
-  end
+  before_action :set_new_form, only: [:index, :create, :update]
 
   def index
     @search_query = search_query
@@ -14,8 +9,8 @@ class ExpensesController < ApplicationController
     @expenses = @q.result
     @total_expenses = @expenses.map(&:amount).sum
     @total_items = @expenses.count
-    @vendors = current_user.vendors.order(name: :asc)
-    @categories = current_user.expense_categories.order(name: :asc)
+    @vendors = current_user.vendors.order('lower(name) asc')
+    @categories = current_user.expense_categories.order('lower(name) asc')
     @total_expenses_this_month = current_user.expenses.where(created_at: Time.now.beginning_of_month..Time.now.end_of_month).pluck(:amount).sum
     @total_expenses_last_month = current_user.expenses.where(created_at: Time.now.last_month.beginning_of_month..Time.now.last_month.end_of_month).pluck(:amount).sum
     @percentage_change_over_last_month = Calculator.percentage_change(@total_expenses_last_month, @total_expenses_this_month)

@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   devise_for :users
-  root to: 'expenses#new'
+  root to: 'expenses#index'
   resources :expenses
   resources :recurring_expenses
   resources :expense_categories

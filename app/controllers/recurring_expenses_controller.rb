@@ -3,17 +3,12 @@ require_dependency 'app/models/forms/recurring_expense_form' unless Rails.env ==
 class RecurringExpensesController < ApplicationController
   before_action :set_new_form, only: [:index, :create, :update]
 
-  def new
-    @categories = current_user.expense_categories.order(name: :asc)
-    @vendors = current_user.vendors.order(name: :asc)
-  end
-
   def index
-    @expenses = current_user.recurring_expenses
+    @expenses = current_user.recurring_expenses.order(created_at: :desc)
     @total_expenses = @expenses.map(&:amount).sum
     @total_items = @expenses.count
-    @vendors = current_user.vendors.order(name: :asc)
-    @categories = current_user.expense_categories.order(name: :asc)
+    @vendors = current_user.vendors.order('lower(name) asc')
+    @categories = current_user.expense_categories.order('lower(name) asc')
     @frequencies = RecurringExpense.frequencies
   end
 
@@ -21,7 +16,7 @@ class RecurringExpensesController < ApplicationController
     if validate!
       @form.save
       Recurrence.new(@form.model).compute
-      return redirect_to recurring_expenses_path, notice: 'Expense saved!'
+      return redirect_to recurring_expenses_path, notice: 'Recurring Expense saved!'
     else
       return redirect_to recurring_expenses_path, alert: @form.errors.full_messages.join("! ").concat('!')
     end
@@ -29,14 +24,13 @@ class RecurringExpensesController < ApplicationController
 
   def update
     @expense = RecurringExpense.find params[:recurring_expense][:id]
-    if validate!
-      p = recurring_expense_params
-      p[:frequency] = p[:frequency].to_i
-      @expense.update_attributes(p)
-      return redirect_to recurring_expenses_path, notice: 'Expense updated!'
-    else
-      return redirect_to recurring_expenses_path, alert: @form.errors.full_messages.join('!, ').concat('!')
-    end
+    p = recurring_expense_params
+    p[:frequency] = p[:frequency].to_i
+    @expense.update_attributes(p)
+    raise if @expense.errors.any?
+    return redirect_to recurring_expenses_path, notice: 'Recurring Expense updated!'
+  rescue
+    return redirect_to recurring_expenses_path, alert: @expense.errors.full_messages.join('!, ').concat('!')
   end
 
   def create_new_category
