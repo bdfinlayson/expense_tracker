@@ -6,6 +6,9 @@
 @import 'expenses_new';
 @import 'index';
 @import 'nav';
+@import 'jquery-ui/core';
+@import 'jquery-ui/theme';
+@import 'jquery-ui/datepicker';
 
 .sliding-panel-content > ul {
   font-size: 0.9em;
