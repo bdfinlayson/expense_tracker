@@ -4,7 +4,7 @@ $(document).on 'turbolinks:load', ->
 
   $('.created_at').datepicker({
     dateFormat: 'yy-mm-dd',
-    autoclose: true
+    showButtonPanel: true,
   })
 
   $('.edit').on 'click', ->
