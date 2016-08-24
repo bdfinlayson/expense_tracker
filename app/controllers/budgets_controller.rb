@@ -3,6 +3,7 @@ require_dependency 'app/models/forms/budget_form' unless Rails.env == 'productio
 class BudgetsController < ApplicationController
   def index
     @budgets = current_user.budgets.order(amount: :desc)
+    @total_items = @budgets.count
     @form = BudgetForm.new(Budget.new)
     @categories = current_user.expense_categories.order('lower(name) asc')
   end

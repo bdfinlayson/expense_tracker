@@ -1,18 +1,15 @@
-<h1>New Expense</h1>
-
 <%= form_for @form do |f| %>
   <%= f.label :amount %>
-  <%= f.text_field :amount, type: :number, step: '0.01', placeholder: '$1.50' %>
-  <%= f.date_field :created_at, class: 'created_at' %>
-  <%= f.check_box :recurring %>
-  <%= collection_select(:expense, :frequency, @frequencies, :second, :first, prompt: 'Select a frequency') %>
+  <%= f.text_field :amount, type: :number, placeholder: '$1500' %>
 
-  <%= collection_select(:expense, :category_id, @categories, :id, :name, prompt: 'Select a category') %>
+  <%= f.date_field :created_at, class: 'created_at' %>
+
+  <%= collection_select(:income, :income_category_id, @categories, :id, :name, prompt: 'Select a category') %>
 
   <div class='create-new new-category-btn'>Create Category</div>
 
   <div class='category-form'>
-    <%= f.fields_for Category.new do |category_fields| %>
+    <%= f.fields_for IncomeCategory.new do |category_fields| %>
       <h4>Create New Category</h4>
       <%= category_fields.label :name %>
       <%= category_fields.text_field :name, placeholder: 'Enter a category name' %>
@@ -20,7 +17,7 @@
     <div class='cancel-add'>Cancel</div>
   </div>
 
-  <%= collection_select(:expense, :vendor_id, @vendors, :id, :name, prompt: 'Select a vendor') %>
+  <%= collection_select(:income, :vendor_id, @vendors, :id, :name, prompt: 'Select a vendor') %>
 
   <div class='create-new new-vendor-btn'>Create Vendor</div>
 
@@ -36,4 +33,7 @@
   </div>
 
   <%= f.submit %>
+
 <% end %>
+
+

@@ -4,6 +4,7 @@ class VendorsController < ApplicationController
   def index
     @form = VendorForm.new(Vendor.new)
     @vendors = Vendor.where(user_id: current_user.id).order('name asc')
+    @total_items = @vendors.count
   end
 
   def edit

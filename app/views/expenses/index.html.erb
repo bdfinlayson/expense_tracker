@@ -1,4 +1,6 @@
-<h1><span>Expenses
+<h1>
+  <span>
+    Expenses (<%= @total_items %>)
     <%= render partial: 'modal/show',
       locals: {
         form: 'expenses/new',
@@ -8,8 +10,6 @@
     %>
   </span>
 </h1>
-
-<h3>Displaying <%= @total_items %> Expenses</h3>
 
 <table>
   <tr>
