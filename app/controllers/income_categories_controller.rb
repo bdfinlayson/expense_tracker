@@ -38,6 +38,7 @@ class IncomeCategoriesController < ApplicationController
   def index
     @form = IncomeCategoryForm.new(IncomeCategory.new)
     @categories = IncomeCategory.where(user_id: current_user.id).order('lower(name) asc')
+    @total_items = @categories.count
   end
 
   def category_params
