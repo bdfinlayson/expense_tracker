@@ -1,4 +1,21 @@
-$(document).on 'turbolinks:load', ->
-  $('.sliding-panel-button,.sliding-panel-fade-screen,.sliding-panel-close').on 'click touchstart', (e) ->
-    $('.sliding-panel-content,.sliding-panel-fade-screen').toggleClass 'is-visible'
+$(document).ready ->
+  menuToggle = $('#js-mobile-menu').unbind()
+  $('#js-navigation-menu').removeClass 'show'
+  menuToggle.on 'click', (e) ->
     e.preventDefault()
+    $('#js-navigation-menu').slideToggle ->
+      if $('#js-navigation-menu').is(':hidden')
+        $('#js-navigation-menu').removeAttr 'style'
+
+$(window).resize ->
+  more = document.getElementById('js-navigation-more')
+  if $(more).length > 0
+    windowWidth = $(window).width()
+    moreLeftSideToPageLeftSide = $(more).offset().left
+    moreLeftSideToPageRightSide = windowWidth - moreLeftSideToPageLeftSide
+    if moreLeftSideToPageRightSide < 330
+      $('#js-navigation-more .submenu .submenu').removeClass 'fly-out-right'
+      $('#js-navigation-more .submenu .submenu').addClass 'fly-out-left'
+    if moreLeftSideToPageRightSide > 330
+      $('#js-navigation-more .submenu .submenu').removeClass 'fly-out-left'
+      $('#js-navigation-more .submenu .submenu').addClass 'fly-out-right'
