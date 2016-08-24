@@ -1,7 +1,7 @@
-@import 'jquery-ui';
 @import 'bourbon';
-@import 'base/base';
 @import 'neat';
+@import 'base/base';
+@import 'jquery-ui';
 @import 'alerts';
 @import 'expenses_new';
 @import 'index';
@@ -9,6 +9,7 @@
 @import 'jquery-ui/core';
 @import 'jquery-ui/theme';
 @import 'jquery-ui/datepicker';
+@import 'modal';
 
 .sliding-panel-content > ul {
   font-size: 0.9em;

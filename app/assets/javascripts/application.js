@@ -19,3 +19,4 @@
 //= require index
 //= require categories_edit
 //= require nav
+//= require modal

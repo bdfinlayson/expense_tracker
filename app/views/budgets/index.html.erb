@@ -1,10 +1,15 @@
-<h1>Budget</h1>
-<%= form_for @form do |f| %>
-  <%= f.label :amount %>
-  <%= f.text_field :amount, type: :number, placeholder: '$1.50' %>
-  <%= collection_select(:budget, :expense_category_id, @categories, :id, :name, prompt: 'Select a category') %>
-  <%= f.submit %>
-<% end %>
+<h1>
+  <span>
+    Budget (<%= @total_items %>)
+    <%= render partial: 'modal/show',
+      locals: {
+        form: 'budgets/new',
+        modal_trigger: 'Create New +',
+        modal_title: 'New Budget'
+      }
+    %>
+  </span>
+</h1>
 
 <table>
   <tr>
