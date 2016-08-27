@@ -1,11 +1,12 @@
-<h1>
+<h1 class='page-header'>
   <span>
     Budget (<%= @total_items %>)
     <%= render partial: 'modal/show',
       locals: {
         form: 'budgets/new',
         modal_trigger: 'Create New +',
-        modal_title: 'New Budget'
+        modal_title: 'New Budget',
+        modal_id: 'new'
       }
     %>
   </span>

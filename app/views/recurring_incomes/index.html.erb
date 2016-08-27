@@ -1,11 +1,12 @@
-<h1>
+<h1 class='page-header'>
   <span>
     Recurring Incomes (<%= @total_items %>)
     <%= render partial: 'modal/show',
       locals: {
         form: 'recurring_incomes/new',
         modal_trigger: 'Create New +',
-        modal_title: 'New Recurring Income'
+        modal_title: 'New Recurring Income',
+        modal_id: 'new'
       }
     %>
   </span>
