@@ -1,6 +1,6 @@
 <%= form_for @form do |f| %>
   <%= f.label :amount %>
-  <%= f.text_field :amount, type: :number, placeholder: '$1500' %>
+  <%= f.text_field :amount, step: '0.01', type: :number, placeholder: '$1500' %>
 
   <%= f.date_field :created_at, class: 'created_at' %>
 

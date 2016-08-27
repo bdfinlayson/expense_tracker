@@ -13,8 +13,6 @@ class ExpensesController < ApplicationController
     @categories = current_user.expense_categories.order('lower(name) asc')
     @total_expenses_this_month = current_user.expenses.where(created_at: Time.now.beginning_of_month..Time.now.end_of_month).pluck(:amount).sum
     @total_expenses_last_month = current_user.expenses.where(created_at: Time.now.last_month.beginning_of_month..Time.now.last_month.end_of_month).pluck(:amount).sum
-    @percentage_change_over_last_month = Calculator.percentage_change(@total_expenses_last_month, @total_expenses_this_month)
-    @searched_vs_total = Calculator.percentage_of(@total_expenses, @total_expenses_this_month)
   end
 
   def search_query

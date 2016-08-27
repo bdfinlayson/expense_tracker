@@ -1,4 +1,4 @@
-<h1>
+<h1 class='page-header'>
   <span>
     Expenses (<%= @total_items %>)
     <%= render partial: 'modal/show',
@@ -9,42 +9,10 @@
       }
     %>
   </span>
+  <%= render partial: 'expenses/stats' %>
+
 </h1>
 
-<table>
-  <tr>
-    <td>This Month</td>
-    <td>Last Month</td>
-    <td>% Change over Last Month</td>
-    <td>Displayed Expenses</td>
-    <td>Displayed Vs Total</td>
-  </tr>
-  <tr>
-    <td>
-      <%= number_to_currency @total_expenses_this_month %>
-    </td>
-    <td>
-      <%= number_to_currency @total_expenses_last_month %>
-    </td>
-    <td>
-      <%= @percentage_change_over_last_month %>%
-    </td>
-    <td>
-      <%= number_to_currency @total_expenses %>
-    </td>
-    <td>
-      <%= @searched_vs_total %>%
-    </td>
-  </tr>
-</table>
-
-
-
-<%= search_form_for @q do |f| %>
-  <%= f.label :expense_category_name_or_vendor_name_cont %>
-  <%= f.search_field :expense_category_name_or_vendor_name_cont %>
-  <%= f.submit %>
-<% end %>
 
 <table data-role="table" class="ui-responsive">
   <thead>
