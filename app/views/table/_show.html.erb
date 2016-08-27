@@ -1,0 +1,32 @@
+<table class="tables">
+  <thead>
+    <tr>
+      <% columns.each do |c| %>
+        <th><%= c.humanize.titleize %></th>
+      <% end %>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% collection.each_with_index do |model, i| %>
+      <tr>
+        <% columns.each do |c| %>
+            <td><%= model.send(c) %></td>
+        <% end %>
+        <td>
+          <button>
+            <%= render partial: 'modal/show', locals: {
+               form: @form_partial,
+               modal_trigger: 'Edit',
+               modal_title: 'Edit Expense',
+               modal_id: model.id,
+               model: model
+               }
+             %>
+          </button>
+          <button class='delete'><%= link_to 'Destroy', {action: :destroy, id: model.id }, method: :delete, data: { confirm: 'Are you sure?'} %></button>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -3,7 +3,7 @@
   <%= f.text_field :amount, type: :number, step: '0.01', placeholder: '$1.50' %>
   <%= f.date_field :created_at, class: 'created_at' %>
 
-  <%= collection_select(:expense, :expense_category_id, @categories, :id, :name, prompt: 'Select a category') %>
+  <%= collection_select(:expense, :expense_category_id, @categories, :id, :name, prompt: 'Select a category', selected: model.try(:expense_category).try(:id)) %>
 
   <div class='create-new new-category-btn'>Create Category</div>
 
@@ -16,7 +16,7 @@
     <div class='cancel-add'>Cancel</div>
   </div>
 
-  <%= collection_select(:expense, :vendor_id, @vendors, :id, :name, prompt: 'Select a vendor') %>
+  <%= collection_select(:expense, :vendor_id, @vendors, :id, :name, prompt: 'Select a vendor', selected: model.try(:vendor).try(:id)) %>
 
   <div class='create-new new-vendor-btn'>Create Vendor</div>
 
@@ -30,7 +30,5 @@
     <% end %>
     <div class='cancel-add'>Cancel</div>
   </div>
-
   <%= f.submit %>
 <% end %>
-

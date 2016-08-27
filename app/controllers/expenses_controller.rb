@@ -13,6 +13,8 @@ class ExpensesController < ApplicationController
     @categories = current_user.expense_categories.order('lower(name) asc')
     @total_expenses_this_month = current_user.expenses.where(created_at: Time.now.beginning_of_month..Time.now.end_of_month).pluck(:amount).sum
     @total_expenses_last_month = current_user.expenses.where(created_at: Time.now.last_month.beginning_of_month..Time.now.last_month.end_of_month).pluck(:amount).sum
+    @columns = %w(date item_amount vendor_name category_name recurring?)
+    @form_partial = 'expenses/new'
   end
 
   def search_query
@@ -34,18 +36,10 @@ class ExpensesController < ApplicationController
     @expense = Expense.find params[:expense][:id]
     if validate!
       @expense.update_attributes(expense_params)
-      return redirect_to build_expenses_path, notice: 'Expense updated!'
+      return redirect_to expenses_path, notice: 'Expense updated!'
     else
-      return redirect_to build_expenses_path, alert: @form.errors.full_messages.join('!, ').concat('!')
+      return redirect_to expenses_path, alert: @form.errors.full_messages.join('!, ').concat('!')
     end
-  end
-
-  def build_expenses_path
-    expenses_path(
-      q: {
-        category_name_or_vendor_name_cont: ( params[:expense][:q].present? ? params[:expense][:q][:category_name_or_vendor_name_cont] : [] )
-      }
-    )
   end
 
   def create_new_category
@@ -58,7 +52,7 @@ class ExpensesController < ApplicationController
   def destroy
     @expense = Expense.find params[:id]
     @expense.destroy
-    redirect_to build_expenses_path, notice: 'Expense destroyed!'
+    redirect_to expenses_path, notice: 'Expense destroyed!'
   end
 
   def new_category?
