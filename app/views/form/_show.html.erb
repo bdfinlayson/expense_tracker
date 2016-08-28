@@ -4,7 +4,11 @@
     <%= f.text_field :amount, type: :number, step: '0.01', placeholder: '$1.50' %>
   <% end %>
 
-  <% if (model.respond_to? :created_at) && (model.model_name.name != 'Budget') %>
+  <% if model.respond_to?(:name) %>
+    <%= f.text_field :name, placeholder: 'Name here' %>
+  <% end %>
+
+  <% if (model.respond_to? :created_at) && (['Budget', 'Vendor', 'ExpenseCategory', 'IncomeCategory'].exclude? model.model_name.name) %>
     <%= f.date_field :created_at, class: 'created_at', id: model.try(:id) %>
   <% end %>
 
@@ -42,6 +46,10 @@
       <% end %>
       <div class='cancel-add'>Cancel</div>
     </div>
+  <% end %>
+
+  <% if model.respond_to?(:note) %>
+    <%= f.text_area :note, placeholder: 'Notes here' %>
   <% end %>
 
   <%= f.submit %>
