@@ -12,15 +12,15 @@ module BaseModel
   end
 
   def spent
-    '$' + expense_category.summed_expenses.to_s
+    '$' + expense_category.summed_expenses.round(2).to_s
   end
 
-  def percent_remaining
+  def percent_spent
     Calculator.percentage_of(expense_category.summed_expenses, amount).to_s + '%'
   end
 
   def left
-    '$' + (amount - expense_category.summed_expenses).to_s
+    '$' + (amount - expense_category.summed_expenses).round(2).to_s
   end
 
   def category_name

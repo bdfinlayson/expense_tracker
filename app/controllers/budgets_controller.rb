@@ -6,7 +6,7 @@ class BudgetsController < ApplicationController
     @total_items = @budgets.count
     @form = BudgetForm.new(Budget.new)
     @categories = current_user.expense_categories.order('lower(name) asc')
-    @columns = %w(category_name spent left budgeted_amount percent_remaining)
+    @columns = %w(category_name budgeted_amount spent left percent_spent)
     @form_partial = 'form/show'
     @new_category = ExpenseCategory.new
   end

@@ -1,3 +1,7 @@
 form {
+  font-size: 1em;
   color: black;
+  .category-form, .vendor-form {
+    display: none;
+  }
 }

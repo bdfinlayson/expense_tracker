@@ -18,3 +18,4 @@
 //= require index
 //= require nav
 //= require modal
+//= require form
