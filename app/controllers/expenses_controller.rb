@@ -14,7 +14,7 @@ class ExpensesController < ApplicationController
     @total_expenses_this_month = current_user.expenses.where(created_at: Time.now.beginning_of_month..Time.now.end_of_month).pluck(:amount).sum
     @total_expenses_last_month = current_user.expenses.where(created_at: Time.now.last_month.beginning_of_month..Time.now.last_month.end_of_month).pluck(:amount).sum
     @columns = %w(date item_amount vendor_name category_name recurring?)
-    @form_partial = 'expenses/new'
+    @form_partial = 'form/show'
     @new_category = ExpenseCategory.new
     @new_vendor = Vendor.new
   end
