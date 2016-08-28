@@ -35,9 +35,9 @@ class ExpensesController < ApplicationController
   end
 
   def update
-    @expense = Expense.find params[:expense][:id]
+    @expense = Expense.find params[:id]
     if validate!
-      @expense.update_attributes(expense_params)
+      @expense.update(expense_params)
       return redirect_to expenses_path, notice: 'Expense updated!'
     else
       return redirect_to expenses_path, alert: @form.errors.full_messages.join('!, ').concat('!')
@@ -78,15 +78,19 @@ class ExpensesController < ApplicationController
   def validate!
     category = create_new_category if new_category?
     vendor = create_new_vendor if new_vendor?
+    params[:expense].delete :expense_category
+    params[:expense].delete :vendor
     if category && vendor
-      @form.validate(expense_params.merge(user_id: current_user.id, expense_category_id: category.id, vendor_id: vendor.id))
+      params[:expense][:expense_category_id] = category.id
+      params[:expense][:vendor_id] = vendor.id
     elsif category
-      @form.validate(expense_params.merge(user_id: current_user.id, expense_category_id: category.id))
+      params[:expense][:expense_category_id] = category.id
     elsif vendor
-      @form.validate(expense_params.merge(user_id: current_user.id, vendor_id: vendor.id))
+      params[:expense][:vendor_id] = vendor.id
     else
-      @form.validate(expense_params.merge(user_id: current_user.id))
+      ''
     end
+    @form.validate(expense_params.merge(user_id: current_user.id))
   end
 
   def set_new_form

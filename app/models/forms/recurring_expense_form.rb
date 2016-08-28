@@ -10,7 +10,7 @@ class RecurringExpenseForm < Reform::Form
   property :note
   property :frequency, type: Types::Form::Int
 
-  validate :whether_vendor_already_has_recurring_expense
+  #validate :whether_vendor_already_has_recurring_expense
 
   validates :amount, presence: true
   validates :user_id, presence: true

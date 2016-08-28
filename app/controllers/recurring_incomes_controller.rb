@@ -6,7 +6,12 @@ class RecurringIncomesController < ApplicationController
     @incomes = current_user.recurring_incomes.order(created_at: :desc)
     @total_items = @incomes.count
     @vendors = current_user.vendors.order('lower(name) asc')
+    @frequencies = RecurringIncome.frequencies
     @categories = current_user.income_categories.order('lower(name) asc')
+    @columns = %w(date item_amount vendor_name category_name frequency)
+    @form_partial = 'form/show'
+    @new_category = IncomeCategory.new
+    @new_vendor = Vendor.new
   end
 
   def destroy
@@ -19,25 +24,25 @@ class RecurringIncomesController < ApplicationController
   end
 
   def update
-    @income = RecurringIncome.find params[:recurring_income][:id]
-    p = recurring_income_params
-    p[:frequency] = p[:frequency].to_i
-    @income.update_attributes(p)
-    raise if @income.errors.any?
-    return redirect_to recurring_incomes_path, notice: 'Recurring Income updated!'
-  rescue
-    return redirect_to recurring_incomes_path, alert: @income.errors.full_messages.join('!, ').concat('!')
+    @income = RecurringIncome.find params[:id]
+    if validate!
+      @income.update(recurring_income_params)
+      return redirect_to recurring_incomes_path, notice: 'Recurring Income updated!'
+    else
+      return redirect_to recurring_incomes_path, alert: @income.errors.full_messages.join('!, ').concat('!')
+    end
   end
 
   def create
     if validate!
       @form.save
       Recurrence.new(@form.model).compute
-      return redirect_to recurring_incomes_path, notice: 'Income saved!'
+      return redirect_to recurring_incomes_path, notice: 'Recurring Income saved!'
     else
-      return redirect_to recurring_incomes_path, alert: @form.errors.full_messages.join('. ').concat('.')
+      return redirect_to recurring_incomes_path, alert: @form.errors.full_messages.join("! ").concat('!')
     end
   end
+
   def recurring_income_params
     params.require(:recurring_income).permit(
       :amount,
@@ -93,14 +98,19 @@ class RecurringIncomesController < ApplicationController
     @form = RecurringIncomeForm.new(RecurringIncome.new)
     category = create_new_category if new_category?
     vendor = create_new_vendor if new_vendor?
+    params[:recurring_income].delete :income_category
+    params[:recurring_income].delete :vendor
+    params[:recurring_income][:frequency] = params[:recurring_income][:frequency].to_i
     if category && vendor
-      @form.validate(recurring_income_params.merge(user_id: current_user.id, income_category_id: category.id, vendor_id: vendor.id))
+      params[:recurring_income][:income_category_id] = category.id
+      params[:recurring_income][:vendor_id] = vendor.id
     elsif category
-      @form.validate(recurring_income_params.merge(user_id: current_user.id, income_category_id: category.id))
+      params[:recurring_income][:income_category_id] = category.id
     elsif vendor
-      @form.validate(recurring_income_params.merge(user_id: current_user.id, vendor_id: vendor.id))
+      params[:recurring_income][:vendor_id] = vendor.id
     else
-      @form.validate(recurring_income_params.merge(user_id: current_user.id))
+      ''
     end
+    @form.validate(recurring_income_params.merge(user_id: current_user.id))
   end
 end

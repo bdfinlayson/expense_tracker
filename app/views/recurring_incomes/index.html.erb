@@ -3,7 +3,7 @@
     Recurring Incomes (<%= @total_items %>)
     <%= render partial: 'modal/show',
       locals: {
-        form: 'recurring_incomes/new',
+        form: @form_partial,
         modal_trigger: 'Create New +',
         modal_title: 'New Recurring Income',
         modal_id: 'new',
@@ -13,63 +13,8 @@
   </span>
 </h1>
 
-<table data-role="table" class="ui-responsive">
-  <thead>
-    <tr>
-      <td class='date-column'>Date</td>
-      <td>Amount</td>
-      <td>Vendor</td>
-      <td>Category</td>
-      <td>Frequency</td>
-      <td></td>
-    </tr>
-  </thead>
-  <tbody>
-    <% @incomes.each do |income| %>
-      <tr class='index-form'>
-        <%= form_for income do |f| %>
-          <%= f.text_field :id, type: :hidden, value: income.id %>
-          <td class='date-column'>
-            <div class='row-item'>
-              <%= income.created_at.strftime('%m-%d-%Y') %>
-            </div>
-            <%= f.date_field :created_at, class: 'created_at' %>
-          </td>
-          <td>
-            <div class='row-item'>
-              <%= number_to_currency income.amount %>
-            </div>
-            <%= f.text_field :amount, type: :number, step: '0.01', placeholder: '$1.50' %>
-          </td>
-          <td>
-            <div class='row-item'>
-              <%= link_to income.vendor.name, edit_vendor_path(income.vendor) %>
-            </div>
-            <%= collection_select(:recurring_income, :vendor_id, @vendors, :id, :name, prompt: 'Select a vendor', selected: income.vendor.id) %>
-          </td>
-          <td>
-            <div class='row-item'>
-              <%= link_to income.income_category.name, edit_income_category_path(income.income_category) %>
-            </div>
-            <%= collection_select(:recurring_income, :income_category_id, @categories, :id, :name, prompt: 'Select category', selected: income.income_category.id) %>
-          </td>
-          <td>
-            <div class='row-item'>
-              <%= income.frequency %>
-            </div>
-            <%= collection_select(:recurring_income, :frequency, RecurringIncome.frequencies, :second, :first, prompt: 'Income recurring...', selected: RecurringIncome.frequencies[income.frequency]) %>
-          </td>
-          <td class='form-actions'>
-            <div class='edit'>&#9998;</div>
-            <div class='cancel'>&#9995;</div>
-            <div class='update'>&#10003</div>
-            <div class='delete'><%= link_to 'X', {action: :destroy, id: income.id }, method: :delete, data: { confirm: 'Are you sure?'} %></div>
-            <div class='update-btn'><%= f.submit %></div>
-          </td>
-        <% end %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-
+<%= render partial: 'table/show', locals: {
+  columns: @columns,
+  collection: @incomes
+  }
+%>

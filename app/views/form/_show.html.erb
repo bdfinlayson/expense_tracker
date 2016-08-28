@@ -45,10 +45,10 @@
   <% end %>
 
   <%= f.submit %>
+<% end %>
 
   <% if model.id.present? %>
     <br>
     <%= button_to 'Destroy', {action: 'destroy', id: model.id }, method: :delete, data: { confirm: 'Are you sure?'} %>
   <% end %>
 
-<% end %>
