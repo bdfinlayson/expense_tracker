@@ -18,7 +18,7 @@
             <%= render partial: 'modal/show', locals: {
                form: @form_partial,
                modal_trigger: 'Edit',
-               modal_title: 'Edit Expense',
+               modal_title: 'Edit' + model.model_name.name.titleize,
                modal_id: model.id,
                model: model
                }

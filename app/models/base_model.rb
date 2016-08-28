@@ -7,9 +7,25 @@ module BaseModel
     '$' + amount.to_s
   end
 
+  def budgeted_amount
+    item_amount
+  end
+
+  def spent
+    '$' + expense_category.summed_expenses.to_s
+  end
+
+  def percent_remaining
+    Calculator.percentage_of(expense_category.summed_expenses, amount).to_s + '%'
+  end
+
+  def left
+    '$' + (amount - expense_category.summed_expenses).to_s
+  end
+
   def category_name
-    case self.model_name.to_s
-    when 'Expense', 'RecurringExpense'
+    case self.model_name.name
+    when 'Expense', 'RecurringExpense', 'Budget'
       expense_category.name
     when 'Income', 'RecurringIncome'
       income_category.name
@@ -23,7 +39,7 @@ module BaseModel
   end
 
   def recurring?
-    case self.model_name.to_s
+    case self.model_name.name
     when 'Expense'
       recurring_expense_id.present?
     when 'Income'

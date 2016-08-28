@@ -4,7 +4,7 @@
     <%= f.text_field :amount, type: :number, step: '0.01', placeholder: '$1.50' %>
   <% end %>
 
-  <% if model.respond_to? :created_at %>
+  <% if (model.respond_to? :created_at) && (model.model_name.name != 'Budget') %>
     <%= f.date_field :created_at, class: 'created_at', id: model.try(:id) %>
   <% end %>
 
@@ -13,7 +13,7 @@
   <% end %>
 
   <% if (model.respond_to?(:income_category_id) || model.respond_to?(:expense_category_id)) %>
-    <%= collection_select(model.model_name.name.underscore.to_sym, (model.model_name.name.underscore.split('_').last + '_category_id') , @categories, :id, :name, prompt: 'Select a category', selected: model.try((model.model_name.name.underscore.split('_').last + '_category')).try(:id)) %>
+    <%= collection_select(model.model_name.name.underscore.to_sym, (model.model_name.name != 'Budget' ? (model.model_name.name.underscore.split('_').last + '_category_id') : 'expense_category_id') , @categories, :id, :name, prompt: 'Select a category', selected: model.try(model.model_name.name != 'Budget' ? (model.model_name.name.underscore.split('_').last + '_category') : 'expense_category').try(:id)) %>
 
     <div class='create-new new-category-btn'>Create Category</div>
 
