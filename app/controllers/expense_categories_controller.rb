@@ -39,6 +39,8 @@ class ExpenseCategoriesController < ApplicationController
     @form = ExpenseCategoryForm.new(ExpenseCategory.new)
     @categories = ExpenseCategory.where(user_id: current_user.id).order('lower(name) asc')
     @total_items = @categories.count
+    @columns = %w(name)
+    @form_partial = 'form/show'
   end
 
   def category_params
