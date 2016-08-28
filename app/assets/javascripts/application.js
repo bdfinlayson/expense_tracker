@@ -15,8 +15,6 @@
 //= require turbolinks
 //= require jquery-ui
 //= require alerts
-//= require expenses_new
 //= require index
-//= require categories_edit
 //= require nav
 //= require modal
