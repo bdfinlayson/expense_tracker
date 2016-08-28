@@ -3,7 +3,7 @@
     Expenses (<%= @total_items %>)
     <%= render partial: 'modal/show',
       locals: {
-        form: 'form/show',
+        form: @form_partial,
         modal_trigger: 'Create New +',
         modal_title: 'New Expense',
         modal_id: 'new',

@@ -1,4 +1,5 @@
 class Income < ApplicationRecord
+  include BaseModel
   belongs_to :user
   belongs_to :vendor
   belongs_to :income_category

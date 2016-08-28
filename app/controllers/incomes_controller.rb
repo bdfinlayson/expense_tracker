@@ -7,6 +7,10 @@ class IncomesController < ApplicationController
     @total_items = @incomes.count
     @vendors = current_user.vendors.order('lower(name) asc')
     @categories = current_user.income_categories.order('lower(name) asc')
+    @new_vendor = Vendor.new
+    @new_category = IncomeCategory.new
+    @form_partial = 'form/show'
+    @columns = %w(date item_amount vendor_name category_name recurring?)
   end
 
   def destroy

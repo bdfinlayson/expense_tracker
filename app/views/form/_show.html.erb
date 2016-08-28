@@ -5,11 +5,11 @@
   <% end %>
 
   <% if model.respond_to? :created_at %>
-    <%= f.date_field :created_at, class: 'created_at' %>
+    <%= f.date_field :created_at, class: 'created_at', id: model.try(:id) %>
   <% end %>
 
-  <% if model.respond_to? :expense_category_id %>
-    <%= collection_select(:expense, :expense_category_id, @categories, :id, :name, prompt: 'Select a category', selected: model.try(:expense_category).try(:id)) %>
+  <% if (model.respond_to?(:income_category_id) || model.respond_to?(:expense_category_id)) %>
+    <%= collection_select(model.model_name.name.downcase, (model.model_name.name.downcase + '_category_id') , @categories, :id, :name, prompt: 'Select a category', selected: model.try((model.model_name.name.downcase + '_category')).try(:id)) %>
 
     <div class='create-new new-category-btn'>Create Category</div>
 
@@ -24,7 +24,7 @@
   <% end %>
 
   <% if model.respond_to? :vendor_id %>
-    <%= collection_select(:expense, :vendor_id, @vendors, :id, :name, prompt: 'Select a vendor', selected: model.try(:vendor).try(:id)) %>
+    <%= collection_select(model.model_name.name.downcase.to_sym, :vendor_id, @vendors, :id, :name, prompt: 'Select a vendor', selected: model.try(:vendor).try(:id)) %>
 
     <div class='create-new new-vendor-btn'>Create Vendor</div>
 
