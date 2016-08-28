@@ -9,9 +9,9 @@ module BaseModel
 
   def category_name
     case self.model_name.to_s
-    when 'Expense'
+    when 'Expense', 'RecurringExpense'
       expense_category.name
-    when 'Income'
+    when 'Income', 'RecurringIncome'
       income_category.name
     else
       'N/A'
