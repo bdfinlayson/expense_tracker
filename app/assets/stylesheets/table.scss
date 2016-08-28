@@ -16,7 +16,7 @@
   $table-hover-background: darken($table-background, 5%);
   $table-stripe-background: darken($table-background, 2%);
   $table-stripe-background-hover: darken($table-stripe-background, 5%);
-  $table-padding: 0.75em 1em;
+  $table-padding: 0.75em 0;
 
   border: $table-border;
   border-collapse: separate;
@@ -65,10 +65,13 @@
       border-bottom: 0;
       border-left: 1px solid $table-border-color;
       padding: $table-padding;
-      text-align: left;
+      text-align: center;
 
       &:first-child {
         border-left: 0;
+        @include media(max-width 500px) {
+          display: none;
+        }
       }
     }
   }
@@ -81,9 +84,13 @@
       border-left: 1px solid $table-border-color;
       border-top: 1px solid $table-border-color;
       padding: $table-padding;
+      text-align: center;
 
       &:first-child {
         border-left: 0;
+        @include media(max-width 500px) {
+          display: none;
+        }
       }
 
       button {
@@ -100,6 +107,9 @@
         @include media($medium-screen) {
           margin-bottom: 0;
           width: auto;
+        }
+        .modal-inner {
+          font-size: 2.3em;
         }
       }
     }
