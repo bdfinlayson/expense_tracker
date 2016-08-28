@@ -1,0 +1,15 @@
+<%# <form class="search-bar" role="search"> %>
+<%#   <input type="search" placeholder="Enter Search" /> %>
+<%#   <button type="submit"> %>
+<%#     <img src="https://raw.githubusercontent.com/thoughtbot/refills/master/source/images/search-icon-black.png" alt="Search Icon"> %>
+<%#   </button> %>
+<%# </form> %>
+
+<%= search_form_for @q, class: 'search-bar', role: 'search' do |f| %>
+  <%= f.search_field :expense_category_name_or_vendor_name_cont, placeholder: 'Enter Search' %>
+  <button type='submit'>
+    <img src="https://raw.githubusercontent.com/thoughtbot/refills/master/source/images/search-icon-black.png" alt="Search Icon">
+  </button>
+<% end %>
+
+

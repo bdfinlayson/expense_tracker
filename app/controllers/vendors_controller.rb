@@ -5,6 +5,8 @@ class VendorsController < ApplicationController
     @form = VendorForm.new(Vendor.new)
     @vendors = Vendor.where(user_id: current_user.id).order('name asc')
     @total_items = @vendors.count
+    @form_partial = 'form/show'
+    @columns = %w(name note)
   end
 
   def edit

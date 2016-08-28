@@ -1,4 +1,5 @@
 class Expense < ApplicationRecord
+  include BaseModel
   belongs_to :expense_category
   belongs_to :recurring_expense
   belongs_to :vendor

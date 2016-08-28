@@ -7,6 +7,10 @@ class IncomesController < ApplicationController
     @total_items = @incomes.count
     @vendors = current_user.vendors.order('lower(name) asc')
     @categories = current_user.income_categories.order('lower(name) asc')
+    @new_vendor = Vendor.new
+    @new_category = IncomeCategory.new
+    @form_partial = 'form/show'
+    @columns = %w(date item_amount vendor_name category_name recurring?)
   end
 
   def destroy
@@ -91,17 +95,18 @@ class IncomesController < ApplicationController
     @form = IncomeForm.new(Income.new)
     category = create_new_category if new_category?
     vendor = create_new_vendor if new_vendor?
+    params[:income].delete :income_category
+    params[:income].delete :vendor
     if category && vendor
-      @form.validate(income_params.merge(user_id: current_user.id, income_category_id: category.id, vendor_id: vendor.id))
+      params[:income][:income_category_id] = category.id
+      params[:income][:vendor_id] = vendor.id
     elsif category
-      @form.validate(income_params.merge(user_id: current_user.id, income_category_id: category.id))
+      params[:income][:income_category_id] = category.id
     elsif vendor
-      @form.validate(income_params.merge(user_id: current_user.id, vendor_id: vendor.id))
+      params[:income][:vendor_id] = vendor.id
     else
-      @form.validate(income_params.merge(user_id: current_user.id))
+      ''
     end
+    @form.validate(income_params.merge(user_id: current_user.id))
   end
-
-
-
 end

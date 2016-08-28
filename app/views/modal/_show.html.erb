@@ -1,13 +1,13 @@
 <div class="modal">
-  <label for="modal-1">
+  <label for="modal-<%= modal_id %>">
     <div class="modal-trigger"><%= modal_trigger %></div>
   </label>
-  <input class="modal-state" id="modal-1" type="checkbox" />
+  <input class="modal-state" id="modal-<%= modal_id %>" type="checkbox" />
   <div class="modal-fade-screen">
     <div class="modal-inner">
-      <div class="modal-close" for="modal-1">&#215</div>
+      <div class="modal-close" for="modal-<%= modal_id %>">&#215</div>
       <h1><%= modal_title %></h1>
-      <%= render form %>
+      <%= render partial: form, locals: { model: model } %>
     </div>
   </div>
 </div>

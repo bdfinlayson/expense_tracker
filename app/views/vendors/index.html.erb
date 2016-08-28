@@ -1,34 +1,7 @@
-<h1>Vendors (<%= @total_items %>)</h1>
-<table>
-  <tr>
-    <td>Name</td>
-    <td>Notes</td>
-    <td></td>
-  </tr>
-  <% @vendors.order('name asc').each do |v| %>
-    <tr class='index-form'>
-      <%= form_for v do |f| %>
-        <%= f.text_field :id, type: :hidden, value: v.id %>
-        <td>
-          <div class='row-item'>
-            <%= link_to v.name, edit_vendor_path(v) %>
-          </div>
-          <%= f.text_field :name, placeholder: 'Vendor name' %>
-        </td>
-        <td>
-          <div class='row-item'>
-            <%= v.note %>
-          </div>
-          <%= f.text_area :note, placeholder: 'Notes on this vendor here' %>
-        </td>
-        <td class='form-actions'>
-          <div class='edit'>&#9998;</div>
-          <div class='cancel'>&#9995;</div>
-          <div class='update'>&#10003;</div>
-          <div class='delete'><%= link_to 'X', {action: :destroy, id: v.id}, method: :delete, data: { confirm: 'Are you sure?'} %></div>
-          <div class='update-btn'><%= f.submit %></div>
-        </td>
-      <% end %>
-    </tr>
-  <% end %>
-</table>
+<h1 class='page-header'>Vendors (<%= @total_items %>)</h1>
+
+<%= render partial: 'table/show', locals: {
+  columns: @columns,
+  collection: @vendors
+  }
+%>

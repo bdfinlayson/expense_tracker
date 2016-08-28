@@ -13,8 +13,10 @@ class ExpensesController < ApplicationController
     @categories = current_user.expense_categories.order('lower(name) asc')
     @total_expenses_this_month = current_user.expenses.where(created_at: Time.now.beginning_of_month..Time.now.end_of_month).pluck(:amount).sum
     @total_expenses_last_month = current_user.expenses.where(created_at: Time.now.last_month.beginning_of_month..Time.now.last_month.end_of_month).pluck(:amount).sum
-    @percentage_change_over_last_month = Calculator.percentage_change(@total_expenses_last_month, @total_expenses_this_month)
-    @searched_vs_total = Calculator.percentage_of(@total_expenses, @total_expenses_this_month)
+    @columns = %w(date item_amount vendor_name category_name recurring?)
+    @form_partial = 'form/show'
+    @new_category = ExpenseCategory.new
+    @new_vendor = Vendor.new
   end
 
   def search_query
@@ -33,21 +35,13 @@ class ExpensesController < ApplicationController
   end
 
   def update
-    @expense = Expense.find params[:expense][:id]
+    @expense = Expense.find params[:id]
     if validate!
-      @expense.update_attributes(expense_params)
-      return redirect_to build_expenses_path, notice: 'Expense updated!'
+      @expense.update(expense_params)
+      return redirect_to expenses_path, notice: 'Expense updated!'
     else
-      return redirect_to build_expenses_path, alert: @form.errors.full_messages.join('!, ').concat('!')
+      return redirect_to expenses_path, alert: @form.errors.full_messages.join('!, ').concat('!')
     end
-  end
-
-  def build_expenses_path
-    expenses_path(
-      q: {
-        category_name_or_vendor_name_cont: ( params[:expense][:q].present? ? params[:expense][:q][:category_name_or_vendor_name_cont] : [] )
-      }
-    )
   end
 
   def create_new_category
@@ -60,7 +54,7 @@ class ExpensesController < ApplicationController
   def destroy
     @expense = Expense.find params[:id]
     @expense.destroy
-    redirect_to build_expenses_path, notice: 'Expense destroyed!'
+    redirect_to expenses_path, notice: 'Expense destroyed!'
   end
 
   def new_category?
@@ -84,15 +78,19 @@ class ExpensesController < ApplicationController
   def validate!
     category = create_new_category if new_category?
     vendor = create_new_vendor if new_vendor?
+    params[:expense].delete :expense_category
+    params[:expense].delete :vendor
     if category && vendor
-      @form.validate(expense_params.merge(user_id: current_user.id, expense_category_id: category.id, vendor_id: vendor.id))
+      params[:expense][:expense_category_id] = category.id
+      params[:expense][:vendor_id] = vendor.id
     elsif category
-      @form.validate(expense_params.merge(user_id: current_user.id, expense_category_id: category.id))
+      params[:expense][:expense_category_id] = category.id
     elsif vendor
-      @form.validate(expense_params.merge(user_id: current_user.id, vendor_id: vendor.id))
+      params[:expense][:vendor_id] = vendor.id
     else
-      @form.validate(expense_params.merge(user_id: current_user.id))
+      ''
     end
+    @form.validate(expense_params.merge(user_id: current_user.id))
   end
 
   def set_new_form

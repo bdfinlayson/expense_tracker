@@ -1,27 +1,7 @@
-<h1>Expense Categories (<%= @total_items %>)</h1>
-<table>
-  <tr>
-    <td>Name</td>
-    <td></td>
-  </tr>
-  <% @categories.order('name asc').each do |c| %>
-    <tr class='index-form'>
-      <%= form_for c do |f| %>
-        <%= f.text_field :id, type: :hidden, value: c.id %>
-        <td>
-          <div class='row-item'>
-            <%= link_to c.name, edit_expense_category_path(c) %>
-          </div>
-          <%= f.text_field :name, placeholder: 'Category name' %>
-        </td>
-        <td class='form-actions'>
-          <div class='edit'>&#9998;</div>
-          <div class='cancel'>&#9995;</div>
-          <div class='update'>&#10003</div>
-          <div class='delete'><%= link_to 'X', {action: :destroy, id: c.id }, method: :delete, data: { confirm: 'Are you sure?'} %></div>
-          <div class='update-btn'><%= f.submit %></div>
-        </td>
-      <% end %>
-    </tr>
-  <% end %>
-</table>
+<h1 class='page-header'>Expense Categories (<%= @total_items %>)</h1>
+
+<%= render partial: 'table/show', locals: {
+  columns: @columns,
+  collection: @categories
+  }
+%>

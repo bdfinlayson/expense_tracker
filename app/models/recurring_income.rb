@@ -1,4 +1,5 @@
 class RecurringIncome < ApplicationRecord
+  include BaseModel
   enum frequency: [:weekly, :biweekly, :monthly, :annually]
   belongs_to :user
   belongs_to :vendor

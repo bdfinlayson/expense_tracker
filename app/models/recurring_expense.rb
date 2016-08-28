@@ -1,4 +1,5 @@
 class RecurringExpense < ApplicationRecord
+  include BaseModel
   enum frequency: [:weekly, :biweekly, :monthly, :annually]
   belongs_to :expense_category
   belongs_to :vendor

@@ -10,7 +10,7 @@ class RecurringIncomeForm < Reform::Form
   property :created_at
   property :note
 
-  validate :whether_vendor_already_has_recurring_income
+  # validate :whether_vendor_already_has_recurring_income
 
   validates :amount, presence: true
   validates :user_id, presence: true

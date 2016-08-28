@@ -10,6 +10,10 @@ class RecurringExpensesController < ApplicationController
     @vendors = current_user.vendors.order('lower(name) asc')
     @categories = current_user.expense_categories.order('lower(name) asc')
     @frequencies = RecurringExpense.frequencies
+    @columns = %w(date item_amount vendor_name category_name frequency)
+    @form_partial = 'form/show'
+    @new_category = ExpenseCategory.new
+    @new_vendor = Vendor.new
   end
 
   def create
@@ -23,14 +27,13 @@ class RecurringExpensesController < ApplicationController
   end
 
   def update
-    @expense = RecurringExpense.find params[:recurring_expense][:id]
-    p = recurring_expense_params
-    p[:frequency] = p[:frequency].to_i
-    @expense.update_attributes(p)
-    raise if @expense.errors.any?
-    return redirect_to recurring_expenses_path, notice: 'Recurring Expense updated!'
-  rescue
-    return redirect_to recurring_expenses_path, alert: @expense.errors.full_messages.join('!, ').concat('!')
+    @expense = RecurringExpense.find params[:id]
+    if validate!
+      @expense.update(recurring_expense_params)
+      return redirect_to recurring_expenses_path, notice: 'Recurring Expense updated!'
+    else
+      return redirect_to recurring_expenses_path, alert: @expense.errors.full_messages.join('!, ').concat('!')
+    end
   end
 
   def create_new_category
@@ -67,15 +70,20 @@ class RecurringExpensesController < ApplicationController
   def validate!
     category = create_new_category if new_category?
     vendor = create_new_vendor if new_vendor?
+    params[:recurring_expense].delete :expense_category
+    params[:recurring_expense].delete :vendor
+    params[:recurring_expense][:frequency] = params[:recurring_expense][:frequency].to_i
     if category && vendor
-      @form.validate(recurring_expense_params.merge(user_id: current_user.id, expense_category_id: category.id, vendor_id: vendor.id))
+      params[:recurring_expense][:expense_category_id] = category.id
+      params[:recurring_expense][:vendor_id] = vendor.id
     elsif category
-      @form.validate(recurring_expense_params.merge(user_id: current_user.id, expense_category_id: category.id))
+      params[:recurring_expense][:expense_category_id] = category.id
     elsif vendor
-      @form.validate(recurring_expense_params.merge(user_id: current_user.id, vendor_id: vendor.id))
+      params[:recurring_expense][:vendor_id] = vendor.id
     else
-      @form.validate(recurring_expense_params.merge(user_id: current_user.id))
+      ''
     end
+    @form.validate(recurring_expense_params.merge(user_id: current_user.id))
   end
 
   def set_new_form

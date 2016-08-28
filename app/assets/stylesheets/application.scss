@@ -3,13 +3,16 @@
 @import 'base/base';
 @import 'jquery-ui';
 @import 'alerts';
-@import 'expenses_new';
 @import 'index';
 @import 'nav';
 @import 'jquery-ui/core';
 @import 'jquery-ui/theme';
 @import 'jquery-ui/datepicker';
 @import 'modal';
+@import 'stats';
+@import 'search_bar';
+@import 'table';
+@import 'form/show';
 
 .sliding-panel-content > ul {
   font-size: 0.9em;
