@@ -16,7 +16,7 @@ class RecurringExpensesController < ApplicationController
     @new_vendor = Vendor.new
     @budget = current_user.budgets.pluck(:amount).sum
     @stats = {
-      'Total Recurring': "$#{@total_expenses}",
+      'Total Recurring': "$#{@total_expenses.round(2)}",
       '% of Budget': "#{((@total_expenses / @budget) * 100).round(2)}%"
     }
   end
