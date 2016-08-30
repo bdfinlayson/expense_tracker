@@ -1,0 +1,16 @@
+
+<div class="stats">
+  <ul>
+    <% @stats.keys.each do |k| %>
+      <li>
+        <%= @stats[k] %>
+        <span><%= k %></span>
+      </li>
+    <% end %>
+  </ul>
+  <% if @show_search %>
+    <%= render partial: 'expenses/search' %>
+  <% end %>
+</div>
+
+
