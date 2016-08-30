@@ -17,6 +17,12 @@ class ExpensesController < ApplicationController
     @form_partial = 'form/show'
     @new_category = ExpenseCategory.new
     @new_vendor = Vendor.new
+    @stats = {
+      'This Month': "$#{@total_expenses_this_month}",
+      'Last Month': "$#{@total_expenses_last_month}",
+      'Displayed': "$#{@total_expenses}"
+    }
+    @show_search = true
   end
 
   def search_query
