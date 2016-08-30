@@ -9,12 +9,32 @@ class BudgetsController < ApplicationController
     @columns = %w(percent_spent category_name budgeted_amount spent left)
     @form_partial = 'form/show'
     @new_category = ExpenseCategory.new
-    @income = current_user.recurring_incomes.pluck(:amount).sum
+    @income = current_user.recurring_incomes
     @total_budget = @budgets.pluck(:amount).sum
+    @summed_income = get_monthly_income_sum(@income)
     @stats = {
       'Total Budget': "$#{@total_budget}",
-      'Budget vs Income':"#{((@total_budget / @income) * 100).round(2)}%"
+      'Budget vs Income':"#{((@total_budget / @summed_income) * 100).round(2)}%"
     }
+  end
+
+  def get_monthly_income_sum(incomes)
+    income = []
+    incomes.each do |i|
+      case i.frequency
+      when 'monthly'
+        income.push i.amount
+      when 'biweekly'
+        income.push (i.amount * 2)
+      when 'weekly'
+        income.push (i.amount * 4)
+      when 'annually'
+        income.push (i.amount / 12)
+      else
+        ''
+      end
+    end
+    income.sum
   end
 
   def create
