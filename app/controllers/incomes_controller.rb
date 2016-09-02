@@ -2,9 +2,14 @@ require_dependency 'app/models/forms/income_form' unless Rails.env == 'productio
 
 class IncomesController < ApplicationController
   def index
-    @month = params[:month].present? ? params[:month] : Time.now.month
+    @month = params[:month].present? ? params[:month].to_i : Time.now.month
+    @previous_month = @month - 1
+    @next_month = @month + 1
+    @current_month_name = Date::MONTHNAMES[@month]
+    @previous_month_name = Date::MONTHNAMES[@month - 1]
+    @next_month_name = Date::MONTHNAMES[@month + 1]
     @form = IncomeForm.new(Income.new)
-    @incomes = current_user.incomes.where('extract(month from created_at) = ?', @month.to_i - 1).order(created_at: :desc)
+    @incomes = current_user.incomes.where('extract(month from created_at) = ?', @month.to_i).order(created_at: :desc)
     @total_items = @incomes.count
     @vendors = current_user.vendors.order('lower(name) asc')
     @categories = current_user.income_categories.order('lower(name) asc')

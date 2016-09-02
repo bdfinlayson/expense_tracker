@@ -1,7 +1,16 @@
 <% if @month.present? %>
   <div class='navigation-arrows'>
-    <div><%= link_to '< Previous', url_for(params[:controller] + '?month=' + (@month.to_i - 1).to_s) %></div>
-    <div><%= link_to 'Next >', url_for(params[:controller] + '?month=' + (@month.to_i + 1).to_s) %></div>
+    <% if @previous_month > 0 %>
+      <div><%= link_to '< ' + @previous_month_name, url_for(params[:controller] + '?month=' + @previous_month.to_s), disabled: true %></div>
+    <% else %>
+      <div></div>
+    <% end %>
+    <h1><%= @current_month_name + ' ' + Time.now.year.to_s %></h1>
+    <% if @next_month < 13 %>
+      <div><%= link_to @next_month_name + ' >', url_for(params[:controller] + '?month=' + @next_month.to_s) %></div>
+    <% else %>
+      <div></div>
+    <% end %>
   </div>
 <% end %>
 <table class="tables">

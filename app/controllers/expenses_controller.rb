@@ -5,8 +5,13 @@ class ExpensesController < ApplicationController
 
   def index
     @search_query = search_query
-    @month = params[:month].present? ? params[:month] : Time.now.month
-    @q = current_user.expenses.where('extract(month from created_at) = ?', (@month.to_i - 1)).order(created_at: :desc).ransack( search_query )
+    @month = params[:month].present? ? params[:month].to_i : Time.now.month
+    @previous_month = @month - 1
+    @next_month = @month + 1
+    @current_month_name = Date::MONTHNAMES[@month]
+    @previous_month_name = Date::MONTHNAMES[@month - 1]
+    @next_month_name = Date::MONTHNAMES[@month + 1]
+    @q = current_user.expenses.where('extract(month from created_at) = ?', (@month.to_i)).order(created_at: :desc).ransack( search_query )
     @expenses = @q.result
     @total_expenses = @expenses.map(&:amount).sum.round(2)
     @total_items = @expenses.count
