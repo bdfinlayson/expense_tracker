@@ -1,13 +1,13 @@
 <% if @month.present? %>
   <div class='navigation-arrows'>
     <% if @previous_month > 0 %>
-      <div><%= link_to '< ' + @previous_month_name, url_for(params[:controller] + '?month=' + @previous_month.to_s), disabled: true %></div>
+      <div><%= link_to '< ' + @previous_month_name, url_for(params[:controller] + '?month=' + @previous_month.to_s), 'data-turbolinks' => false %></div>
     <% else %>
       <div></div>
     <% end %>
     <h1><%= @current_month_name + ' ' + Time.now.year.to_s %></h1>
     <% if @next_month < 13 %>
-      <div><%= link_to @next_month_name + ' >', url_for(params[:controller] + '?month=' + @next_month.to_s) %></div>
+      <div><%= link_to @next_month_name + ' >', url_for(params[:controller] + '?month=' + @next_month.to_s), 'data-turbolinks' => false %></div>
     <% else %>
       <div></div>
     <% end %>
