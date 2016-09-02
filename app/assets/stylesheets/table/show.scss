@@ -1,3 +1,8 @@
+.navigation-arrows {
+  display: flex;
+  justify-content: space-between;
+}
+
 .tables {
   $base-border-color: gainsboro !default;
   $base-border-radius: 3px !default;

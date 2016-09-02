@@ -5,7 +5,8 @@ class ExpensesController < ApplicationController
 
   def index
     @search_query = search_query
-    @q = current_user.expenses.order(created_at: :desc).ransack( search_query )
+    @month = params[:month].present? ? params[:month] : Time.now.month
+    @q = current_user.expenses.where('extract(month from created_at) = ?', (@month.to_i - 1)).order(created_at: :desc).ransack( search_query )
     @expenses = @q.result
     @total_expenses = @expenses.map(&:amount).sum.round(2)
     @total_items = @expenses.count
