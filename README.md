@@ -1,9 +1,10 @@
 # To-Do
-* modal for new expense form on expenses index page
-* pagination for expenses based on month created
+* Pending Approval page where recurring expenses/incomes go to be cleared first by the user before being added to the account
+* Category Stats modal that shows expenses for a category over time (user can select time range)
+* Vendor Stats modal that shows expenses for a vendor over time (user can select time range)
+* Additional columns on Vendor for phone, email, account #, address, website, etc
 * improved searching / filtering / sorting via date created, date range, category, vendor, price, recurring
 * graphs for monthly total expenses vs revenue, monthly expenses by budget item
-* recurring income / expense support
 * email alerts for recurring expense / income events
 * email alerts for budget approaching limit and budget exceeded events
 * set cutoff date for recurring expense / income
