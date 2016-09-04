@@ -2,33 +2,28 @@ require_dependency 'app/models/forms/expense_form' unless Rails.env == 'producti
 
 class ExpensesController < ApplicationController
   before_action :set_new_form, only: [:index, :create, :update]
+  include Querier
+  include Calculator
+  include Calendar
 
   def index
-    @search_query = search_query
-    @month = params[:month].present? ? params[:month].to_i : Time.now.month
-    @previous_month = @month - 1
-    @next_month = @month + 1
-    @current_month_name = Date::MONTHNAMES[@month]
-    @previous_month_name = Date::MONTHNAMES[@month - 1]
-    @next_month_name = Date::MONTHNAMES[@month + 1]
-    @q = current_user.expenses.where('extract(month from created_at) = ?', (@month.to_i)).order(created_at: :desc).ransack( search_query )
-    @expenses = @q.result
-    @total_expenses = @expenses.map(&:amount).sum.round(2)
+    @months = months params
+    @expenses = all_records_for('expenses', Time.now.year, @months[:current][:number])
     @total_items = @expenses.count
     @vendors = current_user.vendors.order('lower(name) asc')
     @categories = current_user.expense_categories.order('lower(name) asc')
-    @total_expenses_this_month = current_user.expenses.where(created_at: Time.now.beginning_of_month..Time.now.end_of_month).pluck(:amount).sum
-    @total_expenses_last_month = current_user.expenses.where(created_at: Time.now.last_month.beginning_of_month..Time.now.last_month.end_of_month).pluck(:amount).sum
+    @total_expenses_this_month = get_sum_of @expenses
+    @total_expenses_last_month = get_sum_of(all_records_for('expenses', Time.now.year, @months[:last][:number]))
     @columns = %w(date item_amount vendor_name category_name recurring?)
     @form_partial = 'form/show'
     @new_category = ExpenseCategory.new
     @new_vendor = Vendor.new
+    @total_income_this_month = get_sum_of(all_records_for('incomes', Time.now.year, @months[:current][:number]))
     @stats = {
       'This Month': "$#{@total_expenses_this_month}",
       'Last Month': "$#{@total_expenses_last_month}",
-      'Displayed': "$#{@total_expenses}"
+      '% of Income Spent': "#{percentage_of @total_expenses_this_month, @total_income_this_month}%"
     }
-    @show_search = true
   end
 
   def search_query

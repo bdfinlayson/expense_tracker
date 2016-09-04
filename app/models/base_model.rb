@@ -1,4 +1,6 @@
 module BaseModel
+  include Calculator
+
   def date
     created_at.strftime('%m-%d-%y')
   end
@@ -16,7 +18,7 @@ module BaseModel
   end
 
   def percent_spent
-    Calculator.percentage_of(expense_category.summed_expenses, amount).to_s + '%'
+    percentage_of(expense_category.summed_expenses, amount).to_s + '%'
   end
 
   def left

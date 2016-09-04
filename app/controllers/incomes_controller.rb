@@ -1,15 +1,14 @@
 require_dependency 'app/models/forms/income_form' unless Rails.env == 'production'
 
 class IncomesController < ApplicationController
+  include Querier
+  include Calendar
+  include Calculator
+
   def index
-    @month = params[:month].present? ? params[:month].to_i : Time.now.month
-    @previous_month = @month - 1
-    @next_month = @month + 1
-    @current_month_name = Date::MONTHNAMES[@month]
-    @previous_month_name = Date::MONTHNAMES[@month - 1]
-    @next_month_name = Date::MONTHNAMES[@month + 1]
+    @months = months params
     @form = IncomeForm.new(Income.new)
-    @incomes = current_user.incomes.where('extract(month from created_at) = ?', @month.to_i).order(created_at: :desc)
+    @incomes = all_records_for('incomes', Time.now.year, @months[:current][:number])
     @total_items = @incomes.count
     @vendors = current_user.vendors.order('lower(name) asc')
     @categories = current_user.income_categories.order('lower(name) asc')
@@ -17,6 +16,12 @@ class IncomesController < ApplicationController
     @new_category = IncomeCategory.new
     @form_partial = 'form/show'
     @columns = %w(date item_amount vendor_name category_name recurring?)
+    @total_income_this_month = get_sum_of @incomes
+    @total_expenses_this_month = get_sum_of(all_records_for('expenses', Time.now.year, @months[:current][:number]))
+    @stats = {
+      'This Month': "$#{@total_income_this_month}",
+      '% of Income Spent': "#{percentage_of @total_expenses_this_month, @total_income_this_month}%"
+    }
   end
 
   def destroy
