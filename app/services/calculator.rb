@@ -11,6 +11,6 @@ module Calculator
 
   def percentage_of(part, whole)
     return 0 if whole.zero?
-    (part / whole * 100).floor
+    (part / whole * 100).round(2)
   end
 end
