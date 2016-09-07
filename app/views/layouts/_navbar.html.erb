@@ -16,6 +16,7 @@
           </div>
         <% end %>
       </li>
+      <li class='nav-link'><%= link_to 'Vendors', vendors_path, 'data-turbolinks' => false %></li>
       <li id="js-navigation-more" class="nav-link more"><a href="javascript:void(0)">Transactions</a>
         <ul class="submenu">
           <li><%= link_to 'Expenses', expenses_path, 'data-turbolinks' => false %></li>
@@ -26,13 +27,12 @@
               <li><%= link_to 'Recurring Incomes', recurring_incomes_path, 'data-turbolinks' => false %></li>
             </ul>
           </li>
-          <li><%= link_to 'Vendors', vendors_path, 'data-turbolinks' => false %></li>
-          <li class="more"><a href="javascript:void(0)">Categories</a>
-            <ul class="submenu">
-              <li><%= link_to 'Expense Categories', expense_categories_path, 'data-turbolinks' => false %></li>
-              <li><%= link_to 'Income Categories', income_categories_path, 'data-turbolinks' => false %></li>
-            </ul>
-          </li>
+        </ul>
+      </li>
+      <li id="js-navigation-more" class="nav-link more"><a href="javascript:void(0)">Categories</a>
+        <ul class="submenu">
+          <li><%= link_to 'Expense Categories', expense_categories_path, 'data-turbolinks' => false %></li>
+          <li><%= link_to 'Income Categories', income_categories_path, 'data-turbolinks' => false %></li>
         </ul>
       </li>
       <li class='nav-link'><%= link_to 'Log Out', destroy_user_session_path, method: :delete, 'data-turbolinks' => false %></li>
