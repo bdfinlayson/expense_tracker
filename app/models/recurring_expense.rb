@@ -5,6 +5,7 @@ class RecurringExpense < ApplicationRecord
   belongs_to :vendor
   belongs_to :user
   has_many :expenses
+  has_many :pending_expenses
   accepts_nested_attributes_for :expense_category, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :vendor, reject_if: :all_blank, allow_destroy: true
   validates_presence_of :user_id, :amount, :vendor_id, :expense_category_id, :frequency

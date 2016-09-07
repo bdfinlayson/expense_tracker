@@ -20,7 +20,7 @@ class Recurrence
 
   def which_table
     if @model.class == RecurringExpense
-      { join_table: :expenses, model: Expense }
+      { join_table: :pending_expenses, model: PendingExpense }
     else
       { join_table: :incomes, model: Income }
     end
@@ -55,7 +55,7 @@ class Recurrence
   end
 
   def query_for_biweekly_items(day)
-    query = @user.send(@target[:join_table]).where(vendor_id: @vendor_id)
+    query = @user.send(@target[:join_table]).unscoped.where(vendor_id: @vendor_id)
     query
       .where('extract(year from created_at) = ?', @current_year)
       .where('extract(month from created_at) = ?', @current_month)
@@ -72,7 +72,7 @@ class Recurrence
   end
 
   def monthly_item_due?
-    query = @user.send(@target[:join_table]).where(vendor_id: @vendor_id)
+    query = @user.send(@target[:join_table]).unscoped.where(vendor_id: @vendor_id)
     logged_items = query.where('extract(month from created_at) = ?', @current_month)
     if logged_items.empty? && overdue?(@model_due_day)
       true
@@ -92,9 +92,9 @@ class Recurrence
 
   def get_model_attributes
     if overdue?(@model_due_day)
-      @model.attributes.except('frequency', 'updated_at', 'note', 'id')
+      @model.attributes.except('frequency', 'updated_at', 'note', 'id', 'cleared')
     else
-      @model.attributes.except('frequency', 'created_at', 'updated_at', 'note', 'id')
+      @model.attributes.except('frequency', 'created_at', 'updated_at', 'note', 'id', 'cleared')
     end
   end
 end

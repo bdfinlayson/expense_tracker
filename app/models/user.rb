@@ -11,4 +11,5 @@ class User < ApplicationRecord
   has_many :incomes
   has_many :income_categories
   has_many :recurring_incomes
+  has_many :pending_expenses
 end

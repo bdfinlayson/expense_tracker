@@ -29,6 +29,9 @@
             <td><%= model.send(c) %></td>
         <% end %>
         <td>
+          <% if model.model_name.name == 'PendingExpense' %>
+            <%= button_to 'Clear', clear_pending_expense_path(model) %>
+          <% end %>
           <button>
             <%= render partial: 'modal/show', locals: {
                form: @form_partial,

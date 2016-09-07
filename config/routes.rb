@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   devise_for :users
   root to: 'expenses#index'
   resources :expenses
@@ -10,4 +11,9 @@ Rails.application.routes.draw do
   resources :budgets
   resources :incomes
   resources :recurring_incomes
+  resources :pending_expenses do
+    member do
+      post 'clear'
+    end
+  end
 end

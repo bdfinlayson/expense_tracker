@@ -8,21 +8,29 @@
     <ul id="js-navigation-menu" class="navigation-menu show">
       <li class='nav-link'><%= link_to 'Overview', overviews_path, 'data-turbolinks' => false %></li>
       <li class="nav-link"><%= link_to 'Budget', budgets_path, 'data-turbolinks' => false %></li>
-      <li class='nav-link'><%= link_to 'Vendors', vendors_path, 'data-turbolinks' => false %></li>
+      <li class="nav-link pending-link">
+        <%= link_to "Pending", pending_expenses_path, 'data-turbolinks' => false %>
+        <% if current_user.pending_expenses.any? %>
+          <div class='pending-items'>
+            <%= current_user.pending_expenses.count %>
+          </div>
+        <% end %>
+      </li>
       <li id="js-navigation-more" class="nav-link more"><a href="javascript:void(0)">Transactions</a>
         <ul class="submenu">
           <li><%= link_to 'Expenses', expenses_path, 'data-turbolinks' => false %></li>
           <li><%= link_to 'Incomes', incomes_path, 'data-turbolinks' => false %></li>
-          <li class="more"><a href="javascript:void(0)">Categories</a>
-            <ul class="submenu">
-              <li><%= link_to 'Expense Categories', expense_categories_path, 'data-turbolinks' => false %></li>
-              <li><%= link_to 'Income Categories', income_categories_path, 'data-turbolinks' => false %></li>
-            </ul>
-          </li>
           <li class="more"><a href="javascript:void(0)">Recurring</a>
             <ul class="submenu">
               <li><%= link_to 'Recurring Expenses', recurring_expenses_path, 'data-turbolinks' => false %></li>
               <li><%= link_to 'Recurring Incomes', recurring_incomes_path, 'data-turbolinks' => false %></li>
+            </ul>
+          </li>
+          <li><%= link_to 'Vendors', vendors_path, 'data-turbolinks' => false %></li>
+          <li class="more"><a href="javascript:void(0)">Categories</a>
+            <ul class="submenu">
+              <li><%= link_to 'Expense Categories', expense_categories_path, 'data-turbolinks' => false %></li>
+              <li><%= link_to 'Income Categories', income_categories_path, 'data-turbolinks' => false %></li>
             </ul>
           </li>
         </ul>
