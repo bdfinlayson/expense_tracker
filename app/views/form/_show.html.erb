@@ -4,52 +4,54 @@
     <%= f.text_field :amount, type: :number, step: '0.01', placeholder: '$1.50' %>
   <% end %>
 
-  <% if model.respond_to?(:name) %>
-    <%= f.text_field :name, placeholder: 'Name here' %>
-  <% end %>
+  <% if model.model_name.name != 'PendingExpense' %>
+    <% if model.respond_to?(:name) %>
+      <%= f.text_field :name, placeholder: 'Name here' %>
+    <% end %>
 
-  <% if (model.respond_to? :created_at) && (['Budget', 'Vendor', 'ExpenseCategory', 'IncomeCategory'].exclude? model.model_name.name) %>
-    <%= f.date_field :created_at, class: 'created_at', id: model.try(:id) %>
-  <% end %>
+    <% if (model.respond_to? :created_at) && (['Budget', 'Vendor', 'ExpenseCategory', 'IncomeCategory'].exclude? model.model_name.name) %>
+      <%= f.date_field :created_at, class: 'created_at', id: model.try(:id) %>
+    <% end %>
 
-  <% if model.respond_to?(:frequency) %>
-    <%= collection_select(model.model_name.name.underscore.to_sym, :frequency, @frequencies, :second, :first, prompt: 'Select a frequency', selected: @frequencies[model.frequency]) %>
-  <% end %>
+    <% if model.respond_to?(:frequency) %>
+      <%= collection_select(model.model_name.name.underscore.to_sym, :frequency, @frequencies, :second, :first, prompt: 'Select a frequency', selected: @frequencies[model.frequency]) %>
+    <% end %>
 
-  <% if (model.respond_to?(:income_category_id) || model.respond_to?(:expense_category_id)) %>
-    <%= collection_select(model.model_name.name.underscore.to_sym, (model.model_name.name != 'Budget' ? (model.model_name.name.underscore.split('_').last + '_category_id') : 'expense_category_id') , @categories, :id, :name, prompt: 'Select a category', selected: model.try(model.model_name.name != 'Budget' ? (model.model_name.name.underscore.split('_').last + '_category') : 'expense_category').try(:id)) %>
+    <% if (model.respond_to?(:income_category_id) || model.respond_to?(:expense_category_id)) %>
+      <%= collection_select(model.model_name.name.underscore.to_sym, (model.model_name.name != 'Budget' ? (model.model_name.name.underscore.split('_').last + '_category_id') : 'expense_category_id') , @categories, :id, :name, prompt: 'Select a category', selected: model.try(model.model_name.name != 'Budget' ? (model.model_name.name.underscore.split('_').last + '_category') : 'expense_category').try(:id)) %>
 
-    <div class='create-new new-category-btn'>Create Category</div>
+      <div class='create-new new-category-btn'>Create Category</div>
 
-    <div class='category-form'>
-      <%= f.fields_for @new_category do |category_fields| %>
-        <h4>Create New Category</h4>
-        <%= category_fields.label :name %>
-        <%= category_fields.text_field :name, placeholder: 'Enter a category name' %>
-      <% end %>
-      <div class='cancel-add'>Cancel</div>
-    </div>
-  <% end %>
+      <div class='category-form'>
+        <%= f.fields_for @new_category do |category_fields| %>
+          <h4>Create New Category</h4>
+          <%= category_fields.label :name %>
+          <%= category_fields.text_field :name, placeholder: 'Enter a category name' %>
+        <% end %>
+        <div class='cancel-add'>Cancel</div>
+      </div>
+    <% end %>
 
-  <% if model.respond_to? :vendor_id %>
-    <%= collection_select(model.model_name.name.underscore.to_sym, :vendor_id, @vendors, :id, :name, prompt: 'Select a vendor', selected: model.try(:vendor).try(:id)) %>
+    <% if model.respond_to? :vendor_id %>
+      <%= collection_select(model.model_name.name.underscore.to_sym, :vendor_id, @vendors, :id, :name, prompt: 'Select a vendor', selected: model.try(:vendor).try(:id)) %>
 
-    <div class='create-new new-vendor-btn'>Create Vendor</div>
+      <div class='create-new new-vendor-btn'>Create Vendor</div>
 
-    <div class='vendor-form'>
-      <%= f.fields_for @new_vendor do |vendor_fields| %>
-        <h4>Create New Vendor</h4>
-        <%= vendor_fields.label :name %>
-        <%= vendor_fields.text_field :name, placeholder: 'Enter vendor name' %>
-        <%= vendor_fields.label :note, 'Notes' %>
-        <%= vendor_fields.text_area :note, placeholder: 'Enter notes about the vendor' %>
-      <% end %>
-      <div class='cancel-add'>Cancel</div>
-    </div>
-  <% end %>
+      <div class='vendor-form'>
+        <%= f.fields_for @new_vendor do |vendor_fields| %>
+          <h4>Create New Vendor</h4>
+          <%= vendor_fields.label :name %>
+          <%= vendor_fields.text_field :name, placeholder: 'Enter vendor name' %>
+          <%= vendor_fields.label :note, 'Notes' %>
+          <%= vendor_fields.text_area :note, placeholder: 'Enter notes about the vendor' %>
+        <% end %>
+        <div class='cancel-add'>Cancel</div>
+      </div>
+    <% end %>
 
-  <% if model.respond_to?(:note) %>
-    <%= f.text_area :note, placeholder: 'Notes here' %>
+    <% if model.respond_to?(:note) %>
+      <%= f.text_area :note, placeholder: 'Notes here' %>
+    <% end %>
   <% end %>
 
   <%= f.submit %>

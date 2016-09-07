@@ -102,19 +102,24 @@
         display: inline-block;
         font-size: 0.7em;
         line-height: $base-line-height;
-        margin-bottom: 0.3em;
-        margin-right: 0.5em;
         outline: none;
-        padding: 0.3em 1em;
+        padding: 0 !important;
         width: 100%;
         background-color: white;
+        margin-top: 5px;
+        border: solid 1px black;
 
         @include media($medium-screen) {
           margin-bottom: 0;
           width: auto;
         }
+
+        label {
+          padding: 10px 25px;
+        }
+
         .modal-inner {
-          font-size: 1.5em;
+          font-size: 1.8em;
         }
       }
     }

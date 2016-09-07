@@ -27,7 +27,7 @@ module BaseModel
 
   def category_name
     case self.model_name.name
-    when 'Expense', 'RecurringExpense', 'Budget'
+    when 'Expense', 'RecurringExpense', 'Budget', 'PendingExpense'
       expense_category.name
     when 'Income', 'RecurringIncome'
       income_category.name

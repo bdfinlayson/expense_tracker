@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160819013715) do
+ActiveRecord::Schema.define(version: 20160906234356) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,6 +67,22 @@ ActiveRecord::Schema.define(version: 20160819013715) do
     t.index ["recurring_income_id"], name: "index_incomes_on_recurring_income_id", using: :btree
     t.index ["user_id"], name: "index_incomes_on_user_id", using: :btree
     t.index ["vendor_id"], name: "index_incomes_on_vendor_id", using: :btree
+  end
+
+  create_table "pending_expenses", force: :cascade do |t|
+    t.float    "amount"
+    t.integer  "user_id"
+    t.integer  "vendor_id"
+    t.integer  "expense_category_id"
+    t.text     "note"
+    t.integer  "recurring_expense_id"
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.boolean  "cleared",              default: false
+    t.index ["expense_category_id"], name: "index_pending_expenses_on_expense_category_id", using: :btree
+    t.index ["recurring_expense_id"], name: "index_pending_expenses_on_recurring_expense_id", using: :btree
+    t.index ["user_id"], name: "index_pending_expenses_on_user_id", using: :btree
+    t.index ["vendor_id"], name: "index_pending_expenses_on_vendor_id", using: :btree
   end
 
   create_table "recurring_expenses", force: :cascade do |t|
