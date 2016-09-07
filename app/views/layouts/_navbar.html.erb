@@ -10,7 +10,7 @@
       <li class="nav-link"><%= link_to 'Budget', budgets_path, 'data-turbolinks' => false %></li>
       <li class="nav-link pending-link">
         <%= link_to "Pending", pending_expenses_path, 'data-turbolinks' => false %>
-        <% if current_user.pending_expenses.any? %>
+        <% if current_user.pending_expenses.any? && params[:controller] != 'pending_expenses' %>
           <div class='pending-items'>
             <%= current_user.pending_expenses.count %>
           </div>

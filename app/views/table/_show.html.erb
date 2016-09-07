@@ -30,7 +30,7 @@
         <% end %>
         <td>
           <% if model.model_name.name == 'PendingExpense' %>
-            <%= button_to 'Clear', clear_pending_expense_path(model) %>
+            <%= button_to 'Clear', clear_pending_expense_path(model), data: { confirm: 'Clear this expense and log it to your account?' } %>
           <% end %>
           <button>
             <%= render partial: 'modal/show', locals: {
