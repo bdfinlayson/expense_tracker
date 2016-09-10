@@ -21,6 +21,7 @@ gem 'dry-types'
 group :development, :test do
   gem 'rspec-rails', '~> 3.4'
   gem 'timecop'
+  gem 'factory_girl_rails'
 end
 
 # Styles
