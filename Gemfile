@@ -18,6 +18,10 @@ gem 'ransack'
 gem 'virtus'
 gem 'dry-types'
 
+group :development, :test do
+  gem 'rspec-rails', '~> 3.4'
+end
+
 # Styles
 gem 'bourbon'
 gem 'neat'
