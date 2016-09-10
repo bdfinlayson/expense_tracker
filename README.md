@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/bdfinlayson/expense_tracker.svg?style=svg)](https://circleci.com/gh/bdfinlayson/expense_tracker)
+
 # To-Do
 * Cards for Overview page (pending and transactions, total spent for month, budget info, etc) (see Barclays app for examples)
 * Pending Approval page where recurring expenses/incomes go to be cleared first by the user before being added to the account
