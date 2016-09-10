@@ -13,7 +13,7 @@ class Recurrence
   end
 
   def compute
-    log_recurrence if event_not_yet_logged?
+    log_item if item_not_yet_logged?
   end
 
   private
@@ -26,12 +26,12 @@ class Recurrence
     end
   end
 
-  def log_recurrence
+  def log_item
     attrs = get_model_attributes
     @model.send(@target[:join_table]).push @target[:model].create(attrs)
   end
 
-  def event_not_yet_logged?
+  def item_not_yet_logged?
     case @frequency
     when 'biweekly'
       biweekly_item_due?
