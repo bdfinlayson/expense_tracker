@@ -27,9 +27,9 @@ class IncomesController < ApplicationController
   def destroy
     @income = Income.find(params[:id])
     if @income.destroy
-      return redirect_to incomes_path, notice: 'Income deleted!'
+      return redirect_to :back, notice: 'Income deleted!'
     else
-      return redirect_to incomes_path, alert: 'Unable to delete income'
+      return redirect_to :back, alert: 'Unable to delete income'
     end
   end
 
@@ -38,18 +38,18 @@ class IncomesController < ApplicationController
     @income = Income.find params[:id]
     if validate!
       @income.update_attributes(income_params)
-      return redirect_to incomes_path, notice: 'Income updated!'
+      return redirect_to :back, notice: 'Income updated!'
     else
-      return redirect_to incomes_path, alert: @form.errors.full_messages.join('!, ').concat('!')
+      return redirect_to :back, alert: @form.errors.full_messages.join('!, ').concat('!')
     end
   end
 
   def create
     if validate!
       @form.save
-      return redirect_to incomes_path, notice: 'Income saved!'
+      return redirect_to :back, notice: 'Income saved!'
     else
-      return redirect_to incomes_path, alert: @form.errors.full_messages.join('. ').concat('.')
+      return redirect_to :back, alert: @form.errors.full_messages.join('. ').concat('.')
     end
   end
   def income_params

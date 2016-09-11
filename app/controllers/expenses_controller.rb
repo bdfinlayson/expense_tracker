@@ -35,9 +35,9 @@ class ExpensesController < ApplicationController
   def create
     if validate!
       @form.save
-      return redirect_to root_path, notice: 'Expense saved!'
+      return redirect_to :back, notice: 'Expense saved!'
     else
-       redirect_to root_path, alert: @form.errors.full_messages.join("! ").concat('!')
+       redirect_to :back, alert: @form.errors.full_messages.join("! ").concat('!')
     end
   end
 
@@ -45,9 +45,9 @@ class ExpensesController < ApplicationController
     @expense = Expense.find params[:id]
     if validate!
       @expense.update(expense_params)
-      return redirect_to expenses_path, notice: 'Expense updated!'
+      return redirect_to :back, notice: 'Expense updated!'
     else
-      return redirect_to expenses_path, alert: @form.errors.full_messages.join('!, ').concat('!')
+      return redirect_to :back, alert: @form.errors.full_messages.join('!, ').concat('!')
     end
   end
 
@@ -61,7 +61,7 @@ class ExpensesController < ApplicationController
   def destroy
     @expense = Expense.find params[:id]
     @expense.destroy
-    redirect_to expenses_path, notice: 'Expense destroyed!'
+    redirect_to :back, notice: 'Expense destroyed!'
   end
 
   def new_category?
