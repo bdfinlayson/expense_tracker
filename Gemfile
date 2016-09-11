@@ -18,6 +18,10 @@ gem 'ransack'
 gem 'virtus'
 gem 'dry-types'
 
+# Charts
+gem 'chartkick'
+
+
 group :development, :test do
   gem 'rspec-rails', '~> 3.4'
   gem 'timecop'

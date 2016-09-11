@@ -14,6 +14,8 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require jquery-ui
+//= require Chart.bundle
+//= require chartkick
 //= require alerts
 //= require index
 //= require nav

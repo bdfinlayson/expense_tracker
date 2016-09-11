@@ -9,6 +9,7 @@ class ExpensesController < ApplicationController
   def index
     @months = months params
     @expenses = all_records_for('expenses', Time.now.year, @months[:current][:number])
+    @chart_data = get_chart_data
     @total_items = @expenses.count
     @vendors = current_user.vendors.order('lower(name) asc')
     @categories = current_user.expense_categories.order('lower(name) asc')
@@ -24,6 +25,19 @@ class ExpensesController < ApplicationController
       'Last Month': "$#{@total_expenses_last_month}",
       '% of Income Spent': "#{percentage_of @total_expenses_this_month, @total_income_this_month}%"
     }
+  end
+
+  def get_chart_data
+    data_hash = {}
+    grouped_expenses = @expenses
+      .reorder(nil)
+      .select('expenses.expense_category_id, sum(expenses.amount) as summed_expenses')
+      .group('expenses.expense_category_id')
+      .order('summed_expenses')
+    grouped_expenses.each do |e|
+      data_hash.merge!(e.expense_category.name => e.summed_expenses)
+    end
+    data_hash
   end
 
   def search_query

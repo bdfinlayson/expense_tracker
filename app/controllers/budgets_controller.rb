@@ -3,6 +3,7 @@ require_dependency 'app/models/forms/budget_form' unless Rails.env == 'productio
 class BudgetsController < ApplicationController
   def index
     @budgets = current_user.budgets.order(amount: :desc)
+    @chart_data = get_chart_data
     @total_items = @budgets.count
     @form = BudgetForm.new(Budget.new)
     @categories = current_user.expense_categories.order('lower(name) asc')
@@ -16,6 +17,14 @@ class BudgetsController < ApplicationController
       'Total Budget': "$#{@total_budget}",
       'Budget vs Income':"#{((@total_budget / @summed_income) * 100).round(2)}%"
     }
+  end
+
+  def get_chart_data
+    data_hash = {}
+    @budgets.each do |b|
+      data_hash.merge!(b.expense_category.name => b.amount)
+    end
+    data_hash
   end
 
   def get_monthly_income_sum(incomes)

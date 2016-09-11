@@ -13,7 +13,7 @@
   </span>
   <%= render partial: 'stats/show' %>
 </h1>
-
+<%= column_chart @chart_data %>
 <%= render partial: 'table/show', locals: {
   columns: @columns,
   collection: @expenses
