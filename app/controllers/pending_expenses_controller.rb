@@ -10,6 +10,12 @@ class PendingExpensesController < ApplicationController
     @total_items = @pending_expenses.count
   end
 
+  def destroy
+    @pending = PendingExpense.find params[:id]
+    @pending.destroy
+    redirect_to pending_expenses_path, notice: 'Pending Expense destroyed!'
+  end
+
   def clear
     @pending_expense = PendingExpense.find params[:id]
     attrs = @pending_expense.attributes.except('frequency', 'created_at', 'updated_at', 'note', 'id', 'cleared')
