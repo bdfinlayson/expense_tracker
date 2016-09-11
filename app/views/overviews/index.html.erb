@@ -1,6 +1,7 @@
 <h1 class='page-header'>Overview (<%= Time.now.beginning_of_month.strftime('%m/%d/%y') %> - <%= Time.now.end_of_month.strftime('%m/%d/%y') %>)</h1>
 
-<%= bar_chart @monthly_expenses_chart %>
+<h3>Total Monthly Expenses</h3>
+<%= column_chart @monthly_expenses_chart %>
 
 <table>
   <tr>
