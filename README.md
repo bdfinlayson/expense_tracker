@@ -11,6 +11,7 @@
 * email alerts for recurring expense / income events
 * email alerts for budget approaching limit and budget exceeded events
 * set cutoff date for recurring expense / income
+* for expenses, if loan or financing expense, add column for date when 0% financing period ends and interest starts
 * list categories that are not yet budgeted for
 * improved category and vendor search and selection using selectize
 * user profile page (name, email, etc) (See Barclays app for examples)
