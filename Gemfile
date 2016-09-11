@@ -18,6 +18,12 @@ gem 'ransack'
 gem 'virtus'
 gem 'dry-types'
 
+group :development, :test do
+  gem 'rspec-rails', '~> 3.4'
+  gem 'timecop'
+  gem 'factory_girl_rails'
+end
+
 # Styles
 gem 'bourbon'
 gem 'neat'
