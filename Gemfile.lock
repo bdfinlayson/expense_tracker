@@ -49,6 +49,7 @@ GEM
       thor (~> 0.19.1)
     builder (3.2.2)
     byebug (9.0.5)
+    chartkick (2.1.0)
     coderay (1.1.1)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
@@ -274,6 +275,7 @@ PLATFORMS
 DEPENDENCIES
   bourbon
   byebug
+  chartkick
   coffee-rails (~> 4.2)
   devise
   dry-types
