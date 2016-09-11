@@ -91,10 +91,6 @@ class Recurrence
   end
 
   def get_model_attributes
-    if overdue?(@model_due_day)
-      @model.attributes.except('frequency', 'updated_at', 'note', 'id', 'cleared')
-    else
-      @model.attributes.except('frequency', 'created_at', 'updated_at', 'note', 'id', 'cleared')
-    end
+    @model.attributes.except('frequency', 'created_at', 'updated_at', 'note', 'id')
   end
 end
