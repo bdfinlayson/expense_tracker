@@ -9,6 +9,9 @@ module ExpenseTracker
     config.generators do |g|
       g.fixture_replacement :factory_girl
     end
+    
+    config.time_zone = "Central Time (US & Canada)"
+    config.active_record.default_timezone = :local
 
     config.active_record.raise_in_transactional_callbacks = true
   end
