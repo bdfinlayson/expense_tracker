@@ -1,7 +1,162 @@
 describe Recurrence do
+  let(:user) { FactoryGirl.create :user }
+  let(:vendor) { FactoryGirl.create(:vendor, user: user)}
+
+  context 'biweekly (frequency = 1)' do
+    let(:income_category) { FactoryGirl.create(:income_category, user: user)}
+    let(:recurring_income) { FactoryGirl.create(:recurring_income,
+      created_at: Date.new(2016,9,1),
+      user: user,
+      vendor: vendor,
+      income_category: income_category,
+      frequency: 1)
+    }
+    context 'when due first time in month' do
+      context 'month created' do
+        it 'creates item' do
+          Timecop.freeze(Date.new(2016,9,1)) do
+            expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(1)
+          end
+        end
+        context '14 days later' do
+          it 'creates second item' do
+            Timecop.freeze(Date.new(2016,9,1) + 14) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(1)
+            end
+          end
+        end
+        context 'days in between first time' do
+          before do
+            Timecop.freeze(Date.new(2016,9,1)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(1)
+            end
+          end
+          it 'does not create an item' do
+            Timecop.freeze(Date.new(2016,9,1)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+            Timecop.freeze(Date.new(2016,9,2)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+            Timecop.freeze(Date.new(2016,9,3)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+            Timecop.freeze(Date.new(2016,9,4)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+            Timecop.freeze(Date.new(2016,9,10)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+            Timecop.freeze(Date.new(2016,9,13)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+            Timecop.freeze(Date.new(2016,9,14)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+          end
+        end
+        context 'days in between second time' do
+          before do
+            Timecop.freeze(Date.new(2016,9,1)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(1)
+            end
+            Timecop.freeze(Date.new(2016,9,1) + 14) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(1)
+            end
+          end
+          it 'does not create an item' do
+            Timecop.freeze(Date.new(2016,9,15)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+            Timecop.freeze(Date.new(2016,9,16)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+            Timecop.freeze(Date.new(2016,9,17)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+            Timecop.freeze(Date.new(2016,9,18)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+            Timecop.freeze(Date.new(2016,9,25)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+            Timecop.freeze(Date.new(2016,9,29)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+            Timecop.freeze(Date.new(2016,9,30)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+          end
+        end
+      end
+      context 'a month later' do
+        context 'days in between first time' do
+          before do
+            Timecop.freeze(Date.new(2016,10,1)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(1)
+            end
+          end
+          it 'does not create an item' do
+            Timecop.freeze(Date.new(2016,10,1)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+            Timecop.freeze(Date.new(2016,10,2)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+            Timecop.freeze(Date.new(2016,10,3)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+            Timecop.freeze(Date.new(2016,10,4)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+            Timecop.freeze(Date.new(2016,10,10)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+            Timecop.freeze(Date.new(2016,10,13)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+            Timecop.freeze(Date.new(2016,10,14)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+          end
+        end
+        context 'days in between second time' do
+          before do
+            Timecop.freeze(Date.new(2016,10,1)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(1)
+            end
+            Timecop.freeze(Date.new(2016,10,1) + 14) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(1)
+            end
+          end
+          it 'does not create an item' do
+            Timecop.freeze(Date.new(2016,10,15)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+            Timecop.freeze(Date.new(2016,10,16)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+            Timecop.freeze(Date.new(2016,10,17)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+            Timecop.freeze(Date.new(2016,10,18)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+            Timecop.freeze(Date.new(2016,10,25)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+            Timecop.freeze(Date.new(2016,10,29)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+            Timecop.freeze(Date.new(2016,10,30)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+          end
+        end
+      end
+    end
+  end
   context 'monthly (frequency = 2)' do
-    let(:user) { FactoryGirl.create :user }
-    let(:vendor) { FactoryGirl.create(:vendor, user: user)}
     let(:expense_category) { FactoryGirl.create(:expense_category, user: user)}
     let!(:recurring_expense) {
       FactoryGirl.create(:recurring_expense,
