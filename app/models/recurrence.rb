@@ -34,7 +34,15 @@ class Recurrence
   def item_not_yet_logged?
     case @frequency
     when 'biweekly'
-      biweekly_item_due?
+      start_day = @model_due_day
+      next_day = calculate_next_biweekly_day(start_day)
+      if @current_day == start_day
+        biweekly_item_due?(start_day)
+      elsif @current_day == next_day
+        biweekly_item_due?(next_day)
+      else
+        false
+      end
     when 'monthly'
       monthly_item_due?
     else
@@ -42,13 +50,9 @@ class Recurrence
     end
   end
 
-  def biweekly_item_due?
-    start_day = @model_due_day
-    next_day = calculate_next_biweekly_day(start_day)
-    if overdue?(start_day)
-      query_for_biweekly_items(start_day).empty?
-    elsif overdue?(next_day)
-      query_biweekly_items(next_day).empty?
+  def biweekly_item_due?(day)
+    if overdue?(day)
+      query_for_biweekly_items(day).empty?
     else
       false
     end
