@@ -3,6 +3,7 @@
 To view, visit: [Expense Tracker](http://dazzling-kenai-fjords-69846.herokuapp.com/)
 
 # To-Do
+* Improved charts using C3.js library (https://github.com/SunnyLi/c3-rails, http://c3js.org/)
 * For recurring expenses, a 'trigger' button that will send the expense to the pending table for clearing (to help with the use case for manually paying a recurring expense before the due date)
 * Cards for Overview page (pending and transactions, total spent for month, budget info, etc) (see Barclays app for examples)
 * Category Stats modal that shows expenses for a category over time (user can select time range)
