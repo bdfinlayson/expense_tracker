@@ -99,10 +99,10 @@ describe OverviewsController, type: :controller do
       incomes = controller.get_monthly_income_history.values
       h = controller.get_monthly_profit_history(expenses, incomes)
       expect(h['May']).to eq 0.0
-      expect(h['June']).to eq 2500.0
-      expect(h['July']).to eq -2000.0
-      expect(h['August']).to eq 1500.0
-      expect(h['September']).to eq 1000.0
+      expect(h['June']).to eq -2500.0
+      expect(h['July']).to eq 2000.0
+      expect(h['August']).to eq -1500.0
+      expect(h['September']).to eq -1000.0
       expect(h['October']).to eq 0.0
     end
   end
