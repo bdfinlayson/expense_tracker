@@ -47,7 +47,7 @@ class OverviewsController < ApplicationController
     months = Date::MONTHNAMES.dup
     months.shift
     months.each_with_index do |month, i|
-      data.merge!(month => expenses[i] - incomes[i])
+      data.merge!(month => incomes[i] - expenses[i])
     end
     data
   end
