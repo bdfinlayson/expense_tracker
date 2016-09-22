@@ -14,7 +14,10 @@ class OverviewsController < ApplicationController
   end
 
   def data
-    render json: { profit: %w(profit -100 200 100 0 400 -500 100 50 400 -500 -100 200), income: %w(income 5 10 20 19 38 10 22 1 12 13 19 23 10), expenses: %w(expenses 10 20 21 10 10 4 20 10 30 21 10 23 28) }
+    expenses = get_monthly_expense_history.values
+    incomes = get_monthly_income_history.values
+    profits = get_monthly_profit_history(expenses, incomes).values.unshift('profits')
+    render json: { profit: profits, income: incomes.unshift('income'), expenses: expenses.unshift('expenses') }
   end
 
   def get_monthly_expense_history
