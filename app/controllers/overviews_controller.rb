@@ -21,7 +21,7 @@ class OverviewsController < ApplicationController
     months = Date::MONTHNAMES.dup
     months.shift
     months.each_with_index do |month, i|
-      data.merge!(month => @expenses.where('extract(month from created_at) = ?', i).sum(:amount))
+      data.merge!(month => @expenses.where('extract(month from created_at) = ?', i + 1).sum(:amount))
     end
     data
   end
