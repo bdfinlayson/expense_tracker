@@ -2,6 +2,7 @@
 @import 'neat';
 @import 'base/base';
 @import 'jquery-ui';
+@import 'c3';
 @import 'alerts';
 @import 'index';
 @import 'nav';
@@ -13,6 +14,7 @@
 @import 'search_bar';
 @import 'table/show';
 @import 'form/show';
+@import 'charts/styles';
 
 .sliding-panel-content > ul {
   font-size: 0.9em;

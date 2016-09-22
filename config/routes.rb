@@ -7,7 +7,11 @@ Rails.application.routes.draw do
   resources :expense_categories
   resources :income_categories
   resources :vendors
-  resources :overviews, only: [:index]
+  resources :overviews, only: [:index] do
+    collection do
+      get 'data'
+    end
+  end
   resources :budgets
   resources :incomes
   resources :recurring_incomes
