@@ -17,7 +17,7 @@ class OverviewsController < ApplicationController
     expenses = get_monthly_expense_history.values
     incomes = get_monthly_income_history.values
     profits = get_monthly_profit_history(expenses, incomes).values.unshift('profits')
-    render json: { profit: profits, income: incomes.unshift('income'), expenses: expenses.unshift('expenses') }
+    render json: { months: Date::MONTHNAMES.dup.compact, profit: profits, income: incomes.unshift('income'), expenses: expenses.unshift('expenses') }
   end
 
   def get_monthly_expense_history
