@@ -16,8 +16,12 @@
 //= require jquery-ui
 //= require Chart.bundle
 //= require chartkick
+//= require c3
+//= require d3
+//- require overview/charts/bar_chart
 //= require alerts
 //= require index
 //= require nav
 //= require modal
 //= require form
+//= require_tree .
