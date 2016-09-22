@@ -25,4 +25,15 @@ class OverviewsController < ApplicationController
     end
     data
   end
+
+  def get_monthly_income_history
+    @incomes = current_user.incomes.where('extract(year from created_at) = ?', Time.now.year)
+    data = {}
+    months = Date::MONTHNAMES.dup
+    months.shift
+    months.each_with_index do |month, i|
+      data.merge!(month => @incomes.where('extract(month from created_at) = ?', i + 1).sum(:amount))
+    end
+    data
+  end
 end
