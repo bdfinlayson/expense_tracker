@@ -1,12 +1,22 @@
-<h1 class='page-header'>Overview (<%= Time.now.beginning_of_month.strftime('%m/%d/%y') %> - <%= Time.now.end_of_month.strftime('%m/%d/%y') %>)</h1>
+<h1 class='page-header'>Overview</h1>
 
-<h3>Total Monthly Expenses</h3>
-<div id='chart'></div>
-<%= column_chart @monthly_expenses_chart %>
+<h3>Monthly Total Income | Expenses | Profits</h3>
+<div id='expenses-chart'></div>
+<h3>Monthly Profitability</h3>
+<div id='profitability-chart'></div>
 
+<h1>Summary (<%= Time.now.beginning_of_month.strftime('%m/%d/%y') %> - <%= Time.now.end_of_month.strftime('%m/%d/%y') %>)</h1>
 <table>
   <tr>
     GENERAL
+  </tr>
+  <tr>
+    <td>
+      Average Profitability
+    </td>
+    <td>
+      <%= String(@average_profitability) + "%" %>
+    </td>
   </tr>
   <tr>
     <td>

@@ -11,13 +11,32 @@ class OverviewsController < ApplicationController
     @total_for_month = current_user.budgets.pluck(:amount).sum
     @total_spent = current_user.expense_categories.map(&:summed_expenses).sum
     @net_worth_for_month = @income_this_month - @total_expenses_this_month
+    expenses = get_monthly_expense_history.values
+    incomes = get_monthly_income_history.values
+    profits = get_monthly_profit_history(expenses, incomes).values
+    profitability = get_monthly_percent_profit(profits, incomes).delete_if {|x| x == 0}
+    @average_profitability = (profitability.reduce(:+).to_f / profitability.size).round(2)
   end
 
   def data
     expenses = get_monthly_expense_history.values
     incomes = get_monthly_income_history.values
-    profits = get_monthly_profit_history(expenses, incomes).values.unshift('profits')
-    render json: { months: Date::MONTHNAMES.dup.compact, profit: profits, income: incomes.unshift('income'), expenses: expenses.unshift('expenses') }
+    profits = get_monthly_profit_history(expenses, incomes).values
+    profitability = get_monthly_percent_profit(profits, incomes)
+    months = %w(Jul Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec)
+    render json: { profitability: profitability, months: months, profit: profits.unshift('profits'), income: incomes.unshift('income'), expenses: expenses.unshift('expenses') }
+  end
+
+  def get_monthly_percent_profit(profits, incomes)
+    p = []
+    profits.each_with_index do |profit, i|
+      if profit.zero? && incomes[i].zero?
+        p.push 0
+      else
+        p.push(((Float(profit) / Float(incomes[i])) * 100).round(2))
+      end
+    end
+    p
   end
 
   def get_monthly_expense_history
@@ -26,7 +45,7 @@ class OverviewsController < ApplicationController
     months = Date::MONTHNAMES.dup
     months.shift
     months.each_with_index do |month, i|
-      data.merge!(month => @expenses.where('extract(month from created_at) = ?', i + 1).sum(:amount))
+      data.merge!(month => @expenses.where('extract(month from created_at) = ?', i + 1).sum(:amount).round(0))
     end
     data
   end
@@ -37,7 +56,7 @@ class OverviewsController < ApplicationController
     months = Date::MONTHNAMES.dup
     months.shift
     months.each_with_index do |month, i|
-      data.merge!(month => @incomes.where('extract(month from created_at) = ?', i + 1).sum(:amount))
+      data.merge!(month => @incomes.where('extract(month from created_at) = ?', i + 1).sum(:amount).round(0))
     end
     data
   end
@@ -47,7 +66,7 @@ class OverviewsController < ApplicationController
     months = Date::MONTHNAMES.dup
     months.shift
     months.each_with_index do |month, i|
-      data.merge!(month => incomes[i] - expenses[i])
+      data.merge!(month => (incomes[i] - expenses[i]).round(0))
     end
     data
   end
