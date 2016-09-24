@@ -13,7 +13,32 @@
   </span>
   <%= render partial: 'stats/show' %>
 </h1>
+
 <%= pie_chart @chart_data %>
+
+<% if @unbudgeted_categories.any? %>
+  <h2>Unbudgeted Categories</h2>
+  <table>
+  <% @unbudgeted_categories.each_with_index do |c, index| %>
+    <tr>
+      <td><%= c %><td>
+      <td>
+        <%= render partial: 'modal/show',
+          locals: {
+            form: @form_partial,
+            modal_trigger: 'Create +',
+            modal_title: 'Create Budget For ' + c,
+            modal_id: c + "_" + String(index),
+            model: Budget.new(expense_category: @categories.find_by(name: c))
+          }
+        %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<% end %>
+
+<h1>Budget Overview (<%= Time.now.beginning_of_month.strftime('%m/%d/%y') %> - <%= Time.now.end_of_month.strftime('%m/%d/%y') %> )</h1>
 <%= render partial: 'table/show', locals: {
   columns: @columns,
   collection: @budgets

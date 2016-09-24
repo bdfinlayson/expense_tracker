@@ -17,6 +17,7 @@ class BudgetsController < ApplicationController
       'Total Budget': "$#{@total_budget}",
       'Budget vs Income':"#{((@total_budget / @summed_income) * 100).round(2)}%"
     }
+    @unbudgeted_categories = @categories.pluck(:name) - @budgets.map(&:category_name)
   end
 
   def get_chart_data
