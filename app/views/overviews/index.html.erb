@@ -2,8 +2,13 @@
 
 <h3>Monthly Total Income | Expenses | Profits</h3>
 <div id='expenses-chart'></div>
+
 <h3>Monthly Profitability</h3>
 <div id='profitability-chart'></div>
+
+<h3>Total Net Worth</h3>
+<div id='net-worth-chart'></div>
+
 
 <h1>Summary (<%= Time.now.beginning_of_month.strftime('%m/%d/%y') %> - <%= Time.now.end_of_month.strftime('%m/%d/%y') %>)</h1>
 <table>
@@ -36,10 +41,18 @@
   </tr>
   <tr>
     <td>
-      Net Worth for Month
+      Profit for Month
     </td>
     <td>
       <%= number_to_currency @net_worth_for_month %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Current Net Worth
+    </td>
+    <td>
+      <%= number_to_currency (current_user.beginning_cash_on_hand + @profits.sum).round(2) %>
     </td>
   </tr>
 </table>

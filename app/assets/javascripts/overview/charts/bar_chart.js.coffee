@@ -8,6 +8,7 @@ $ ->
       profit = result['profit']
       months = result['months']
       profitability = result['profitability']
+      net_worth = result['net_worth']
 
       c3.generate(
         bindto: '#expenses-chart'
@@ -41,3 +42,17 @@ $ ->
             categories: months
       )
 
+      c3.generate(
+        bindto: '#net-worth-chart'
+        data:
+          columns:[
+            ['net_worth'].concat(net_worth)
+          ]
+          type: 'line'
+          labels:
+            type: 'category'
+        axis:
+          x:
+            type: 'category'
+            categories: months
+      )

@@ -13,8 +13,8 @@ class OverviewsController < ApplicationController
     @net_worth_for_month = @income_this_month - @total_expenses_this_month
     expenses = get_monthly_expense_history.values
     incomes = get_monthly_income_history.values
-    profits = get_monthly_profit_history(expenses, incomes).values
-    profitability = get_monthly_percent_profit(profits, incomes).delete_if {|x| x == 0}
+    @profits = get_monthly_profit_history(expenses, incomes).values
+    profitability = get_monthly_percent_profit(@profits, incomes).delete_if {|x| x == 0}
     @average_profitability = (profitability.reduce(:+).to_f / profitability.size).round(2)
   end
 
@@ -23,8 +23,22 @@ class OverviewsController < ApplicationController
     incomes = get_monthly_income_history.values
     profits = get_monthly_profit_history(expenses, incomes).values
     profitability = get_monthly_percent_profit(profits, incomes)
+    net_worth = get_net_worth(profits)
     months = %w(Jul Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec)
-    render json: { profitability: profitability, months: months, profit: profits.unshift('profits'), income: incomes.unshift('income'), expenses: expenses.unshift('expenses') }
+    render json: { net_worth: net_worth, profitability: profitability, months: months, profit: profits.unshift('profits'), income: incomes.unshift('income'), expenses: expenses.unshift('expenses') }
+  end
+
+  def get_net_worth(profits)
+    starting_cash = current_user.beginning_cash_on_hand
+    worth = []
+    profits.each do |p|
+      if p.zero?
+        worth.push "N/A"
+      else
+        worth.push(starting_cash += p)
+      end
+    end
+    worth
   end
 
   def get_monthly_percent_profit(profits, incomes)
