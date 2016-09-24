@@ -84,6 +84,17 @@
   tbody {
     background-color: $table-background;
 
+    .exceeded-budget {
+      background-color: red !important;
+      color: black !important;
+      font-weight: bold !important;
+      &:hover > td {
+        background-color: red !important;
+        color: black !important;
+        font-weight: bold !important;
+      }
+    }
+
     td {
       border-bottom: 0;
       border-left: 1px solid $table-border-color;
