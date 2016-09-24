@@ -4,6 +4,7 @@ To view, visit: [Expense Tracker](http://dazzling-kenai-fjords-69846.herokuapp.c
 
 A simple Rails app for tracking personal finances. It's very much a work in progress. As of now, main features include:
 - pie, bar, and line charts for displaying personal financial data / trends
+- net worth tracking
 - recurring transactions
 - pending transactions
 - budgets
