@@ -20,6 +20,8 @@ gem 'dry-types'
 
 # Charts
 gem 'chartkick'
+gem 'c3-rails'
+gem 'd3_rails'
 
 
 group :development, :test do

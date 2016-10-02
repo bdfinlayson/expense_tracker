@@ -24,7 +24,7 @@
   </thead>
   <tbody>
     <% collection.each_with_index do |model, i| %>
-      <tr>
+      <tr class=<%= 'exceeded-budget' if (model.model_name.name == 'Budget') && (model.left.include? '-') %>>
         <% columns.each do |c| %>
             <td><%= model.send(c) %></td>
         <% end %>
