@@ -209,7 +209,6 @@ describe Recurrence do
         # Time (yyyy, mm, dd)
         # Timecop.freeze (yyyy, mm, dd)
         recurring_expense.update(created_at: Time.new(2016,9,10))
-        expect{Recurrence.new(recurring_expense).compute}.to change(PendingExpense.unscoped, :count).by(1)
         Timecop.freeze(2016,10,1) do
           expect{Recurrence.new(recurring_expense).compute}.to change(PendingExpense.unscoped, :count).by(0)
         end
