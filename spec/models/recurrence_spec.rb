@@ -92,6 +92,13 @@ describe Recurrence do
       context 'a month later' do
         context 'days in between first time' do
           before do
+            Timecop.freeze(Date.new(2016,9,1)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(1)
+            end
+            Timecop.freeze(Date.new(2016,9,15)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(1)
+            end
+
             Timecop.freeze(Date.new(2016,10,1)) do
               expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(1)
             end
