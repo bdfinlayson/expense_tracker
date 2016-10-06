@@ -18,8 +18,22 @@ describe Recurrence do
             expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(1)
           end
         end
+        context 'a day late' do
+          it 'creates item' do
+            Timecop.freeze(Date.new(2016,9,2)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(1)
+            end
+            Timecop.freeze(Date.new(2016,9,2)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(0)
+            end
+          end
+        end
         context '14 days later' do
           it 'creates second item' do
+            Timecop.freeze(Date.new(2016,9,1)) do
+              expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(1)
+            end
+
             Timecop.freeze(Date.new(2016,9,1) + 14) do
               expect{Recurrence.new(recurring_income).compute}.to change(Income, :count).by(1)
             end

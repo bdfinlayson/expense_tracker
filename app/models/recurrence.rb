@@ -36,10 +36,10 @@ class Recurrence
     when 'biweekly'
       start_day = @model_due_day
       next_day = calculate_next_biweekly_day(start_day)
-      if @current_day == start_day
-        biweekly_item_due?(start_day)
-      elsif @current_day == next_day
-        biweekly_item_due?(next_day)
+      if @current_day >= start_day && @current_day < next_day
+        true if biweekly_item_due?(start_day) && query_for_biweekly_items(start_day).count == 0
+      elsif @current_day >= next_day
+        true if biweekly_item_due?(next_day) && query_for_biweekly_items(next_day).count == 1
       else
         false
       end
@@ -52,7 +52,7 @@ class Recurrence
 
   def biweekly_item_due?(day)
     if overdue?(day)
-      query_for_biweekly_items(day).empty?
+      true
     else
       false
     end
@@ -63,7 +63,6 @@ class Recurrence
     query
       .where('extract(year from created_at) = ?', @current_year)
       .where('extract(month from created_at) = ?', @current_month)
-      .where('extract(day from created_at) = ?', day)
   end
 
   def calculate_next_biweekly_day(start_day)
@@ -90,7 +89,7 @@ class Recurrence
     if (day > @days_in_month) && (difference_in_days <= 3)
       true
     else
-      day <= @current_day
+      @current_day >= day
     end
   end
 
