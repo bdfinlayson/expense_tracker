@@ -13,18 +13,6 @@ module BaseModel
     item_amount
   end
 
-  def spent
-    '$' + expense_category.summed_expenses.round(2).to_s
-  end
-
-  def percent_spent
-    percentage_of(expense_category.summed_expenses, amount).to_s + '%'
-  end
-
-  def left
-    '$' + (amount - expense_category.summed_expenses).round(2).to_s
-  end
-
   def category_name
     case self.model_name.name
     when 'Expense', 'RecurringExpense', 'Budget', 'PendingExpense'
