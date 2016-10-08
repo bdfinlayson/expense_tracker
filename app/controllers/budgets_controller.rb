@@ -1,9 +1,13 @@
 require_dependency 'app/models/forms/budget_form' unless Rails.env == 'production'
 
 class BudgetsController < ApplicationController
+  include Calendar
+
   def index
-    @budgets = current_user.budgets.order(amount: :desc)
+    @months = months(params)
+    @budgets = current_user.budgets.order(amount: :desc).decorate(context: { month: @months[:current][:number] } )
     @chart_data = get_chart_data
+    @expense_data = get_expenses_data
     @total_items = @budgets.count
     @form = BudgetForm.new(Budget.new)
     @categories = current_user.expense_categories.order('lower(name) asc')
@@ -18,6 +22,21 @@ class BudgetsController < ApplicationController
       'Budget vs Income':"#{((@total_budget / @summed_income) * 100).round(2)}%"
     }
     @unbudgeted_categories = @categories.pluck(:name) - @budgets.map(&:category_name)
+  end
+
+  def get_expenses_data
+    data_hash = {}
+    grouped_expenses = Expense
+      .where('extract(year from created_at) = ?', Time.now.year)
+      .where('extract(month from created_at) = ?', @months[:current][:number])
+      .reorder(nil)
+      .select('expenses.expense_category_id, sum(expenses.amount) as summed_expenses')
+      .group('expenses.expense_category_id')
+      .order('summed_expenses desc')
+    grouped_expenses.each do |e|
+      data_hash.merge!(e.expense_category.name => e.summed_expenses)
+    end
+    data_hash
   end
 
   def get_chart_data
