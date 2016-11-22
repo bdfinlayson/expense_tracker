@@ -1,3 +1,4 @@
+<h1><%= title %></h1>
 <%= form_for model do |f| %>
   <% if model.respond_to? :amount %>
     <%= f.label :amount %>
@@ -59,6 +60,6 @@
 
   <% if model.id.present? %>
     <br>
-    <%= button_to 'Destroy', {action: 'destroy', id: model.id }, method: :delete, data: { confirm: 'Are you sure?'} %>
+    <%= button_to 'Destroy', {action: 'destroy', controller: @controller, id: model.id }, method: :delete, data: { confirm: 'Are you sure?'} %>
   <% end %>
 

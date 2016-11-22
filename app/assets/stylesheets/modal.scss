@@ -95,7 +95,7 @@
     width: 95%;
 
     @include media($medium-screen) {
-      max-height: 70%;
+      max-height: 100%;
       padding: $modal-padding;
       width: 60%;
     }
@@ -122,9 +122,6 @@
     .modal-content {
       color: $base-font-color;
 
-      @include media($medium-screen) {
-        columns: 2 8em;
-      }
     }
 
     a.cta {

@@ -11,8 +11,8 @@ class ExpensesController < ApplicationController
     @expenses = all_records_for('expenses', Time.now.year, @months[:current][:number])
     @chart_data = get_chart_data
     @total_items = @expenses.count
-    @vendors = current_user.vendors.order('lower(name) asc')
-    @categories = current_user.expense_categories.order('lower(name) asc')
+    @vendors = current_user.vendors
+    @categories = current_user.expense_categories
     @total_expenses_this_month = get_sum_of @expenses
     @total_expenses_last_month = get_sum_of(all_records_for('expenses', Time.now.year, @months[:last][:number]))
     @columns = %w(date item_amount vendor_name category_name recurring?)
