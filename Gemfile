@@ -17,8 +17,9 @@ gem 'reform-rails'
 gem 'ransack'
 gem 'virtus'
 gem 'dry-types'
- gem 'draper', github: 'drapergem/draper'
+gem 'draper', github: 'drapergem/draper'
 gem 'activemodel-serializers-xml'
+gem 'jquery-datatables-rails'
 
 # Charts
 gem 'chartkick'

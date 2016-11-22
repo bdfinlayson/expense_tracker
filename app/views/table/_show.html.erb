@@ -13,36 +13,34 @@
     <% end %>
   </div>
 <% end %>
-<table class="tables">
+<%= render 'modal/empty_modal' %>
+<table class="tables datatable">
   <thead>
     <tr>
       <% columns.each do |c| %>
         <th><%= c.humanize.titleize %></th>
       <% end %>
-      <th></th>
+      <% if params['controller'] == 'pending_expenses' %>
+        <th></th>
+      <% end %>
     </tr>
   </thead>
   <tbody>
     <% collection.each_with_index do |model, i| %>
-      <tr class=<%= 'exceeded-budget' if (model.model_name.name == 'Budget') && (model.left.include? '-') %>>
+      <tr
+       class="<%= 'exceeded-budget' if (model.model_name.name == 'Budget') && (model.left.include? '-') %>"
+       data-id='<%= model.id %>'
+       data-model-name='<%= model.class.name %>'
+       data-form-controller='<%= params[:controller] %>'
+      >
         <% columns.each do |c| %>
             <td><%= model.send(c) %></td>
         <% end %>
-        <td>
-          <% if model.model_name.name == 'PendingExpense' %>
+        <% if params['controller'] == 'pending_expenses' %>
+          <td>
             <%= button_to 'Clear', clear_pending_expense_path(model), data: { confirm: 'Clear this expense and log it to your account?' } %>
-          <% end %>
-          <button>
-            <%= render partial: 'modal/show', locals: {
-               form: @form_partial,
-               modal_trigger: 'Edit',
-               modal_title: 'Edit ' + model.model_name.name.titleize,
-               modal_id: model.id,
-               model: model
-               }
-             %>
-          </button>
-        </td>
+          </td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

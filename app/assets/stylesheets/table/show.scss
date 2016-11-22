@@ -35,6 +35,7 @@
 
     tr:hover > td, tr:hover > th {
       background-color: $table-hover-background;
+      cursor: pointer;
     }
     tr:nth-child(even) {
       background-color: $table-stripe-background;
@@ -106,30 +107,6 @@
         border-left: 0;
         @include media(max-width 500px) {
           display: none;
-        }
-      }
-
-      button {
-        display: inline-block;
-        font-size: 0.7em;
-        line-height: $base-line-height;
-        outline: none;
-        padding: 0 !important;
-        width: 100%;
-        background-color: white;
-        margin-top: 5px;
-
-        @include media($medium-screen) {
-          margin-bottom: 0;
-          width: auto;
-        }
-
-        label {
-          padding: 10px 25px;
-        }
-
-        .modal-inner {
-          font-size: 1.6em;
         }
       }
     }

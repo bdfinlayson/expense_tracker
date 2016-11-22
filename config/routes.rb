@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
   devise_for :users
   root to: 'expenses#index'
+  resources :forms, only: [:create]
   resources :expenses
   resources :recurring_expenses
   resources :expense_categories

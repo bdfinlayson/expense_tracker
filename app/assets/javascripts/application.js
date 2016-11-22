@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require dataTables/jquery.dataTables
 //= require turbolinks
 //= require jquery-ui
 //= require Chart.bundle
