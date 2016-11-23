@@ -1,5 +1,7 @@
 $(document).on 'turbolinks:load', ->
-  $('.datatable').DataTable()
+  $('.datatable').dataTable
+    aaSorting: []
+
 
   $('.datatable > tbody > tr').click ->
     tr = @
