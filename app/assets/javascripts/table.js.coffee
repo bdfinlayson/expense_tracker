@@ -2,7 +2,9 @@ $(document).on 'turbolinks:load', ->
   table = $('.datatable').dataTable
     aaSorting: []
     drawCallback: ->
-      $('.datatable > tbody > tr').click (event) ->
+      trs = $('.datatable > tbody > tr')
+      $(trs).unbind('click')
+      $(trs).click (event) ->
         unless $(event.toElement).data('clear-pending-expense')
           tr = @
           id = $(tr).data('id')
