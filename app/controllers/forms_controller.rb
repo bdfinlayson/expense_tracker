@@ -5,7 +5,7 @@ class FormsController < ApplicationController
     @frequencies = RecurringExpense.frequencies
     @vendors = current_user.vendors
     @controller = params[:form_controller]
-    if params[:model_name].include? 'Expense'
+    if [params[:model_name]].select { |name| name.match /expense|budget/i }.present?
       @new_category = ExpenseCategory.new
       @categories = current_user.expense_categories
     else
