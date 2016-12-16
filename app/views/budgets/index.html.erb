@@ -14,12 +14,14 @@
   <%= render partial: 'stats/show' %>
 </h1>
 
-<h1>Budget Item Proportion To Total Budget</h1>
-<%= pie_chart @chart_data %>
+<h1>Budget Overview</h1>
+<%= render partial: 'table/show', locals: {
+  columns: @columns,
+  collection: @budgets
+  }
+%>
 
-<h1>Total Expenses Per Budget Item</h1>
-<%= pie_chart @expense_data %>
-
+<hr />
 
 <% if @unbudgeted_categories.any? %>
   <h2>Unbudgeted Categories</h2>
@@ -43,9 +45,8 @@
 </table>
 <% end %>
 
-<h1>Budget Overview</h1>
-<%= render partial: 'table/show', locals: {
-  columns: @columns,
-  collection: @budgets
-  }
-%>
+<h1>Budget Item Proportion To Total Budget</h1>
+<%= pie_chart @chart_data %>
+
+<h1>Total Expenses Per Budget Item</h1>
+<%= pie_chart @expense_data %>

@@ -15,5 +15,5 @@
   display: none;
 }
 
-.notice { background: forestgreen }
-.alert { background: orangered }
+.notice { background: forestgreen; z-index: 9999;}
+.alert { background: orangered; z-index: 9999 }
