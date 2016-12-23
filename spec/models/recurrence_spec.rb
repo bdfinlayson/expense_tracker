@@ -177,6 +177,7 @@ describe Recurrence do
       end
     end
   end
+
   context 'monthly (frequency = 2)' do
     let(:expense_category) { FactoryGirl.create(:expense_category, user: user)}
     let!(:recurring_expense) {
@@ -244,6 +245,48 @@ describe Recurrence do
         end
         Timecop.freeze(2016,10,25) do
           expect{Recurrence.new(recurring_expense).compute}.to change(PendingExpense.unscoped, :count).by(0)
+        end
+      end
+    end
+  end
+
+  context 'when annual (frequency = 3)' do
+    let(:expense_category) { FactoryGirl.create(:expense_category, user: user)}
+    let(:time) { Time.now }
+    let!(:recurring_expense) {
+      FactoryGirl.create(:recurring_expense,
+        created_at: time,
+        user: user,
+        vendor: vendor,
+        expense_category: expense_category,
+        frequency: 3)
+    }
+
+    context 'when not due' do
+      before do
+        Timecop.freeze(time) do
+          expect{Recurrence.new(recurring_expense).compute}.to change(PendingExpense.unscoped, :count).by(1)
+        end
+      end
+
+      it 'does not log' do
+        Timecop.freeze(time.tomorrow) do
+          expect{Recurrence.new(recurring_expense).compute}.to change(PendingExpense.unscoped, :count).by(0)
+        end
+      end
+    end
+
+    context 'when due' do
+      before do
+        Timecop.freeze(time) do
+          expect{Recurrence.new(recurring_expense).compute}.to change(PendingExpense.unscoped, :count).by(1)
+        end
+      end
+
+
+      it 'logs' do
+        Timecop.freeze(time.next_year) do
+          expect{Recurrence.new(recurring_expense).compute}.to change(PendingExpense.unscoped, :count).by(1)
         end
       end
     end
