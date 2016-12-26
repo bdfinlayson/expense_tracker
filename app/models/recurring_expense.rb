@@ -11,5 +11,5 @@ class RecurringExpense < ApplicationRecord
   validates_presence_of :user_id, :amount, :vendor_id, :expense_category_id, :frequency
   validates :vendor_id, uniqueness: {scope: :user_id}
 
-  after_save :add_due_day { update_column(:due_day, created_at.day) }
+  after_save { update_column(:due_day, created_at.day) }
 end
