@@ -10,7 +10,7 @@ class RecurringExpensesController < ApplicationController
     @vendors = current_user.vendors.order('lower(name) asc')
     @categories = current_user.expense_categories.order('lower(name) asc')
     @frequencies = RecurringExpense.frequencies
-    @columns = %w(date item_amount vendor_name category_name frequency)
+    @columns = %w(due_day item_amount vendor_name category_name frequency)
     @form_partial = 'form/show'
     @new_category = ExpenseCategory.new
     @new_vendor = Vendor.new
