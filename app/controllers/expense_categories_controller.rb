@@ -43,7 +43,8 @@ class ExpenseCategoriesController < ApplicationController
     @form_partial = 'form/show'
   end
 
-  def category_params
-    params.require(:expense_category).permit(:name).merge(user_id: current_user.id)
-  end
+  private
+    def category_params
+      params.require(:expense_category).permit(:name).merge(user_id: current_user.id)
+    end
 end

@@ -6,8 +6,6 @@ class BudgetsController < ApplicationController
   def index
     @months = months(params)
     @budgets = current_user.budgets.order(amount: :desc).decorate(context: { month: @months[:current][:number] } )
-    @chart_data = get_chart_data
-    @expense_data = get_expenses_data
     @total_items = @budgets.count
     @form = BudgetForm.new(Budget.new)
     @categories = current_user.expense_categories.order('lower(name) asc')
@@ -22,48 +20,6 @@ class BudgetsController < ApplicationController
       'Budget vs Income':"#{((@total_budget / @summed_income) * 100).round(2)}%"
     }
     @unbudgeted_categories = @categories.pluck(:name) - @budgets.map(&:category_name)
-  end
-
-  def get_expenses_data
-    data_hash = {}
-    grouped_expenses = Expense
-      .where('extract(year from created_at) = ?', Time.now.year)
-      .where('extract(month from created_at) = ?', @months[:current][:number])
-      .reorder(nil)
-      .select('expenses.expense_category_id, sum(expenses.amount) as summed_expenses')
-      .group('expenses.expense_category_id')
-      .order('summed_expenses desc')
-    grouped_expenses.each do |e|
-      data_hash.merge!(e.expense_category.name => e.summed_expenses)
-    end
-    data_hash
-  end
-
-  def get_chart_data
-    data_hash = {}
-    @budgets.each do |b|
-      data_hash.merge!(b.expense_category.name => b.amount)
-    end
-    data_hash
-  end
-
-  def get_monthly_income_sum(incomes)
-    income = []
-    incomes.each do |i|
-      case i.frequency
-      when 'monthly'
-        income.push i.amount
-      when 'biweekly'
-        income.push (i.amount * 2)
-      when 'weekly'
-        income.push (i.amount * 4)
-      when 'annually'
-        income.push (i.amount / 12)
-      else
-        ''
-      end
-    end
-    income.sum
   end
 
   def create
@@ -101,7 +57,27 @@ class BudgetsController < ApplicationController
     @categories = current_user.expense_categories
   end
 
-  def budget_params
-    params.require(:budget).permit(:amount, :expense_category_id).merge!(user_id: current_user.id)
-  end
+  private
+    def get_monthly_income_sum(incomes)
+      income = []
+      incomes.each do |i|
+        case i.frequency
+        when 'monthly'
+          income.push i.amount
+        when 'biweekly'
+          income.push (i.amount * 2)
+        when 'weekly'
+          income.push (i.amount * 4)
+        when 'annually'
+          income.push (i.amount / 12)
+        else
+          ''
+        end
+      end
+      income.sum
+    end
+
+    def budget_params
+      params.require(:budget).permit(:amount, :expense_category_id).merge!(user_id: current_user.id)
+    end
 end

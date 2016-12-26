@@ -41,79 +41,80 @@ class RecurringExpensesController < ApplicationController
     end
   end
 
-  def create_new_category
-    ExpenseCategory.create(
-      name: recurring_expense_params[:expense_category][:name],
-      user_id: current_user.id
-    )
-  end
-
   def destroy
     @expense = RecurringExpense.find params[:id]
     @expense.destroy
     redirect_to recurring_expenses_path, notice: 'Recurring Expense destroyed!'
   end
 
-  def new_category?
-    return false if not recurring_expense_params[:expense_category].present?
-    recurring_expense_params[:expense_category][:name].present?
-  end
-
-  def create_new_vendor
-    Vendor.create(
-      name: recurring_expense_params[:vendor][:name],
-      note: recurring_expense_params[:vendor][:note],
-      user_id: current_user.id
-    )
-  end
-
-  def new_vendor?
-    return false if not recurring_expense_params[:vendor].present?
-    recurring_expense_params[:vendor][:name].present?
-  end
-
-  def validate!
-    category = create_new_category if new_category?
-    vendor = create_new_vendor if new_vendor?
-    params[:recurring_expense].delete :expense_category
-    params[:recurring_expense].delete :vendor
-    params[:recurring_expense][:frequency] = params[:recurring_expense][:frequency].to_i
-    if category && vendor
-      params[:recurring_expense][:expense_category_id] = category.id
-      params[:recurring_expense][:vendor_id] = vendor.id
-    elsif category
-      params[:recurring_expense][:expense_category_id] = category.id
-    elsif vendor
-      params[:recurring_expense][:vendor_id] = vendor.id
-    else
-      ''
+  private
+    def create_new_category
+      ExpenseCategory.create(
+        name: recurring_expense_params[:expense_category][:name],
+        user_id: current_user.id
+      )
     end
-    @form.validate(recurring_expense_params.merge(user_id: current_user.id))
-  end
 
-  def set_new_form
-    @form = RecurringExpenseForm.new(RecurringExpense.new)
-  end
+    def new_category?
+      return false if not recurring_expense_params[:expense_category].present?
+      recurring_expense_params[:expense_category][:name].present?
+    end
 
-  def recurring_expense_params
-    params.require(:recurring_expense).permit(
-      :amount,
-      :created_at,
-      :expense_category_id,
-      :vendor_id,
-      :frequency,
-      :note,
-      expense_category: [
-        :id,
-        :name,
-        :_destroy
-      ],
-      vendor: [
-        :id,
-        :name,
+    def create_new_vendor
+      Vendor.create(
+        name: recurring_expense_params[:vendor][:name],
+        note: recurring_expense_params[:vendor][:note],
+        user_id: current_user.id
+      )
+    end
+
+    def new_vendor?
+      return false if not recurring_expense_params[:vendor].present?
+      recurring_expense_params[:vendor][:name].present?
+    end
+
+    def validate!
+      category = create_new_category if new_category?
+      vendor = create_new_vendor if new_vendor?
+      params[:recurring_expense].delete :expense_category
+      params[:recurring_expense].delete :vendor
+      params[:recurring_expense][:frequency] = params[:recurring_expense][:frequency].to_i
+      if category && vendor
+        params[:recurring_expense][:expense_category_id] = category.id
+        params[:recurring_expense][:vendor_id] = vendor.id
+      elsif category
+        params[:recurring_expense][:expense_category_id] = category.id
+      elsif vendor
+        params[:recurring_expense][:vendor_id] = vendor.id
+      else
+        ''
+      end
+      @form.validate(recurring_expense_params.merge(user_id: current_user.id))
+    end
+
+    def set_new_form
+      @form = RecurringExpenseForm.new(RecurringExpense.new)
+    end
+
+    def recurring_expense_params
+      params.require(:recurring_expense).permit(
+        :amount,
+        :created_at,
+        :expense_category_id,
+        :vendor_id,
+        :frequency,
         :note,
-        :_destroy
-      ]
-    )
-  end
+        expense_category: [
+          :id,
+          :name,
+          :_destroy
+        ],
+        vendor: [
+          :id,
+          :name,
+          :note,
+          :_destroy
+        ]
+      )
+    end
 end
