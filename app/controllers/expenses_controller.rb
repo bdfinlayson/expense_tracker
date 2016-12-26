@@ -9,7 +9,6 @@ class ExpensesController < ApplicationController
   def index
     @months = months params
     @expenses = all_records_for('expenses', Time.now.year, @months[:current][:number])
-    @chart_data = get_chart_data
     @total_items = @expenses.count
     @vendors = current_user.vendors
     @categories = current_user.expense_categories
@@ -25,25 +24,6 @@ class ExpensesController < ApplicationController
       'Last Month': "$#{@total_expenses_last_month}",
       '% of Income Spent': "#{percentage_of @total_expenses_this_month, @total_income_this_month}%"
     }
-  end
-
-  def get_chart_data
-    data_hash = {}
-    grouped_expenses = @expenses
-      .reorder(nil)
-      .select('expenses.expense_category_id, sum(expenses.amount) as summed_expenses')
-      .group('expenses.expense_category_id')
-      .order('summed_expenses')
-    grouped_expenses.each do |e|
-      data_hash.merge!(e.expense_category.name => e.summed_expenses)
-    end
-    data_hash
-  end
-
-  def search_query
-    return {} unless params[:q].present?
-    return {} unless params[:q]['expense_category_name_or_vendor_name_cont'].present?
-    { expense_category_name_or_vendor_name_cont: params[:q]['expense_category_name_or_vendor_name_cont'] }
   end
 
   def create
@@ -65,77 +45,78 @@ class ExpensesController < ApplicationController
     end
   end
 
-  def create_new_category
-    ExpenseCategory.create(
-      name: expense_params[:expense_category][:name],
-      user_id: current_user.id
-    )
-  end
-
   def destroy
     @expense = Expense.find params[:id]
     @expense.destroy
     redirect_to :back, notice: 'Expense destroyed!'
   end
 
-  def new_category?
-    return false if not expense_params[:expense_category].present?
-    expense_params[:expense_category][:name].present?
-  end
-
-  def create_new_vendor
-    Vendor.create(
-      name: expense_params[:vendor][:name],
-      note: expense_params[:vendor][:note],
-      user_id: current_user.id
-    )
-  end
-
-  def new_vendor?
-    return false if not expense_params[:vendor].present?
-    expense_params[:vendor][:name].present?
-  end
-
-  def validate!
-    category = create_new_category if new_category?
-    vendor = create_new_vendor if new_vendor?
-    params[:expense].delete :expense_category
-    params[:expense].delete :vendor
-    if category && vendor
-      params[:expense][:expense_category_id] = category.id
-      params[:expense][:vendor_id] = vendor.id
-    elsif category
-      params[:expense][:expense_category_id] = category.id
-    elsif vendor
-      params[:expense][:vendor_id] = vendor.id
-    else
-      ''
+  private
+    def create_new_category
+      ExpenseCategory.create(
+        name: expense_params[:expense_category][:name],
+        user_id: current_user.id
+      )
     end
-    @form.validate(expense_params.merge(user_id: current_user.id))
-  end
 
-  def set_new_form
-    @form = ExpenseForm.new(Expense.new)
-  end
+    def new_category?
+      return false if not expense_params[:expense_category].present?
+      expense_params[:expense_category][:name].present?
+    end
 
-  def expense_params
-    params.require(:expense).permit(
-      :amount,
-      :created_at,
-      :expense_category_id,
-      :vendor_id,
-      :note,
-      expense_category: [
-        :id,
-        :name,
-        :_destroy
-      ],
-      vendor: [
-        :id,
-        :name,
+    def create_new_vendor
+      Vendor.create(
+        name: expense_params[:vendor][:name],
+        note: expense_params[:vendor][:note],
+        user_id: current_user.id
+      )
+    end
+
+    def new_vendor?
+      return false if not expense_params[:vendor].present?
+      expense_params[:vendor][:name].present?
+    end
+
+    def validate!
+      category = create_new_category if new_category?
+      vendor = create_new_vendor if new_vendor?
+      params[:expense].delete :expense_category
+      params[:expense].delete :vendor
+      if category && vendor
+        params[:expense][:expense_category_id] = category.id
+        params[:expense][:vendor_id] = vendor.id
+      elsif category
+        params[:expense][:expense_category_id] = category.id
+      elsif vendor
+        params[:expense][:vendor_id] = vendor.id
+      else
+        ''
+      end
+      @form.validate(expense_params.merge(user_id: current_user.id))
+    end
+
+    def set_new_form
+      @form = ExpenseForm.new(Expense.new)
+    end
+
+    def expense_params
+      params.require(:expense).permit(
+        :amount,
+        :created_at,
+        :expense_category_id,
+        :vendor_id,
         :note,
-        :_destroy
-      ]
-    )
-  end
+        expense_category: [
+          :id,
+          :name,
+          :_destroy
+        ],
+        vendor: [
+          :id,
+          :name,
+          :note,
+          :_destroy
+        ]
+      )
+    end
 end

@@ -43,74 +43,73 @@ class RecurringIncomesController < ApplicationController
     end
   end
 
-  def recurring_income_params
-    params.require(:recurring_income).permit(
-      :amount,
-      :created_at,
-      :income_category_id,
-      :vendor_id,
-      :note,
-      :frequency,
-      income_category: [
-        :id,
-        :name,
-        :_destroy
-      ],
-      vendor: [
-        :id,
-        :name,
-        :note,
-        :_destroy
-      ]
-    ).merge!(user_id: current_user.id)
-  end
   private
-
-  def create_new_vendor
-    Vendor.create(
-      name: params[:recurring_income][:vendor][:name],
-      note: params[:recurring_income][:vendor][:note],
-      user_id: current_user.id
-    )
-  end
-
-
-  def new_vendor?
-    return false if not params[:recurring_income][:vendor].present?
-    params[:recurring_income][:vendor][:name].present?
-  end
-
-
-  def create_new_category
-    IncomeCategory.create(
-      name: recurring_income_params[:income_category][:name],
-      user_id: current_user.id
-    )
-  end
-
-  def new_category?
-    return false if not recurring_income_params[:income_category].present?
-    recurring_income_params[:income_category][:name].present?
-  end
-
-
-  def validate!
-    @form = RecurringIncomeForm.new(RecurringIncome.new)
-    category = create_new_category if new_category?
-    vendor = create_new_vendor if new_vendor?
-    params[:recurring_income].delete :income_category
-    params[:recurring_income].delete :vendor
-    params[:recurring_income][:frequency] = params[:recurring_income][:frequency].to_i
-    if category && vendor
-      params[:recurring_income][:income_category_id] = category.id
-      params[:recurring_income][:vendor_id] = vendor.id
-    elsif category
-      params[:recurring_income][:income_category_id] = category.id
-    elsif vendor
-      params[:recurring_income][:vendor_id] = vendor.id
-    else
-      ''
+    def recurring_income_params
+      params.require(:recurring_income).permit(
+        :amount,
+        :created_at,
+        :income_category_id,
+        :vendor_id,
+        :note,
+        :frequency,
+        income_category: [
+          :id,
+          :name,
+          :_destroy
+        ],
+        vendor: [
+          :id,
+          :name,
+          :note,
+          :_destroy
+        ]
+      ).merge!(user_id: current_user.id)
     end
-    @form.validate(recurring_income_params.merge(user_id: current_user.id))
-  end
+
+    def create_new_vendor
+      Vendor.create(
+        name: params[:recurring_income][:vendor][:name],
+        note: params[:recurring_income][:vendor][:note],
+        user_id: current_user.id
+      )
+    end
+
+    def new_vendor?
+      return false if not params[:recurring_income][:vendor].present?
+      params[:recurring_income][:vendor][:name].present?
+    end
+
+
+    def create_new_category
+      IncomeCategory.create(
+        name: recurring_income_params[:income_category][:name],
+        user_id: current_user.id
+      )
+    end
+
+    def new_category?
+      return false if not recurring_income_params[:income_category].present?
+      recurring_income_params[:income_category][:name].present?
+    end
+
+
+    def validate!
+      @form = RecurringIncomeForm.new(RecurringIncome.new)
+      category = create_new_category if new_category?
+      vendor = create_new_vendor if new_vendor?
+      params[:recurring_income].delete :income_category
+      params[:recurring_income].delete :vendor
+      params[:recurring_income][:frequency] = params[:recurring_income][:frequency].to_i
+      if category && vendor
+        params[:recurring_income][:income_category_id] = category.id
+        params[:recurring_income][:vendor_id] = vendor.id
+      elsif category
+        params[:recurring_income][:income_category_id] = category.id
+      elsif vendor
+        params[:recurring_income][:vendor_id] = vendor.id
+      else
+        ''
+      end
+      @form.validate(recurring_income_params.merge(user_id: current_user.id))
+    end
 end

@@ -41,7 +41,8 @@ class VendorsController < ApplicationController
     end
   end
 
-  def vendor_params
-    params.require(:vendor).permit(:name, :note).merge(user_id: current_user.id)
-  end
+  private
+    def vendor_params
+      params.require(:vendor).permit(:name, :note).merge(user_id: current_user.id)
+    end
 end
