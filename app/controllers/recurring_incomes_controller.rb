@@ -3,7 +3,7 @@ require_dependency 'app/models/forms/recurring_income_form' unless Rails.env == 
 class RecurringIncomesController < ApplicationController
   def index
     @form = RecurringIncomeForm.new(RecurringIncome.new)
-    @incomes = current_user.recurring_incomes.order(created_at: :desc)
+    @incomes = current_user.recurring_incomes.order(due_day: :desc)
     @total_items = @incomes.count
     @vendors = current_user.vendors.order('lower(name) asc')
     @frequencies = RecurringIncome.frequencies

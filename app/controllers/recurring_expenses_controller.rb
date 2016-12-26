@@ -4,7 +4,7 @@ class RecurringExpensesController < ApplicationController
   before_action :set_new_form, only: [:index, :create, :update]
 
   def index
-    @expenses = current_user.recurring_expenses.order(created_at: :desc)
+    @expenses = current_user.recurring_expenses.order(due_day: :desc)
     @total_expenses = @expenses.map(&:amount).sum
     @total_items = @expenses.count
     @vendors = current_user.vendors.order('lower(name) asc')
