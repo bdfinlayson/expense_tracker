@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161226020704) do
+ActiveRecord::Schema.define(version: 20161226022054) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -111,6 +111,8 @@ ActiveRecord::Schema.define(version: 20161226020704) do
     t.datetime "updated_at",         null: false
     t.text     "note"
     t.integer  "frequency"
+    t.integer  "due_day"
+    t.index ["due_day"], name: "index_recurring_incomes_on_due_day", using: :btree
     t.index ["frequency"], name: "index_recurring_incomes_on_frequency", using: :btree
     t.index ["income_category_id"], name: "index_recurring_incomes_on_income_category_id", using: :btree
     t.index ["user_id"], name: "index_recurring_incomes_on_user_id", using: :btree
