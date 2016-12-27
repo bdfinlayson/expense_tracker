@@ -18,7 +18,7 @@ class PendingExpensesController < ApplicationController
 
   def clear
     @pending_expense = PendingExpense.find params[:id]
-    attrs = @pending_expense.attributes.except('frequency', 'created_at', 'updated_at', 'note', 'id', 'cleared')
+    attrs = @pending_expense.attributes.except('frequency', 'created_at', 'updated_at', 'note', 'id', 'cleared', 'due_day')
     Expense.create(attrs)
     @pending_expense.update(cleared: true)
     redirect_to pending_expenses_path, notice: 'Expense logged!'
