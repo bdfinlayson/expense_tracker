@@ -1,7 +1,7 @@
 $ ->
   $.ajax
     dataType: 'json'
-    url: '/overviews/data'
+    url: $('#expenses-chart').data('chart-url')
     success: (result) =>
       income = result['income']
       expenses = result['expenses']
