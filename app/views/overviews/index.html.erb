@@ -60,7 +60,7 @@
       Estimated End-Of-Month Net Worth
     </td>
     <td>
-      <%= number_to_currency (current_user.beginning_cash_on_hand + @profits.sum).round(2) %>
+      <%= number_to_currency (current_user.beginning_cash_on_hand + @profit_history).round(2) %>
     </td>
   </tr>
 </table>

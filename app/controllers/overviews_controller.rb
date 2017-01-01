@@ -18,6 +18,9 @@ class OverviewsController < ApplicationController
     @net_worth_for_month = @income_this_month - @total_expenses_this_month
     expenses = get_monthly_expense_history.values
     incomes = get_monthly_income_history.values
+    expense_history = current_user.expenses.pluck(:amount).sum
+    income_history = current_user.incomes.pluck(:amount).sum
+    @profit_history = income_history - expense_history
     @profits = get_monthly_profit_history(expenses, incomes).values
     profitability = get_monthly_percent_profit(@profits, incomes).delete_if {|x| x == 0}
     @average_profitability = (profitability.reduce(:+).to_f / profitability.size).round(2)
