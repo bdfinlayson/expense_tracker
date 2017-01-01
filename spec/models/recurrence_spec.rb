@@ -252,7 +252,7 @@ describe Recurrence do
 
   context 'when annual (frequency = 3)' do
     let(:expense_category) { FactoryGirl.create(:expense_category, user: user)}
-    let(:time) { Time.now }
+    let(:time) { DateTime.new(2016,5,5) }
     let!(:recurring_expense) {
       FactoryGirl.create(:recurring_expense,
         created_at: time,
@@ -269,8 +269,14 @@ describe Recurrence do
         end
       end
 
-      it 'does not log' do
+      it 'does not log in same year' do
         Timecop.freeze(time.tomorrow) do
+          expect{Recurrence.new(recurring_expense).compute}.to change(PendingExpense.unscoped, :count).by(0)
+        end
+      end
+
+      it 'does not log in next year before month due' do
+        Timecop.freeze(time.next_year.beginning_of_year) do
           expect{Recurrence.new(recurring_expense).compute}.to change(PendingExpense.unscoped, :count).by(0)
         end
       end
