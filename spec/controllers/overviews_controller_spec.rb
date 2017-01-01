@@ -23,6 +23,7 @@ describe OverviewsController, type: :controller do
       sign_in user
     end
     it 'sums the expenses for each month' do
+      controller.instance_variable_set(:@year, 2016)
       h = controller.get_monthly_expense_history
       expect(h['June']).to eq 5000.0
       expect(h['July']).to eq 2000.0
@@ -51,6 +52,7 @@ describe OverviewsController, type: :controller do
       sign_in user
     end
     it 'sums the expenses for each month' do
+      controller.instance_variable_set(:@year, 2016)
       h = controller.get_monthly_income_history
       expect(h['June']).to eq 5000.0
       expect(h['July']).to eq 2000.0
@@ -95,6 +97,7 @@ describe OverviewsController, type: :controller do
     end
 
     it 'returns montly profit' do
+      controller.instance_variable_set(:@year, 2016)
       expenses = controller.get_monthly_expense_history.values
       incomes = controller.get_monthly_income_history.values
       h = controller.get_monthly_profit_history(expenses, incomes)
