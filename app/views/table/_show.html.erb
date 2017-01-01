@@ -1,15 +1,15 @@
 <% if @months.present? %>
   <div class='navigation-arrows'>
     <% if @months[:last][:number] > 0 %>
-      <div><%= link_to '< ' + @months[:last][:name], url_for(params[:controller] + '?month=' + @months[:last][:number].to_s), 'data-turbolinks' => false %></div>
+      <div><%= link_to '< ' + @months[:last][:name], url_for(params[:controller] + '?month=' + @months[:last][:number].to_s + '&year=' + @year.to_s), 'data-turbolinks' => false %></div>
     <% else %>
-      <div></div>
+      <div><%= link_to '< ' + 'December', url_for(params[:controller] + '?month=12&year=' + @last_year.to_s), 'data-turbolinks' => false %></div>
     <% end %>
-    <h1><%= @months[:current][:name] + ' ' + Time.now.year.to_s %></h1>
+    <h1><%= @months[:current][:name] + ' ' + @year.to_s %></h1>
     <% if @months[:next][:number] < 13 %>
-      <div><%= link_to @months[:next][:name] + ' >', url_for(params[:controller] + '?month=' + @months[:next][:number].to_s), 'data-turbolinks' => false %></div>
+      <div><%= link_to @months[:next][:name] + ' >', url_for(params[:controller] + '?month=' + @months[:next][:number].to_s + '&year=' + @year.to_s), 'data-turbolinks' => false %></div>
     <% else %>
-      <div></div>
+      <div><%= link_to 'January' + ' >', url_for(params[:controller] + '?month=1&year=' + @next_year.to_s), 'data-turbolinks' => false %></div>
     <% end %>
   </div>
 <% end %>

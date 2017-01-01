@@ -7,18 +7,21 @@ class ExpensesController < ApplicationController
   include Calendar
 
   def index
+    @year = params[:year] || Time.now.year
+    @last_year = @year.to_i - 1
+    @next_year = @year.to_i + 1
     @months = months params
-    @expenses = all_records_for('expenses', Time.now.year, @months[:current][:number])
+    @expenses = all_records_for('expenses', @year, @months[:current][:number])
     @total_items = @expenses.count
     @vendors = current_user.vendors
     @categories = current_user.expense_categories
     @total_expenses_this_month = get_sum_of @expenses
-    @total_expenses_last_month = get_sum_of(all_records_for('expenses', Time.now.year, @months[:last][:number]))
+    @total_expenses_last_month = get_sum_of(all_records_for('expenses', @year, @months[:last][:number]))
     @columns = %w(date item_amount vendor_name category_name recurring?)
     @form_partial = 'form/show'
     @new_category = ExpenseCategory.new
     @new_vendor = Vendor.new
-    @total_income_this_month = get_sum_of(all_records_for('incomes', Time.now.year, @months[:current][:number]))
+    @total_income_this_month = get_sum_of(all_records_for('incomes', @year, @months[:current][:number]))
     @stats = {
       'This Month': "$#{@total_expenses_this_month}",
       'Last Month': "$#{@total_expenses_last_month}",

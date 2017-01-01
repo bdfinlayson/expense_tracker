@@ -6,9 +6,12 @@ class IncomesController < ApplicationController
   include Calculator
 
   def index
+    @year = params[:year] || Time.now.year
+    @last_year = @year.to_i - 1
+    @next_year = @year.to_i + 1
     @months = months params
     @form = IncomeForm.new(Income.new)
-    @incomes = all_records_for('incomes', Time.now.year, @months[:current][:number])
+    @incomes = all_records_for('incomes', @year, @months[:current][:number])
     @total_items = @incomes.count
     @vendors = current_user.vendors.order('lower(name) asc')
     @categories = current_user.income_categories.order('lower(name) asc')
@@ -17,7 +20,7 @@ class IncomesController < ApplicationController
     @form_partial = 'form/show'
     @columns = %w(date item_amount vendor_name category_name recurring?)
     @total_income_this_month = get_sum_of @incomes
-    @total_expenses_this_month = get_sum_of(all_records_for('expenses', Time.now.year, @months[:current][:number]))
+    @total_expenses_this_month = get_sum_of(all_records_for('expenses', @year, @months[:current][:number]))
     @stats = {
       'This Month': "$#{@total_income_this_month}",
       '% of Income Spent': "#{percentage_of @total_expenses_this_month, @total_income_this_month}%"
