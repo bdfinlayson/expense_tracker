@@ -1,7 +1,12 @@
-<h1 class='page-header'>Overview</h1>
+<h1 class='page-header'>
+  <span>
+    Overview (<%= @year %>)
+  </span>
+  <%= render partial: 'stats/show' %>
+</h1>
 
 <select name="month" id="year-select" onchange="" size="1">
-    <option selected value='' disabled>Select year...</option>
+    <option selected value='' disabled><%= @year %></option>
     <option value="2016">2016</option>
     <option value="2017">2017</option>
     <option value="2018">2018</option>
@@ -19,51 +24,6 @@
 
 
 <h1>Summary (<%= Time.now.beginning_of_month.strftime('%m/%d/%y') %> - <%= Time.now.end_of_month.strftime('%m/%d/%y') %>)</h1>
-<table>
-  <tr>
-    GENERAL
-  </tr>
-  <tr>
-    <td>
-      Average Profitability
-    </td>
-    <td>
-      <%= String(@average_profitability) + "%" %>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Expense
-    </td>
-    <td>
-      <%= number_to_currency @total_expenses_this_month %>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Income
-    </td>
-    <td>
-      <%= number_to_currency @income_this_month %>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Profit for Month
-    </td>
-    <td>
-      <%= number_to_currency @net_worth_for_month %>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Estimated End-Of-Month Net Worth
-    </td>
-    <td>
-      <%= number_to_currency (current_user.beginning_cash_on_hand + @profit_history).round(2) %>
-    </td>
-  </tr>
-</table>
 
 <table>
   <tr>
