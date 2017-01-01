@@ -2,7 +2,7 @@ class OverviewsController < ApplicationController
   respond_to :json, :html
 
   def index
-    @year = params[:year].to_i || Time.now.year
+    @year = params[:year] ? params[:year].to_i : Time.now.year
     @last_year = @year.to_i - 1
     @next_year = @year.to_i + 1
     @total_expenses_this_month = current_user.expenses.where('extract(year from created_at) = ?', @year).where('extract(month from created_at) = ?', Time.now.month).pluck(:amount).sum
