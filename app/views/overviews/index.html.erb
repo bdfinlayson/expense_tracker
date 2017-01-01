@@ -1,17 +1,18 @@
 <h1 class='page-header'>
   <span>
-    Overview (<%= @year %>)
+    Overview <select name="month" id="year-select" onchange="" size="1">
+            <option selected value='' disabled><%= @year %></option>
+            <option value="2016">2016</option>
+            <option value="2017">2017</option>
+            <option value="2018">2018</option>
+            <option value="2019">2019</option>
+        </select>
+
   </span>
   <%= render partial: 'stats/show' %>
 </h1>
 
-<select name="month" id="year-select" onchange="" size="1">
-    <option selected value='' disabled><%= @year %></option>
-    <option value="2016">2016</option>
-    <option value="2017">2017</option>
-    <option value="2018">2018</option>
-    <option value="2019">2019</option>
-</select>
+
 
 <h3>Monthly Total Income | Expenses | Profits</h3>
 <div id='expenses-chart' data-chart-url=<%= "/overviews/data?year=#{@year}" %>></div>
