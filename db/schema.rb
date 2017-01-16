@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161227053117) do
+ActiveRecord::Schema.define(version: 20170116044637) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,10 +91,12 @@ ActiveRecord::Schema.define(version: 20161227053117) do
     t.integer  "vendor_id"
     t.integer  "expense_category_id"
     t.text     "note"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
     t.integer  "frequency"
     t.integer  "due_day"
+    t.boolean  "archived",            default: false
+    t.index ["archived"], name: "index_recurring_expenses_on_archived", using: :btree
     t.index ["due_day"], name: "index_recurring_expenses_on_due_day", using: :btree
     t.index ["expense_category_id"], name: "index_recurring_expenses_on_expense_category_id", using: :btree
     t.index ["frequency"], name: "index_recurring_expenses_on_frequency", using: :btree
@@ -107,11 +109,13 @@ ActiveRecord::Schema.define(version: 20161227053117) do
     t.integer  "user_id"
     t.integer  "vendor_id"
     t.integer  "income_category_id"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.text     "note"
     t.integer  "frequency"
     t.integer  "due_day"
+    t.boolean  "archived",           default: false
+    t.index ["archived"], name: "index_recurring_incomes_on_archived", using: :btree
     t.index ["due_day"], name: "index_recurring_incomes_on_due_day", using: :btree
     t.index ["frequency"], name: "index_recurring_incomes_on_frequency", using: :btree
     t.index ["income_category_id"], name: "index_recurring_incomes_on_income_category_id", using: :btree

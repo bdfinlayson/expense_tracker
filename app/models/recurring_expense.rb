@@ -12,4 +12,7 @@ class RecurringExpense < ApplicationRecord
   validates :vendor_id, uniqueness: {scope: :user_id}
 
   after_save { update_column(:due_day, created_at.day) }
+
+  scope :active, -> { where(archived: false) }
+  scope :archived, -> { where(archived: true) }
 end

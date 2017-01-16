@@ -4,7 +4,12 @@ class RecurringExpensesController < ApplicationController
   before_action :set_new_form, only: [:index, :create, :update]
 
   def index
-    @expenses = current_user.recurring_expenses.order(due_day: :desc)
+    archived  = params[:archived].present?
+    if archived
+      @expenses = current_user.recurring_expenses.archived.order(due_day: :desc)
+    else
+      @expenses = current_user.recurring_expenses.active.order(due_day: :desc)
+    end
     @total_expenses = @expenses.map(&:amount).sum
     @total_items = @expenses.count
     @vendors = current_user.vendors.order('lower(name) asc')
@@ -19,6 +24,12 @@ class RecurringExpensesController < ApplicationController
       'Total Recurring': "$#{@total_expenses.round(2)}",
       '% of Budget': "#{((@total_expenses / @budget) * 100).round(2)}%"
     }
+  end
+
+  def archive
+    recurring_expense = RecurringExpense.find params[:id]
+    recurring_expense.update(archived: true)
+    redirect_to recurring_expenses_path, notice: 'Recurring Expense archived!'
   end
 
   def create
