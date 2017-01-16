@@ -25,8 +25,8 @@ class OverviewsController < ApplicationController
     @stats = {
       "#{@year} Avg Profitability": "#{@average_profitability}%",
       'Total Avg Profitability': "#{((@profit_history / expense_history) * 100).round(2)}%",
-      "#{@year} Net Worth": "$#{year_net_worth}",
-      'Total Net Worth': "$#{current_user.beginning_cash_on_hand + @profit_history}"
+      "#{@year} Net Worth": "$#{year_net_worth.round(2)}",
+      'Total Net Worth': "$#{(current_user.beginning_cash_on_hand + @profit_history).round(2)}"
     }
   end
 
