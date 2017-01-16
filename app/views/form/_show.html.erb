@@ -59,10 +59,6 @@
 <% end %>
 
   <% if model.id.present? %>
-    <% if model.respond_to? :archived %>
-      <%= button_to 'Archive', {action: 'archive', controller: @controller, id: model.id }, data: { confirm: 'Do you want to archive this expense?'} %>
-    <% end %>
-    <br>
     <%= button_to 'Destroy', {action: 'destroy', controller: @controller, id: model.id }, method: :delete, data: { confirm: 'Are you sure?'} %>
   <% end %>
 

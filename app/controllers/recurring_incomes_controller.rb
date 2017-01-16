@@ -2,8 +2,13 @@ require_dependency 'app/models/forms/recurring_income_form' unless Rails.env == 
 
 class RecurringIncomesController < ApplicationController
   def index
+    archived  = params[:archived].present?
+    if archived
+      @incomes = current_user.recurring_incomes.archived.order(due_day: :desc)
+    else
+      @incomes = current_user.recurring_incomes.active.order(due_day: :desc)
+    end
     @form = RecurringIncomeForm.new(RecurringIncome.new)
-    @incomes = current_user.recurring_incomes.order(due_day: :desc)
     @total_items = @incomes.count
     @vendors = current_user.vendors.order('lower(name) asc')
     @frequencies = RecurringIncome.frequencies
@@ -12,6 +17,12 @@ class RecurringIncomesController < ApplicationController
     @form_partial = 'form/show'
     @new_category = IncomeCategory.new
     @new_vendor = Vendor.new
+  end
+
+  def archive
+    recurring_income = RecurringIncome.find params[:id]
+    recurring_income.update(archived: true)
+    redirect_to recurring_incomes_path, notice: 'Recurring Income archived!'
   end
 
   def destroy

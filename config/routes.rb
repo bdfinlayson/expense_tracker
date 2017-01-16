@@ -19,7 +19,11 @@ Rails.application.routes.draw do
   end
   resources :budgets
   resources :incomes
-  resources :recurring_incomes
+  resources :recurring_incomes do
+    collection do
+      post 'archive'
+    end
+  end
   resources :pending_expenses do
     member do
       post 'clear'

@@ -10,4 +10,7 @@ class RecurringIncome < ApplicationRecord
   accepts_nested_attributes_for :vendor, reject_if: :all_blank, allow_destroy: true
 
   after_save { update_column(:due_day, created_at.day) }
+
+  scope :active, -> { where(archived: false) }
+  scope :archived, -> { where(archived: true) }
 end

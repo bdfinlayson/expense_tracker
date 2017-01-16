@@ -1,6 +1,12 @@
 <h1 class='page-header'>
   <span>
     Recurring Incomes (<%= @total_items %>)
+    ||
+    <% if params[:archived] %>
+      <%= link_to 'View Active', recurring_incomes_path, 'data-turbolinks': false %>
+    <% else %>
+      <%= link_to 'View Inactive', recurring_incomes_path(archived: true), 'data-turbolinks': false %>
+    <% end %>
     <%= render partial: 'modal/show',
       locals: {
         form: @form_partial,
