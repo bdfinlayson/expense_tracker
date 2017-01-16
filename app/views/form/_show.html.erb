@@ -59,7 +59,6 @@
 <% end %>
 
   <% if model.id.present? %>
-    <br>
     <%= button_to 'Destroy', {action: 'destroy', controller: @controller, id: model.id }, method: :delete, data: { confirm: 'Are you sure?'} %>
   <% end %>
 

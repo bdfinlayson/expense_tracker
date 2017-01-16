@@ -4,7 +4,11 @@ Rails.application.routes.draw do
   root to: 'expenses#index'
   resources :forms, only: [:create]
   resources :expenses
-  resources :recurring_expenses
+  resources :recurring_expenses do
+    collection do
+      post 'archive'
+    end
+  end
   resources :expense_categories
   resources :income_categories
   resources :vendors
@@ -15,7 +19,11 @@ Rails.application.routes.draw do
   end
   resources :budgets
   resources :incomes
-  resources :recurring_incomes
+  resources :recurring_incomes do
+    collection do
+      post 'archive'
+    end
+  end
   resources :pending_expenses do
     member do
       post 'clear'

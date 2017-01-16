@@ -108,6 +108,6 @@ class Recurrence
   end
 
   def get_model_attributes
-    @model.attributes.except('frequency', 'created_at', 'updated_at', 'note', 'id', 'due_day')
+    @model.attributes.except('frequency', 'created_at', 'updated_at', 'note', 'id', 'due_day', 'archived')
   end
 end

@@ -5,7 +5,7 @@ $(document).on 'turbolinks:load', ->
       trs = $('.datatable > tbody > tr')
       $(trs).unbind('click')
       $(trs).click (event) ->
-        unless $(event.toElement).data('clear-pending-expense')
+        unless $(event.toElement).data('clear-pending-expense') || $(event.toElement).data('archive-resource')
           tr = @
           id = $(tr).data('id')
           name = $(tr).data('model-name')
