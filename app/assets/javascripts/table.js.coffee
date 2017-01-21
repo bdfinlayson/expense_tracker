@@ -15,4 +15,5 @@ $(document).on 'turbolinks:load', ->
             method: 'POST'
             success: (response) ->
               $('#empty-modal-content').empty().append(response)
+              $('select').selectize()
               $('#empty-modal-trigger').click()
