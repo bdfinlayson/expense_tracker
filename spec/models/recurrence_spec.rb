@@ -193,7 +193,7 @@ describe Recurrence do
       context 'a month later' do
         it 'creates a pending expense' do
           expect{Recurrence.new(recurring_expense).compute}.to change(PendingExpense.unscoped, :count).by(1)
-          Timecop.freeze(Date.today + 31) do
+          Timecop.freeze(Date.today + 1.month) do
             expect{Recurrence.new(recurring_expense).compute}.to change(PendingExpense.unscoped, :count).by(1)
           end
           expect(PendingExpense.unscoped.count).to be 2
@@ -210,15 +210,15 @@ describe Recurrence do
         context 'in the following month after logging the first time the item was due' do
           before do
             expect{Recurrence.new(recurring_expense).compute}.to change(PendingExpense.unscoped, :count).by(1)
-            Timecop.freeze(Date.today + 31) do
+            Timecop.freeze(Date.today + 1.month) do
               expect{Recurrence.new(recurring_expense).compute}.to change(PendingExpense.unscoped, :count).by(1)
             end
           end
           it 'does not create again on the following day' do
-            Timecop.freeze(Date.today + 32) do
+            Timecop.freeze(Date.today + 1.month + 1.day) do
               expect{Recurrence.new(recurring_expense).compute}.to change(PendingExpense.unscoped, :count).by(0)
             end
-            Timecop.freeze(Date.today + 33) do
+            Timecop.freeze(Date.today + 1.month + 2.days) do
               expect{Recurrence.new(recurring_expense).compute}.to change(PendingExpense.unscoped, :count).by(0)
             end
             expect(PendingExpense.unscoped.count).to be 2

@@ -20,6 +20,7 @@ gem 'dry-types'
 gem 'draper', github: 'drapergem/draper'
 gem 'activemodel-serializers-xml'
 gem 'jquery-datatables-rails'
+gem 'selectize-rails'
 
 # Charts
 gem 'chartkick'
