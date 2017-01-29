@@ -36,7 +36,7 @@ main.content {
 }
 
 .selectize-control {
-  width: 200px;
+  width: 100%;
   display: inline-flex;
 }
 
@@ -48,6 +48,10 @@ label .selectize-control {
   width: 80px;
 }
 
-.modal-content .selectize-control {
+.page-header .modal-content .selectize-control {
+  width: 100%;
+}
+
+.page-header .modal-content .selectize-input {
   width: 100%;
 }
