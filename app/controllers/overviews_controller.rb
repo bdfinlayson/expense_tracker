@@ -24,7 +24,7 @@ class OverviewsController < ApplicationController
     @average_profitability = (profitability.reduce(:+).to_f / profitability.size).round(2)
     @stats = {
       "#{@year} Avg Profitability": "#{@average_profitability}%",
-      'Total Avg Profitability': "#{((@profit_history / expense_history) * 100).round(2)}%",
+      'Total Avg Profitability': "#{((@profit_history / income_history) * 100).round(2)}%",
       "#{@year} Net Worth": "$#{year_net_worth.round(2)}",
       'Total Net Worth': "$#{(current_user.beginning_cash_on_hand + @profit_history).round(2)}"
     }
