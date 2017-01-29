@@ -34,3 +34,20 @@
 main.content {
   font-size: .8em;
 }
+
+.selectize-control {
+  width: 200px;
+  display: inline-flex;
+}
+
+label .selectize-control {
+  width: 75px;
+}
+
+.page-header span .selectize-control {
+  width: 80px;
+}
+
+.modal-content .selectize-control {
+  width: 100%;
+}
