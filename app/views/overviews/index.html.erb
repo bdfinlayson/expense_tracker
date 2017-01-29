@@ -2,10 +2,12 @@
   <span>
     Overview <select name="month" id="year-select" onchange="" size="1">
             <option selected value='' disabled><%= @year %></option>
-            <option value="2016">2016</option>
-            <option value="2017">2017</option>
-            <option value="2018">2018</option>
-            <option value="2019">2019</option>
+            <% [2016, 2017, 2018, 2019].each do |year| %>
+              <% if year != @year %>
+                <option value="<%= year %>"><%= year %></option>
+              <% end %>
+            <% end %>
+
         </select>
 
   </span>

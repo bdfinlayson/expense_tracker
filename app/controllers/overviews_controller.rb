@@ -24,7 +24,7 @@ class OverviewsController < ApplicationController
     @average_profitability = (profitability.reduce(:+).to_f / profitability.size).round(2)
     @stats = {
       "#{@year} Avg Profitability": "#{@average_profitability}%",
-      'Total Avg Profitability': "#{((@profit_history / expense_history) * 100).round(2)}%",
+      'Total Avg Profitability': "#{((@profit_history / income_history) * 100).round(2)}%",
       "#{@year} Net Worth": "$#{year_net_worth.round(2)}",
       'Total Net Worth': "$#{(current_user.beginning_cash_on_hand + @profit_history).round(2)}"
     }
@@ -45,18 +45,26 @@ class OverviewsController < ApplicationController
     profits = get_monthly_profit_history(expenses, incomes).values
     profitability = get_monthly_percent_profit(profits, incomes)
     net_worth = get_net_worth(profits)
-    months = %w(Jul Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec)
+    months = %w(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec)
     render json: { net_worth: net_worth, profitability: profitability, months: months, profit: profits.unshift('profits'), income: incomes.unshift('income'), expenses: expenses.unshift('expenses') }
   end
 
   def get_net_worth(profits)
-    starting_cash = current_user.beginning_cash_on_hand
+    if @year.to_i == 2016
+      current_balance = current_user.beginning_cash_on_hand
+    else
+      current_balance =
+        current_user.beginning_cash_on_hand +
+        (current_user.incomes.where("extract(year from created_at) < ?", @year.to_i).pluck(:amount).sum -
+         current_user.expenses.where("extract(year from created_at) < ?", @year.to_i).pluck(:amount).sum)
+    end
     worth = []
     profits.each do |p|
       if p.zero?
         worth.push "N/A"
       else
-        worth.push(starting_cash += p)
+        amt = (current_balance += p).round(2)
+        worth.push(amt)
       end
     end
     worth
