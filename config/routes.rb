@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   devise_for :users
   root to: 'expenses#index'
   resources :forms, only: [:create]
@@ -30,4 +29,5 @@ Rails.application.routes.draw do
     end
   end
   resources :account_payables
+  resources :account_payable_histories, only: [:index]
 end

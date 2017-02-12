@@ -26,6 +26,9 @@
       <% if params['controller'].include?('recurring') && !params[:archived] %>
         <th></th>
       <% end %>
+      <% if params['controller'] == 'account_payables' %>
+        <th></th>
+      <% end %>
     </tr>
   </thead>
   <tbody>
@@ -47,6 +50,11 @@
         <% if params['controller'].include?('recurring') && !params[:archived] %>
           <td>
             <%= button_to 'Archive', {action: 'archive', controller: params['controller'], id: model.id }, data: { confirm: 'Are you sure you want to archive this?', 'archive-resource': true} %>
+          </td>
+        <% end %>
+        <% if params['controller'] == 'account_payables' %>
+          <td>
+            <%= link_to 'Payment History', account_payable_histories_path(id: model.id), method: 'get', data: { 'payment-history': true } %>
           </td>
         <% end %>
       </tr>

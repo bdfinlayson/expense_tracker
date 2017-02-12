@@ -1,0 +1,11 @@
+<h1 class='page-header'>
+  <span>
+    <%= @account.name %> Payment History (<%= @total_items %>)
+  </span>
+  <%= render partial: 'stats/show' %>
+</h1>
+<%= render partial: 'table/show', locals: {
+  columns: @columns,
+  collection: @logs
+  }
+%>

@@ -1,0 +1,2 @@
+module AccountPayableHistoriesHelper
+end
