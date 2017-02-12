@@ -24,36 +24,3 @@
 
 <h3>Total Net Worth</h3>
 <div id='net-worth-chart'></div>
-
-
-<h1>Summary (<%= Time.now.beginning_of_month.strftime('%m/%d/%y') %> - <%= Time.now.end_of_month.strftime('%m/%d/%y') %>)</h1>
-
-<table>
-  <tr>
-    BUDGET
-  </tr>
-  <tr>
-    <td>
-      Total for Month
-    </td>
-    <td>
-      <%= number_to_currency @total_for_month %>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Spent
-    </td>
-    <td>
-      <%= number_to_currency @total_spent %>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Left
-    </td>
-    <td>
-      <%= number_to_currency(@total_for_month - @total_spent) %>
-    </td>
-  </tr>
-</table>

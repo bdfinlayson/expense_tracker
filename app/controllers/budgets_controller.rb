@@ -2,6 +2,8 @@ require_dependency 'app/models/forms/budget_form' unless Rails.env == 'productio
 
 class BudgetsController < ApplicationController
   include Calendar
+  include Querier
+  include Calculator
 
   def index
     @months = months(params)
@@ -15,8 +17,12 @@ class BudgetsController < ApplicationController
     @income = current_user.recurring_incomes
     @total_budget = @budgets.pluck(:amount).sum
     @summed_income = get_monthly_income_sum(@income)
+    @expenses = all_records_for('expenses', Time.now.year, Time.now.month)
+    @total_expenses_this_month = get_sum_of @expenses
     @stats = {
       'Total Budget': "$#{@total_budget}",
+      'Spent': "$#{@total_expenses_this_month}",
+      'Left': "$#{@total_budget - @total_expenses_this_month}",
       'Budget vs Income':"#{((@total_budget / @summed_income) * 100).round(2)}%"
     }
     @unbudgeted_categories = @categories.pluck(:name) - @budgets.map(&:category_name)
