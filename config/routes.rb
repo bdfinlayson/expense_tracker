@@ -29,4 +29,5 @@ Rails.application.routes.draw do
       post 'clear'
     end
   end
+  resources :account_payables
 end

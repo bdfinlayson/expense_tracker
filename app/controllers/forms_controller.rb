@@ -4,6 +4,7 @@ class FormsController < ApplicationController
   def create
     @frequencies = RecurringExpense.frequencies
     @vendors = current_user.vendors
+    @account_payables = current_user.account_payables.active
     @controller = params[:form_controller]
     if [params[:model_name]].select { |name| name.match /expense|budget/i }.present?
       @new_category = ExpenseCategory.new

@@ -1,0 +1,20 @@
+<h1 class='page-header'>
+  <span>
+    Accounts Payables (<%= @total_items %>)
+    <%= render partial: 'modal/show',
+      locals: {
+        form: @form_partial,
+        modal_trigger: 'Create New +',
+        modal_title: 'New Account Payable',
+        modal_id: 'new',
+        model: @form
+      }
+    %>
+  </span>
+  <%= render partial: 'stats/show' %>
+</h1>
+<%= render partial: 'table/show', locals: {
+  columns: @columns,
+  collection: @accounts_payables
+  }
+%>

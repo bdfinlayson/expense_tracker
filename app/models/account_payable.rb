@@ -1,8 +1,11 @@
 class AccountPayable < ApplicationRecord
+  include BaseModel
   belongs_to :user
   belongs_to :vendor
   has_many :payments, foreign_key: 'account_payable_id', class_name: 'Expense'
   has_many :logs, foreign_key: 'account_payable_id', class_name: 'AccountPayableHistory'
+
+  scope :active, -> { where(closed_at: nil) }
 
   def log_transaction(payment)
     starting_amount = self.current_amount

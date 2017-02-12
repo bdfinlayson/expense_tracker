@@ -7,18 +7,37 @@
 
   <% if model.model_name.name != 'PendingExpense' %>
     <% if model.respond_to?(:name) %>
+      <%= f.label :name %>
       <%= f.text_field :name, placeholder: 'Name here' %>
     <% end %>
 
     <% if (model.respond_to? :created_at) && (['Budget', 'Vendor', 'ExpenseCategory', 'IncomeCategory'].exclude? model.model_name.name) %>
+      <%= f.label :created_at %>
       <%= f.date_field :created_at, class: 'created_at', id: model.try(:id) %>
     <% end %>
 
+    <% if model.respond_to?(:starting_amount) %>
+      <%= f.label :starting_amount %>
+      <%= f.text_field :starting_amount, type: :number, step: '0.01', placeholder: '$1.50' %>
+    <% end %>
+
+    <% if model.respond_to?(:current_amount) %>
+      <%= f.label :current_amount %>
+      <%= f.text_field :current_amount, type: :number, step: '0.01', placeholder: '$1.50' %>
+    <% end %>
+
+    <% if (model.respond_to? :interest_free_expiration_at) %>
+      <%= f.label :interest_free_expiration_at %>
+      <%= f.date_field :interest_free_expiration_at, class: 'created_at', id: model.try(:id) %>
+    <% end %>
+
     <% if model.respond_to?(:frequency) %>
+      <%= f.label :frequency %>
       <%= collection_select(model.model_name.name.underscore.to_sym, :frequency, @frequencies, :second, :first, prompt: 'Select a frequency', selected: @frequencies[model.frequency]) %>
     <% end %>
 
     <% if (model.respond_to?(:income_category_id) || model.respond_to?(:expense_category_id)) %>
+      <%= f.label 'Category' %>
       <%= collection_select(model.model_name.name.underscore.to_sym, (model.model_name.name != 'Budget' ? (model.model_name.name.underscore.split('_').last + '_category_id') : 'expense_category_id') , @categories, :id, :name, prompt: 'Select a category', selected: model.try(model.model_name.name != 'Budget' ? (model.model_name.name.underscore.split('_').last + '_category') : 'expense_category').try(:id)) %>
 
       <div class='create-new new-category-btn'>Create Category</div>
@@ -34,6 +53,7 @@
     <% end %>
 
     <% if model.respond_to? :vendor_id %>
+      <%= f.label 'Vendor' %>
       <%= collection_select(model.model_name.name.underscore.to_sym, :vendor_id, @vendors, :id, :name, prompt: 'Select a vendor', selected: model.try(:vendor).try(:id)) %>
 
       <div class='create-new new-vendor-btn'>Create Vendor</div>
@@ -50,7 +70,13 @@
       </div>
     <% end %>
 
+    <% if model.respond_to?(:account_payable) %>
+      <%= f.label 'Apply Payment To Account' %>
+      <%= collection_select(model.model_name.name.underscore.to_sym, :account_payable_id, @account_payables, :id, :name, prompt: 'Select an account', selected: model.try(:account_payable).try(:id)) %>
+    <% end %>
+
     <% if model.respond_to?(:note) %>
+      <%= f.label :note %>
       <%= f.text_area :note, placeholder: 'Notes here' %>
     <% end %>
   <% end %>

@@ -22,6 +22,7 @@ class ExpensesController < ApplicationController
     @new_category = ExpenseCategory.new
     @new_vendor = Vendor.new
     @total_income_this_month = get_sum_of(all_records_for('incomes', @year, @months[:current][:number]))
+    @account_payables = current_user.account_payables.active
     @stats = {
       'This Month': "$#{@total_expenses_this_month}",
       'Last Month': "$#{@total_expenses_last_month}",
@@ -109,6 +110,7 @@ class ExpensesController < ApplicationController
         :expense_category_id,
         :vendor_id,
         :note,
+        :account_payable_id,
         expense_category: [
           :id,
           :name,
