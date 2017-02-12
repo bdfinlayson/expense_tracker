@@ -8,6 +8,7 @@ class ExpenseForm < Reform::Form
   property :expense_category_id, type: Types::Form::Int
   property :created_at
   property :note
+  property :account_payable_id, type: Types::Form::Int
 
   validates :amount, presence: true
   validates :user_id, presence: true

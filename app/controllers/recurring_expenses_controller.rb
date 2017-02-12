@@ -115,6 +115,7 @@ class RecurringExpensesController < ApplicationController
         :vendor_id,
         :frequency,
         :note,
+        :account_payable_id,
         expense_category: [
           :id,
           :name,

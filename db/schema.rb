@@ -10,10 +10,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170116044637) do
+ActiveRecord::Schema.define(version: 20170211172339) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "account_payable_histories", force: :cascade do |t|
+    t.integer  "expense_id"
+    t.integer  "account_payable_id"
+    t.float    "starting_amount"
+    t.float    "ending_amount"
+    t.float    "transaction_amount"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.index ["account_payable_id"], name: "index_account_payable_histories_on_account_payable_id", using: :btree
+    t.index ["expense_id"], name: "index_account_payable_histories_on_expense_id", using: :btree
+  end
+
+  create_table "account_payables", force: :cascade do |t|
+    t.float    "starting_amount"
+    t.float    "current_amount"
+    t.string   "name"
+    t.integer  "user_id"
+    t.date     "interest_free_expiration_at"
+    t.date     "opened_at"
+    t.date     "closed_at"
+    t.integer  "vendor_id"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.index ["name"], name: "index_account_payables_on_name", using: :btree
+    t.index ["user_id"], name: "index_account_payables_on_user_id", using: :btree
+    t.index ["vendor_id"], name: "index_account_payables_on_vendor_id", using: :btree
+  end
 
   create_table "budgets", force: :cascade do |t|
     t.integer  "amount"
@@ -40,6 +68,8 @@ ActiveRecord::Schema.define(version: 20170116044637) do
     t.integer  "expense_category_id"
     t.text     "note"
     t.integer  "recurring_expense_id"
+    t.integer  "account_payable_id"
+    t.index ["account_payable_id"], name: "index_expenses_on_account_payable_id", using: :btree
     t.index ["expense_category_id"], name: "index_expenses_on_expense_category_id", using: :btree
     t.index ["recurring_expense_id"], name: "index_expenses_on_recurring_expense_id", using: :btree
     t.index ["user_id"], name: "index_expenses_on_user_id", using: :btree
@@ -79,6 +109,8 @@ ActiveRecord::Schema.define(version: 20170116044637) do
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
     t.boolean  "cleared",              default: false
+    t.integer  "account_payable_id"
+    t.index ["account_payable_id"], name: "index_pending_expenses_on_account_payable_id", using: :btree
     t.index ["expense_category_id"], name: "index_pending_expenses_on_expense_category_id", using: :btree
     t.index ["recurring_expense_id"], name: "index_pending_expenses_on_recurring_expense_id", using: :btree
     t.index ["user_id"], name: "index_pending_expenses_on_user_id", using: :btree
@@ -96,6 +128,8 @@ ActiveRecord::Schema.define(version: 20170116044637) do
     t.integer  "frequency"
     t.integer  "due_day"
     t.boolean  "archived",            default: false
+    t.integer  "account_payable_id"
+    t.index ["account_payable_id"], name: "index_recurring_expenses_on_account_payable_id", using: :btree
     t.index ["archived"], name: "index_recurring_expenses_on_archived", using: :btree
     t.index ["due_day"], name: "index_recurring_expenses_on_due_day", using: :btree
     t.index ["expense_category_id"], name: "index_recurring_expenses_on_expense_category_id", using: :btree

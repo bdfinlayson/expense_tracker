@@ -28,6 +28,10 @@ module BaseModel
     vendor.name
   end
 
+  def account_payable_name
+    account_payable.name
+  end
+
   def recurring?
     case self.model_name.name
     when 'Expense'

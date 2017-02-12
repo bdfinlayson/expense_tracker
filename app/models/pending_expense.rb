@@ -4,6 +4,7 @@ class PendingExpense < ApplicationRecord
   belongs_to :recurring_expense
   belongs_to :expense_category
   belongs_to :vendor
+  belongs_to :account_payable
 
   default_scope { where.not(cleared: true) }
 

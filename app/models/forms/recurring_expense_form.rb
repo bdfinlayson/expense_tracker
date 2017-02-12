@@ -9,6 +9,7 @@ class RecurringExpenseForm < Reform::Form
   property :created_at
   property :note
   property :frequency, type: Types::Form::Int
+  property :account_payable_id, type: Types::Form::Int
 
   #validate :whether_vendor_already_has_recurring_expense
 
