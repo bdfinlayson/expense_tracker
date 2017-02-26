@@ -11,11 +11,9 @@ class Recurring
     when 'biweekly'
       Recurrence.new(resource).extend(BiweeklyRecurrence).compute
     when 'monthly'
-      Recurrence.new(@resource).extend(MonthlyRecurrence).compute
-      # Recurrence.new(@resource).compute
+      Recurrence.new(resource).extend(MonthlyRecurrence).compute
     when 'annually'
-      # Recurrence.new(resource).extend(YearlyRecurrence).compute
-      Recurrence.new(@resource).compute
+      Recurrence.new(resource).extend(YearlyRecurrence).compute
     end
   end
 end
