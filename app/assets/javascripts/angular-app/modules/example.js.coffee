@@ -1,0 +1,1 @@
+@exampleApp = angular.module('app.exampleApp', []).run(-> console.log 'exampleApp running' )
