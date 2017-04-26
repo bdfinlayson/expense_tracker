@@ -2,12 +2,14 @@
   "lib": {
     "name": "bower-rails generated lib assets",
     "dependencies": {
-      "angular": "v1.6.4"
     }
   },
   "vendor": {
     "name": "bower-rails generated vendor assets",
     "dependencies": {
+      "angular": "v1.6.4",
+      "angular-ui-router": "latest",
+      "angular-devise": "latest"
     }
   }
 }

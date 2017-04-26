@@ -13,6 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require angular
+//= require angular-ui-router
+//= require angular-devise
 //= require angular-rails-templates
 //= require angular-app/app
 //= require_tree ./angular-app/templates
@@ -22,6 +24,7 @@
 //= require_tree ./angular-app/models
 //= require_tree ./angular-app/services
 //= require_tree ./angular-app/controllers
+//= require bootstrap-sprockets
 //= require dataTables/jquery.dataTables
 //= require jquery-ui
 //= require selectize

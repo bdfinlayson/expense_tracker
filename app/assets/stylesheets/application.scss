@@ -1,23 +1,14 @@
-@import 'bourbon';
-@import 'neat';
-@import 'base/base';
+@import 'bootstrap-sprockets';
+@import 'bootstrap';
+
 @import 'jquery-ui';
 @import 'c3';
 @import 'selectize';
 @import 'selectize.default';
-@import 'alerts';
-@import 'index';
-@import 'nav';
 @import 'jquery-ui/core';
 @import 'jquery-ui/theme';
 @import 'jquery-ui/datepicker';
 @import 'dataTables/jquery.dataTables';
-@import 'modal';
-@import 'stats/show';
-@import 'search_bar';
-@import 'table/show';
-@import 'form/show';
-@import 'charts/styles';
 
 .sliding-panel-content > ul {
   font-size: 0.9em;

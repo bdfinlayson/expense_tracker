@@ -20,8 +20,10 @@ gem 'draper', github: 'drapergem/draper'
 gem 'activemodel-serializers-xml'
 gem 'jquery-datatables-rails'
 gem 'selectize-rails'
+
 gem 'angular-rails-templates'
 gem 'bower-rails'
+gem 'active_model_serializers'
 
 # Charts
 gem 'chartkick'
@@ -36,8 +38,7 @@ group :development, :test do
 end
 
 # Styles
-gem 'bourbon'
-gem 'neat'
+gem 'bootstrap-sass', '~> 3.3.6'
 
 # JS
 gem 'jquery-ui-rails'

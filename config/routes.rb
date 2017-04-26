@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   devise_for :users
-  root to: 'expenses#index'
+  root to: 'application#index'
   get 'example' => 'example#index'
   resources :forms, only: [:create]
   resources :expenses
