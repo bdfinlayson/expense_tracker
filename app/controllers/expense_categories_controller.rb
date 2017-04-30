@@ -45,6 +45,6 @@ class ExpenseCategoriesController < ApplicationController
 
   private
     def category_params
-      params.require(:expense_category).permit(:name).merge(user_id: current_user.id)
+      params.permit(:name).merge(user_id: current_user.id)
     end
 end

@@ -2,3 +2,16 @@
   <h1>{{hello}}</h1>
   <h3 ng-if="user">Welcome, {{user.email}}</h3>
 </div>
+
+
+<div class='row' ng-controller='categoryCtrl'>
+  <form ng-submit="submitForm()" class='form-group col-md-6 col-md-offset-3'>
+    <input class='form-control' type="text" id="name" ng-model="newCategory.name">
+    <input class='form-control' type="radio" id="type" value='expense' ng-model="newCategory.category_type">
+    <input class='form-control' type="submit" value="Submit">
+  </form>
+
+  <ul ng-repeat='category in categories'>
+    <li>{{category.name}}</li>
+  </ul>
+</div>
