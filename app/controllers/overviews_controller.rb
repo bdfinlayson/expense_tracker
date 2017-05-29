@@ -20,14 +20,20 @@ class OverviewsController < ApplicationController
     income_history = current_user.incomes.pluck(:amount).sum
     @profit_history = income_history - expense_history
     @profits = get_monthly_profit_history(expenses, incomes).values
+    @average_profit_per_month = get_average_profit_per_month(@profits)
     profitability = get_monthly_percent_profit(@profits, incomes).delete_if {|x| x == 0}
     @average_profitability = (profitability.reduce(:+).to_f / profitability.size).round(2)
     @stats = {
       "#{@year} Avg Profitability": "#{@average_profitability}%",
       'Total Avg Profitability': "#{((@profit_history / income_history) * 100).round(2)}%",
+      "#{@year} Average Monthly Profit": "$#{@average_profit_per_month}",
       "#{@year} Net Worth": "$#{year_net_worth.round(2)}",
       'Total Net Worth': "$#{(current_user.beginning_cash_on_hand + @profit_history).round(2)}"
     }
+  end
+
+  def get_average_profit_per_month(profits)
+    (profits.sum.to_f / Time.current.month.to_f)
   end
 
   def year_net_worth
