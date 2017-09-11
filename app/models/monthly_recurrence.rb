@@ -6,7 +6,9 @@ module MonthlyRecurrence
 
   def monthly_item_due?
     query = @user.send(@target[:join_table]).unscoped.where(vendor_id: @vendor_id)
-    logged_items = query.where('extract(month from created_at) = ?', @current_month)
+    logged_items = query
+      .where('extract(month from created_at) = ?', @current_month)
+      .where.not('extract(year from created_at) < ?', @current_year)
     if logged_items.empty? && overdue?(@model_due_day)
       true
     else

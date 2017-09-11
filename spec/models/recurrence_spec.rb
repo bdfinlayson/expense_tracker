@@ -199,6 +199,19 @@ describe Recurrence do
           expect(PendingExpense.unscoped.count).to be 2
         end
       end
+
+      context 'when a year later' do
+        it 'creates a pending expense' do
+          current_date = Date.today
+          Timecop.freeze(current_date) do
+            expect{Recurring.new(recurring_expense).compute}.to change(PendingExpense.unscoped, :count).by(1)
+          end
+          Timecop.freeze(current_date + 1.year) do
+            expect{Recurring.new(recurring_expense).compute}.to change(PendingExpense.unscoped, :count).by(1)
+          end
+        end
+      end
+
       context 'when duplicate' do
         context 'on same day' do
           it 'does not create' do
